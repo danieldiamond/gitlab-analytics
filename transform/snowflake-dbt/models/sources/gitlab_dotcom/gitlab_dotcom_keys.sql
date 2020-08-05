@@ -8,8 +8,8 @@ WITH source AS (
 
     SELECT
 
-      id::INTEGER             AS key_id,
-      user_id::INTEGER        AS user_id,
+      id::NUMBER             AS key_id,
+      user_id::NUMBER        AS user_id,
       created_at::TIMESTAMP   AS created_at,
       updated_at::TIMESTAMP   AS updated_at,
       type::VARCHAR           AS key_type,

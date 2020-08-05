@@ -13,7 +13,7 @@ WITH source AS (
 
   SELECT 
     dbt_scd_id::VARCHAR              AS customer_snapshot_id,
-    id::INTEGER                      AS customer_id,
+    id::NUMBER                      AS customer_id,
     created_at::TIMESTAMP            AS customer_created_at,
     updated_at::TIMESTAMP            AS customer_updated_at,
     --sign_in_count // missing from manifest, issue 1860,

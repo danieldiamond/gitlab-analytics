@@ -12,8 +12,8 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                                      AS environment_id,
-      project_id::INTEGER                              AS project_id,
+      id::NUMBER                                      AS environment_id,
+      project_id::NUMBER                              AS project_id,
       name::VARCHAR                                    AS environment_name,
       created_at::TIMESTAMP                            AS created_at,
       updated_at::TIMESTAMP                            AS updated_at,

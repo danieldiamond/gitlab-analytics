@@ -7,9 +7,9 @@ WITH source AS (
 ), renamed AS (
 
   SELECT
-    id::INTEGER                     AS approval_id,
-    merge_request_id::INTEGER       AS merge_request_id,
-    user_id::INTEGER                AS user_id,
+    id::NUMBER                     AS approval_id,
+    merge_request_id::NUMBER       AS merge_request_id,
+    user_id::NUMBER                AS user_id,
     created_at::TIMESTAMP           AS created_at,
     updated_at::TIMESTAMP           AS updated_at
 

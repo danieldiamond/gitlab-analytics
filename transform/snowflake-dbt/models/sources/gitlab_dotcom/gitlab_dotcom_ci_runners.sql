@@ -20,7 +20,7 @@ WITH source AS (
 ), renamed AS (
 
   SELECT
-    id::INTEGER                                     AS runner_id,
+    id::NUMBER                                     AS runner_id,
     created_at::TIMESTAMP                           AS created_at,
     updated_at::TIMESTAMP                           AS updated_at,
     description::VARCHAR                            AS description,
@@ -34,10 +34,10 @@ WITH source AS (
     architecture::VARCHAR                           AS architecture,
     run_untagged::BOOLEAN                           AS is_untagged,
     locked::BOOLEAN                                 AS is_locked,
-    access_level::INTEGER                           AS access_level,
+    access_level::NUMBER                           AS access_level,
     ip_address::VARCHAR                             AS ip_address,
-    maximum_timeout::INTEGER                        AS maximum_timeout,
-    runner_type::INTEGER                            AS runner_type,
+    maximum_timeout::NUMBER                        AS maximum_timeout,
+    runner_type::NUMBER                            AS runner_type,
     public_projects_minutes_cost_factor::FLOAT      AS public_projects_minutes_cost_factor,
     private_projects_minutes_cost_factor::FLOAT     AS private_projects_minutes_cost_factor
   FROM source

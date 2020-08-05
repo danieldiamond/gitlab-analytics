@@ -15,8 +15,8 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                                  AS id,
-      usage_data_id::INTEGER                       AS usage_data_id,
+      id::NUMBER                                  AS id,
+      usage_data_id::NUMBER                       AS usage_data_id,
       leader_boards::FLOAT                         AS leader_boards,
       instance_boards::FLOAT                       AS instance_boards,
       leader_ci_pipelines::FLOAT                   AS leader_ci_pipelines,

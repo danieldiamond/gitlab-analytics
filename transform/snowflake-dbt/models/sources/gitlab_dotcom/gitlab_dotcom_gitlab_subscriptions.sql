@@ -5,15 +5,15 @@ WITH
 
     SELECT DISTINCT
 
-      id::INTEGER                                   AS gitlab_subscription_id,
+      id::NUMBER                                   AS gitlab_subscription_id,
       start_date::DATE                              AS gitlab_subscription_start_date,
       end_date::DATE                                AS gitlab_subscription_end_date,
       trial_starts_on::DATE                         AS gitlab_subscription_trial_starts_on,
       trial_ends_on::DATE                           AS gitlab_subscription_trial_ends_on,
-      namespace_id::INTEGER                         AS namespace_id,
-      hosted_plan_id::INTEGER                       AS plan_id,
-      max_seats_used::INTEGER                       AS max_seats_used,
-      seats::INTEGER                                AS seats,
+      namespace_id::NUMBER                         AS namespace_id,
+      hosted_plan_id::NUMBER                       AS plan_id,
+      max_seats_used::NUMBER                       AS max_seats_used,
+      seats::NUMBER                                AS seats,
       trial::BOOLEAN                                AS is_trial,
       created_at::TIMESTAMP                         AS created_at,
       updated_at::TIMESTAMP                         AS updated_at,

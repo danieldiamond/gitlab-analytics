@@ -6,9 +6,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                                  AS license_id,
+      id::NUMBER                                  AS license_id,
       company::VARCHAR                             AS company,
-      users_count::INTEGER                         AS users_count,
+      users_count::NUMBER                         AS users_count,
       email::VARCHAR                               AS email,
       md5(license_file::VARCHAR)                   AS license_md5,
       expires_at::TIMESTAMP                        AS license_expires_at,
@@ -16,8 +16,8 @@ WITH source AS (
       starts_at::TIMESTAMP                         AS starts_at,
       NULLIF(zuora_subscription_name, '')::VARCHAR AS zuora_subscription_name,
       NULLIF(zuora_subscription_id, '')::VARCHAR   AS zuora_subscription_id,
-      previous_users_count::INTEGER                AS previous_users_count,
-      trueup_quantity::INTEGER                     AS trueup_quantity,
+      previous_users_count::NUMBER                AS previous_users_count,
+      trueup_quantity::NUMBER                     AS trueup_quantity,
       trueup_from::TIMESTAMP                       AS trueup_from,
       trueup_to::TIMESTAMP                         AS trueup_to,
       plan_code::VARCHAR                           AS plan_code,

@@ -15,28 +15,28 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-        id::INTEGER                                  AS id,
+        id::NUMBER                                  AS id,
         source_ip::VARCHAR                           AS source_ip,
         version::VARCHAR                             AS version,
-        active_user_count::INTEGER                   AS instance_user_count, -- See issue #4872.
+        active_user_count::NUMBER                   AS instance_user_count, -- See issue #4872.
         license_md5::VARCHAR                         AS license_md5,
-        historical_max_users::INTEGER                AS historical_max_users,
+        historical_max_users::NUMBER                AS historical_max_users,
         --licensee // removed for PII
-        license_user_count::INTEGER                  AS license_user_count,
+        license_user_count::NUMBER                  AS license_user_count,
         license_starts_at::TIMESTAMP                 AS license_starts_at,
         license_expires_at::TIMESTAMP                AS license_expires_at,
         PARSE_JSON(license_add_ons)                  AS license_add_ons,
         recorded_at::TIMESTAMP                       AS recorded_at,
         created_at::TIMESTAMP                        AS created_at,
         updated_at::TIMESTAMP                        AS updated_at,
-        license_id::INTEGER                          AS license_id,
+        license_id::NUMBER                          AS license_id,
         mattermost_enabled::BOOLEAN                  AS mattermost_enabled,
         uuid::VARCHAR                                AS uuid,
         edition::VARCHAR                             AS edition,
         hostname::VARCHAR                            AS hostname,
-        host_id::INTEGER                             AS host_id,
+        host_id::NUMBER                             AS host_id,
         license_trial::BOOLEAN                       AS license_trial,
-        source_license_id::INTEGER                   AS source_license_id,
+        source_license_id::NUMBER                   AS source_license_id,
         installation_type::VARCHAR                   AS installation_type,
         license_plan::VARCHAR                        AS license_plan,
         database_adapter::VARCHAR                    AS database_adapter,
@@ -59,9 +59,9 @@ WITH source AS (
         --smau // never not null
         PARSE_JSON(usage_activity_by_stage)          AS usage_activity_by_stage,
         PARSE_JSON(usage_activity_by_stage_monthly)  AS usage_activity_by_stage_monthly,
-        gitaly_clusters::INTEGER                     AS gitaly_clusters,
+        gitaly_clusters::NUMBER                     AS gitaly_clusters,
         gitaly_version::VARCHAR                      AS gitaly_version,
-        gitaly_servers::INTEGER                      AS gitaly_servers,
+        gitaly_servers::NUMBER                      AS gitaly_servers,
         gitaly_filesystems::VARCHAR                  AS gitaly_filesystems,
         PARSE_JSON(object_store)                     AS object_store,
         dependency_proxy_enabled::BOOLEAN            AS is_dependency_proxy_enabled,

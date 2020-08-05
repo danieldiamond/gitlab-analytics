@@ -18,12 +18,12 @@ WITH source AS (
 , renamed AS (
 
     SELECT
-      id::INTEGER                                 AS requirement_id,
+      id::NUMBER                                 AS requirement_id,
       created_at::TIMESTAMP                       AS created_at,
       updated_at::TIMESTAMP                       AS updated_at,
-      project_id::INTEGER                         AS project_id,
-      author_id::INTEGER                          AS author_id,
-      iid::INTEGER                                AS requirement_iid,
+      project_id::NUMBER                         AS project_id,
+      author_id::NUMBER                          AS author_id,
+      iid::NUMBER                                AS requirement_iid,
       state::VARCHAR                              AS requirement_state
     FROM source
 

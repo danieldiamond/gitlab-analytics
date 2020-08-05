@@ -14,9 +14,9 @@ WITH source AS (
   SELECT
   
     dbt_scd_id::VARCHAR                                           AS namespace_statistics_snapshot_id,
-    id::INTEGER                                                   AS namespace_statistics_id,
-    namespace_id::INTEGER                                         AS namespace_id,
-    shared_runners_seconds::INTEGER                               AS shared_runners_seconds,
+    id::NUMBER                                                   AS namespace_statistics_id,
+    namespace_id::NUMBER                                         AS namespace_id,
+    shared_runners_seconds::NUMBER                               AS shared_runners_seconds,
     shared_runners_seconds_last_reset::TIMESTAMP                  AS shared_runners_seconds_last_reset,
     dbt_valid_from::TIMESTAMP                                     AS valid_from,
     dbt_valid_to::TIMESTAMP                                       AS valid_to

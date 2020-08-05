@@ -7,15 +7,15 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                AS cluster_id,
-      user_id::INTEGER           AS user_id,
-      provider_type::INTEGER     AS provider_type_id,
-      platform_type::INTEGER     AS platform_type_id,
+      id::NUMBER                AS cluster_id,
+      user_id::NUMBER           AS user_id,
+      provider_type::NUMBER     AS provider_type_id,
+      platform_type::NUMBER     AS platform_type_id,
       created_at::TIMESTAMP      AS created_at,
       updated_at::TIMESTAMP      AS updated_at,
       enabled::BOOLEAN           AS is_enabled,
       environment_scope::VARCHAR AS environment_scope,
-      cluster_type::INTEGER      AS cluster_type_id,
+      cluster_type::NUMBER      AS cluster_type_id,
       domain::VARCHAR            AS domain,
       managed::VARCHAR           AS managed
 

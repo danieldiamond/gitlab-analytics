@@ -5,10 +5,10 @@ WITH
 
     SELECT
 
-      id::INTEGER                                     AS group_group_link_id,
-      shared_group_id::INTEGER                        AS shared_group_id,
-      shared_with_group_id::INTEGER                   AS shared_with_group_id,
-      group_access::INTEGER                           AS group_access,
+      id::NUMBER                                     AS group_group_link_id,
+      shared_group_id::NUMBER                        AS shared_group_id,
+      shared_with_group_id::NUMBER                   AS shared_with_group_id,
+      group_access::NUMBER                           AS group_access,
       created_at::TIMESTAMP                           AS created_at,
       updated_at::TIMESTAMP                           AS updated_at,
       expires_at::TIMESTAMP                           AS expires_at,

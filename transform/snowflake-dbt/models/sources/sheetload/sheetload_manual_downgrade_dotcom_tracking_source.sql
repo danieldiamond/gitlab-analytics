@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      namespace_id::INTEGER        AS namespace_id,
+      namespace_id::NUMBER        AS namespace_id,
       TRY_TO_DATE(downgraded_date) AS downgraded_date
     FROM source  
 

@@ -13,7 +13,7 @@ WITH source AS (
          "Parent_Role"::VARCHAR     AS parent_role,
          "Timeframe"::VARCHAR       AS timeframe,
          "Field"::VARCHAR           AS field,
-         "Week"::INTEGER            AS week,
+         "Week"::NUMBER            AS week,
          "Start_Day"::DATE          AS start_date,
          "End_Day"::DATE            AS end_date,
          "Data_Type"::VARCHAR       AS data_type,

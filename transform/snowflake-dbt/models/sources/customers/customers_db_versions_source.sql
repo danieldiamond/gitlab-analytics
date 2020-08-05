@@ -12,9 +12,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER             AS version_id,
-      item_id::INTEGER        AS item_id,
-      transaction_id::INTEGER AS transaction_id,
+      id::NUMBER             AS version_id,
+      item_id::NUMBER        AS item_id,
+      transaction_id::NUMBER AS transaction_id,
       created_at::TIMESTAMP   AS created_at,
       event::VARCHAR          AS event,
       item_type::VARCHAR      AS item_type,
