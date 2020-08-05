@@ -1,7 +1,7 @@
-import numpy as np
-import pandas as pd
 import time
 
+import numpy as np
+import pandas as pd
 from logging import error, info, basicConfig, getLogger, warning
 from sqlalchemy.engine.base import Engine
 
@@ -46,7 +46,7 @@ def dw_uploader(
     ]
     data = data.infer_objects()
 
-    # Replace NULL values with None values which translates into NULL in SQL
+    # Replace empty strings into NaN values which translates into NULL in SQL
     data.replace("", np.nan, inplace=True)
 
     # If the data isn't chunked, or this is the first iteration, drop table
