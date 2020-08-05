@@ -42,7 +42,7 @@ WITH raw_mrr_totals_levelled AS (
 
     SELECT
         subscription_name_slugify       AS original_sub,
-        c.value::string                 AS subscriptions_in_lineage,
+        c.value::VARCHAR                 AS subscriptions_in_lineage,
         mrr_month                       AS original_mrr_month,
         DATEADD('year', 1, mrr_month)   AS retention_month
     FROM mrr_totals_levelled,

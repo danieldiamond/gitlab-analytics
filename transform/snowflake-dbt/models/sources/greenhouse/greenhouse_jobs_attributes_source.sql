@@ -8,9 +8,9 @@ WITH source as (
 	SELECT
 
 			--keys
-    		id::bigint				    AS job_attribute_id,
-    		job_id::bigint			  AS job_id,
-    		attribute_id::bigint	AS attribute_id,
+    		id::NUMBER				    AS job_attribute_id,
+    		job_id::NUMBER			  AS job_id,
+    		attribute_id::NUMBER	AS attribute_id,
 
     		--info
     		active::boolean			  AS is_active,

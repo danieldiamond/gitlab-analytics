@@ -7,7 +7,7 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                       AS programming_language_id,
+      id::NUMBER                       AS programming_language_id,
       name::VARCHAR                     AS programming_language_name
     FROM source
 

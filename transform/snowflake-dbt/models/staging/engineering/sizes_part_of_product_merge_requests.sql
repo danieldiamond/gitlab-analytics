@@ -1,9 +1,9 @@
 WITH split_diff_path AS (
 
     SELECT
-      added_lines::BIGINT                                       AS product_merge_request_lines_added,
+      added_lines::NUMBER                                       AS product_merge_request_lines_added,
       real_size::VARCHAR                                        AS product_merge_request_files_changed,
-      REGEXP_REPLACE(real_size::VARCHAR, '[^0-9]+', '')::BIGINT AS product_merge_request_files_changed_truncated,
+      REGEXP_REPLACE(real_size::VARCHAR, '[^0-9]+', '')::NUMBER AS product_merge_request_files_changed_truncated,
       removed_lines::VARCHAR                                    AS product_merge_request_lines_removed,
       SPLIT(plain_diff_url_path, '-')                           AS product_merge_request_diff_url_split,
       ARRAY_SIZE(SPLIT(plain_diff_url_path, '-'))               AS product_merge_request_diff_url_size 
@@ -17,7 +17,7 @@ WITH split_diff_path AS (
       product_merge_request_files_changed_truncated,
       product_merge_request_lines_removed,
       TRIM(ARRAY_TO_STRING(ARRAY_SLICE(product_merge_request_diff_url_split, 0, -1), '-'), '/')::VARCHAR AS product_merge_request_project,
-      REGEXP_REPLACE(GET(product_merge_request_diff_url_split, product_merge_request_diff_url_size - 1), '[^0-9]+', '')::bigint AS product_merge_request_iid
+      REGEXP_REPLACE(GET(product_merge_request_diff_url_split, product_merge_request_diff_url_size - 1), '[^0-9]+', '')::NUMBER AS product_merge_request_iid
     FROM split_diff_path
 
 ), product_projects AS (

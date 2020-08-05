@@ -7,7 +7,7 @@ WITH source as (
 
 	SELECT
  			--key
- 			id::bigint			   AS organization_id,
+ 			id::NUMBER			   AS organization_id,
 
  			--info
     		name::varchar		 AS organization_name

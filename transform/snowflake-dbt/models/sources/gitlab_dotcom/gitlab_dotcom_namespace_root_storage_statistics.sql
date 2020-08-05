@@ -13,13 +13,13 @@ WITH source AS (
 
     SELECT
 
-      namespace_id::INTEGER         AS namespace_id,
-      repository_size::INTEGER      AS repository_size,
-      lfs_objects_size::INTEGER     AS lfs_objects_size,
-      wiki_size::INTEGER            AS wiki_size,
-      build_artifacts_size::INTEGER AS build_artifacts_size,
-      storage_size::INTEGER         AS storage_size,
-      packages_size::INTEGER        AS packages_size,
+      namespace_id::NUMBER         AS namespace_id,
+      repository_size::NUMBER      AS repository_size,
+      lfs_objects_size::NUMBER     AS lfs_objects_size,
+      wiki_size::NUMBER            AS wiki_size,
+      build_artifacts_size::NUMBER AS build_artifacts_size,
+      storage_size::NUMBER         AS storage_size,
+      packages_size::NUMBER        AS packages_size,
       updated_at::TIMESTAMP         AS namespace_updated_at
 
     FROM source

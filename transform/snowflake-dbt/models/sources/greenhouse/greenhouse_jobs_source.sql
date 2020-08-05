@@ -8,10 +8,10 @@ WITH source as (
 	SELECT
 
 			--keys
-    		id::bigint							    AS job_id,
-    		organization_id::bigint 		AS organization_id,
+    		id::NUMBER							    AS job_id,
+    		organization_id::NUMBER 		AS organization_id,
     		requisition_id::varchar			AS requisition_id,
-    		department_id::bigint				AS department_id,
+    		department_id::NUMBER				AS department_id,
 
     		--info
     		name::varchar						    AS job_name,

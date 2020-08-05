@@ -7,7 +7,7 @@ WITH merge_requests AS (
     
     SELECT 
       handbook_file_edited,
-      REGEXP_REPLACE(plain_diff_url_path, '[^0-9]+', '')::BIGINT AS merge_request_iid
+      REGEXP_REPLACE(plain_diff_url_path, '[^0-9]+', '')::NUMBER AS merge_request_iid
     FROM {{ ref('handbook_merge_requests_files') }}
 
 ), file_classifications AS (

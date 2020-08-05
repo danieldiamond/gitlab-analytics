@@ -10,15 +10,15 @@ WITH
 
     SELECT
 
-      id::INTEGER                                    AS member_id,
-      access_level::INTEGER                          AS access_level,
-      source_id::INTEGER                             AS source_id,
+      id::NUMBER                                    AS member_id,
+      access_level::NUMBER                          AS access_level,
+      source_id::NUMBER                             AS source_id,
       source_type                                    AS member_source_type,
-      user_id::INTEGER                               AS user_id,
-      notification_level::INTEGER                    AS notification_level,
+      user_id::NUMBER                               AS user_id,
+      notification_level::NUMBER                    AS notification_level,
       type                                           AS member_type,
       created_at::TIMESTAMP                          AS invite_created_at,
-      created_by_id::INTEGER                         AS created_by_id,
+      created_by_id::NUMBER                         AS created_by_id,
       invite_accepted_at::TIMESTAMP                  AS invite_accepted_at,
       requested_at::TIMESTAMP                        AS requested_at,
       expires_at::TIMESTAMP                          AS expires_at,

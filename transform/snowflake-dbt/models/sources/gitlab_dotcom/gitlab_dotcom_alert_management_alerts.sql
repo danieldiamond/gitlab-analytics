@@ -7,17 +7,17 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-        id::INTEGER                AS alert_management_alert_id,
+        id::NUMBER                AS alert_management_alert_id,
         created_at::TIMESTAMP_NTZ  AS created_at,
         updated_at::TIMESTAMP_NTZ  AS updated_at,
         started_at::TIMESTAMP_NTZ  AS started_at,
         ended_at::TIMESTAMP_NTZ    AS ended_at,
-        events::INTEGER            AS alert_management_alert_events,
-        iid::INTEGER               AS alert_management_alert_iid,
-        severity::INTEGER          AS severity_id,
-        status::INTEGER            AS status_id,
-        issue_id::INTEGER          AS issue_id,
-        project_id::INTEGER        AS project_id,
+        events::NUMBER            AS alert_management_alert_events,
+        iid::NUMBER               AS alert_management_alert_iid,
+        severity::NUMBER          AS severity_id,
+        status::NUMBER            AS status_id,
+        issue_id::NUMBER          AS issue_id,
+        project_id::NUMBER        AS project_id,
         service::VARCHAR           AS alert_management_alert_service,
         monitoring_tool::VARCHAR   AS monitoring_tool
 

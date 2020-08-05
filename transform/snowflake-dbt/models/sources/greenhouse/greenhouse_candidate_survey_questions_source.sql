@@ -8,7 +8,7 @@ WITH source as (
 
     SELECT
             --keys
-            id::bigint            AS candidate_survey_question_id,
+            id::NUMBER            AS candidate_survey_question_id,
 
             --info
             question::varchar 		AS candidate_survey_question

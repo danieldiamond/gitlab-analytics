@@ -17,7 +17,7 @@ WITH base as (
 ), renamed AS (
 
     SELECT 
-      DISTINCT JSONTEXT['line']::string       AS base64_event,
+      DISTINCT JSONTEXT['line']::VARCHAR       AS base64_event,
       TO_ARRAY(JSONTEXT['errors'])            AS error_array,
       JSONTEXT[ 'failure_tstamp']::timestamp  AS failure_timestamp,
       'Fishtown'                              AS infra_source,

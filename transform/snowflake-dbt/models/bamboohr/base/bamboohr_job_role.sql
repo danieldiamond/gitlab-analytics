@@ -6,8 +6,8 @@ WITH source AS (
 ), intermediate AS (
 
     SELECT 
-      NULLIF(d.value['employeeNumber'],'')::BIGINT                    AS employee_number,
-      d.value['id']::BIGINT                                           AS employee_id,
+      NULLIF(d.value['employeeNumber'],'')::NUMBER                    AS employee_number,
+      d.value['id']::NUMBER                                           AS employee_id,
       d.value['firstName']::VARCHAR                                   AS first_name,
       d.value['lastName']::VARCHAR                                    AS last_name,
       (CASE WHEN d.value['hireDate']=''
@@ -21,7 +21,7 @@ WITH source AS (
       d.value['customJobTitleSpeciality']::VARCHAR                    AS jobtitle_speciality,
       d.value['customGitLabUsername']::VARCHAR                        AS gitlab_username,
       d.value['customSalesGeoDifferential']::VARCHAR                  AS sales_geo_differential,
-      uploaded_at::DATETIME                                           AS effective_date
+      uploaded_at::DATE                                           AS effective_date
     FROM source,
     LATERAL FLATTEN(INPUT => PARSE_JSON(jsontext['employees']), OUTER => true) d
     QUALIFY ROW_NUMBER() OVER (PARTITION BY employee_id, job_role, job_grade, cost_center,

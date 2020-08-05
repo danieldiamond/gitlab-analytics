@@ -22,14 +22,14 @@ with subscription as (
 ), arr AS
     (
       SELECT subscription.subscription_id,
-             SUM(rate_plan_charge.mrr*12::NUMERIC) AS current_arr
+             SUM(rate_plan_charge.mrr*12::NUMBER) AS current_arr
       FROM subscription
         JOIN account 
-          ON subscription.account_id = account.account_id::TEXT
+          ON subscription.account_id = account.account_id::VARCHAR
         JOIN rate_plan 
-          ON rate_plan.subscription_id::TEXT = subscription.subscription_id
+          ON rate_plan.subscription_id::VARCHAR = subscription.subscription_id
         JOIN rate_plan_charge 
-          ON rate_plan_charge.rate_plan_id::TEXT = rate_plan.rate_plan_id::TEXT
+          ON rate_plan_charge.rate_plan_id::VARCHAR = rate_plan.rate_plan_id::VARCHAR
       WHERE (subscription.subscription_status NOT IN ('Draft','Expired')) --DOUBLE CHECK THIS
       AND   rate_plan_charge.effective_start_date <= CURRENT_DATE
       AND   (rate_plan_charge.effective_end_date > CURRENT_DATE 

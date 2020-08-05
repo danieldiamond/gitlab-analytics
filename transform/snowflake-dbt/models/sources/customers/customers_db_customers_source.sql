@@ -7,13 +7,13 @@ WITH source AS (
 ), renamed AS (
 
     SELECT DISTINCT
-      id::INTEGER                      AS customer_id,
+      id::NUMBER                      AS customer_id,
       first_name::VARCHAR              AS customer_first_name,
       last_name::VARCHAR               AS customer_last_name,
       email::VARCHAR                   AS customer_email,
       created_at::TIMESTAMP            AS customer_created_at,
       updated_at::TIMESTAMP            AS customer_updated_at,
-      sign_in_count::INTEGER           AS sign_in_count,
+      sign_in_count::NUMBER           AS sign_in_count,
       current_sign_in_at::TIMESTAMP    AS current_sign_in_at,
       last_sign_in_at::TIMESTAMP       AS last_sign_in_at,
       --current_sign_in_ip,

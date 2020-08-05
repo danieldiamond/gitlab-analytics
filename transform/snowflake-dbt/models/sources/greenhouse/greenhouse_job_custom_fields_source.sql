@@ -8,8 +8,8 @@ WITH source as (
 	SELECT
 
 			--key
-   			job_id::bigint					      AS job_id,
-		   	user_id::bigint					      AS user_id,
+   			job_id::NUMBER					      AS job_id,
+		   	user_id::NUMBER					      AS user_id,
 
    			--info
    			custom_field::varchar			    AS job_custom_field,
@@ -17,8 +17,8 @@ WITH source as (
    			date_value::date 				      AS job_custom_field_date_value,
    			display_value::varchar			  AS job_custom_field_display_value,
    			unit::varchar					        AS job_custom_field_unit,
-   			min_value::numeric				    AS job_custom_field_min_value,
-   			max_value::numeric				    AS job_custom_field_max_value,
+   			min_value::NUMBER				    AS job_custom_field_min_value,
+   			max_value::NUMBER				    AS job_custom_field_max_value,
    			created_at::timestamp 			  AS job_custom_field_created_at,
    			updated_at::timestamp 			  AS job_custom_field_updated_at
 

@@ -13,7 +13,7 @@ WITH source AS (
 
     SELECT
 
-      id::INTEGER                       AS plan_id,
+      id::NUMBER                       AS plan_id,
       created_at::TIMESTAMP             AS created_at,
       updated_at::TIMESTAMP             AS updated_at,
       name::VARCHAR                     AS plan_name,

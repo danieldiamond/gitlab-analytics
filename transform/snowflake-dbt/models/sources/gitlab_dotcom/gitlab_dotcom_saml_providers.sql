@@ -7,8 +7,8 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                              AS saml_provider_id,
-      group_id::INTEGER                        AS group_id,
+      id::NUMBER                              AS saml_provider_id,
+      group_id::NUMBER                        AS group_id,
       enabled::BOOLEAN                         AS is_enabled,
       certificate_fingerprint::VARCHAR         AS certificate_fingerprint,
       sso_url::VARCHAR                         AS sso_url,
