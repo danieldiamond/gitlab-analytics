@@ -38,7 +38,7 @@ sources:
       - name: ic_iteration_competency
       - name: ic_results_competency
       - name: ic_transparency_competency
-      - name: infrastructure_missing_employees
+      - name: infrastructure_missing_employees_source
       - name: job_roles_prior_to_2020_02
       - name: kpi_status
       - name: linkedin_recruiter
