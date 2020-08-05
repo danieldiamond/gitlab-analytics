@@ -12,7 +12,7 @@ WITH source as (
 
             --info
             custom_field::varchar               AS candidate_custom_field,
-            float_value::double precision       AS candidate_custom_field_float_value,
+            float_value::FLOAT precision       AS candidate_custom_field_float_value,
             date_value::varchar::date           AS candidate_custom_field_date,
             display_value::varchar              AS candidate_custom_field_display_value,
             min_value::NUMBER                  AS candidate_custom_field_min_value,
