@@ -19,10 +19,10 @@ WITH source AS (
       NULLIF(commit_start, '')::VARCHAR             AS commit_start,
       NULLIF(commit_handbook_v1, '')::VARCHAR       AS commit_handbook_v1,
       NULLIF(is_deleted, 'false')::VARCHAR::BOOLEAN AS is_deleted,
-      NULLIF(kpi_number, '')::NUMBER                   AS kpi_number,
-      NULLIF(version_number, '')::NUMBER               AS version_number,
+      NULLIF(kpi_number, '')::NUMBER                AS kpi_number,
+      NULLIF(version_number, '')::NUMBER            AS version_number,
       NULLIF(handbook_reference, '')::VARCHAR       AS handbook_reference,
-      NULLIF(kpi_id, '')::NUMBER                       AS kpi_id
+      NULLIF(kpi_id, '')::NUMBER                    AS kpi_id
     FROM source
       
 ) 

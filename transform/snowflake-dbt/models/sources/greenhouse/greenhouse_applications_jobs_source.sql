@@ -8,7 +8,7 @@ WITH source as (
 	SELECT
 			--keys
     		application_id::NUMBER		AS application_id,
-    		job_id::NUMBER				    AS job_id
+    		job_id::NUMBER				AS job_id
 
 	FROM source
 

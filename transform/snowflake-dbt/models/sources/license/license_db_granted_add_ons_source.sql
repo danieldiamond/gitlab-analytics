@@ -10,8 +10,8 @@ WITH source AS (
       license_id::NUMBER    AS license_id,
       add_on_id::NUMBER     AS add_on_id,
       quantity::NUMBER      AS quantity,
-      created_at::TIMESTAMP  AS created_at,
-      updated_at::TIMESTAMP  AS updated_at
+      created_at::TIMESTAMP AS created_at,
+      updated_at::TIMESTAMP AS updated_at
     FROM source
 
 )

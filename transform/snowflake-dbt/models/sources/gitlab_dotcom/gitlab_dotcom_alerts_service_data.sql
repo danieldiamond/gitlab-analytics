@@ -9,8 +9,8 @@ WITH source AS (
     SELECT
       id::NUMBER                AS alerts_service_data_id,
       service_id::NUMBER        AS service_id,
-      created_at::TIMESTAMP  AS created_at,
-      updated_at::TIMESTAMP  AS updated_at
+      created_at::TIMESTAMP     AS created_at,
+      updated_at::TIMESTAMP     AS updated_at
 
     FROM source
 

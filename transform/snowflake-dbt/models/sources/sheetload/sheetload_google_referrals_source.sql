@@ -7,7 +7,7 @@ WITH source AS (
 
 
     SELECT
-      date_week::DATE               AS date_week,
+      date_week::DATE              AS date_week,
       eligible_upgrades::NUMBER    AS eligible_upgrades,
       trials_referred::NUMBER      AS trials_referred,
       upgrade_revenue::NUMBER      AS upgrade_revenue,

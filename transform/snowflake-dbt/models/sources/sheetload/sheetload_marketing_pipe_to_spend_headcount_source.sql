@@ -7,7 +7,7 @@ WITH source AS (
 
 
     SELECT
-      date_month::DATE       AS date_month,
+      date_month::DATE        AS date_month,
       pipe,
       headcount::FLOAT        AS headcount,
       salary_per_month::FLOAT AS salary_per_month

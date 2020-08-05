@@ -6,7 +6,7 @@ WITH source AS (
 ), renamed AS (
 
   SELECT
-    date::DATE                                              AS entry_date,
+    date::DATE                                             AS entry_date,
     -- running totals
     full_members::NUMBER                                   AS full_members,
     guests::NUMBER                                         AS guests,
@@ -23,12 +23,12 @@ WITH source AS (
     messages_posted::NUMBER                                AS messages_posted,
     messages_posted_by_apps::NUMBER                        AS messages_posted_by_apps,
     messages_posted_by_members::NUMBER                     AS messages_posted_by_members,
-    percent_of_messages_in_dms::FLOAT                       AS percent_of_messages_in_dms,
-    percent_of_messages_in_private_channels::FLOAT          AS percent_of_messages_in_private_channels,
-    percent_of_messages_in_public_channels::FLOAT           AS percent_of_messages_in_public_channels,
-    percent_of_views_in_dms::FLOAT                          AS percent_of_views_in_dms,
-    percent_of_views_in_private_channels::FLOAT             AS percent_of_views_in_private_channels,
-    percent_of_views_in_public_channels::FLOAT              AS percent_of_views_in_public_channels,
+    percent_of_messages_in_dms::FLOAT                      AS percent_of_messages_in_dms,
+    percent_of_messages_in_private_channels::FLOAT         AS percent_of_messages_in_private_channels,
+    percent_of_messages_in_public_channels::FLOAT          AS percent_of_messages_in_public_channels,
+    percent_of_views_in_dms::FLOAT                         AS percent_of_views_in_dms,
+    percent_of_views_in_private_channels::FLOAT            AS percent_of_views_in_private_channels,
+    percent_of_views_in_public_channels::FLOAT             AS percent_of_views_in_public_channels,
     weekly_active_members::NUMBER                          AS weekly_active_members,
     weekly_members_posting_messages::NUMBER                AS weekly_members_posting_messages
   FROM source  
