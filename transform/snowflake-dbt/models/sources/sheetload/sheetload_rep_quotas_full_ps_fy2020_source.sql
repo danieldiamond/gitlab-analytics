@@ -10,7 +10,7 @@ WITH source AS (
       type, 
       team,                                                 
       fiscal_year::INT                                      AS fiscal_year,
-      ZEROIFNULL(NULLIF("PS_QUOTA",'')::DECIMAL(16,5))      AS ps_quota, 
+      ZEROIFNULL(NULLIF("PS_QUOTA",'')::NUMBER(16,5))      AS ps_quota, 
       bamboo_employee_id::INT                               AS bamboo_employee_id
     FROM source
       
