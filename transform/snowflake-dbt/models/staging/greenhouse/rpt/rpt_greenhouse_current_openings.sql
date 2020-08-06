@@ -64,6 +64,27 @@ WITH greenhouse_openings AS (
     SELECT *
     FROM {{ref('bamboohr_id_employee_number_mapping')}}
 
+
+), greenhouse_jobs_offices AS (
+
+  select * 
+  from "ANALYTICS"."GREENHOUSE"."GREENHOUSE_JOBS_OFFICES_SOURCE"
+
+), greenhouse_offices_sources AS (
+
+  SELECT * 
+  FROM "ANALYTICS"."GREENHOUSE"."GREENHOUSE_OFFICES_SOURCE"
+  WHERE office_name IS NOT NULL
+  
+), office AS (
+  
+  SELECT greenhouse_jobs_offices.job_id, office_name
+  FROM greenhouse_jobs_offices
+  LEFT JOIN greenhouse_offices_sources
+    ON greenhouse_offices_sources.office_id = greenhouse_jobs_offices.office_id
+  WHERE office_name IS NOT NULL
+
+
 ), aggregated AS (
 
     SELECT 
@@ -83,7 +104,8 @@ WITH greenhouse_openings AS (
                cost_center_mapping.division)                    AS division,
       greenhouse_opening_custom_fields.hiring_manager,
       greenhouse_opening_custom_fields.type                     AS opening_type,
-      hires.employee_id
+      hires.employee_id,
+      office.office_name                                        AS region
     FROM greenhouse_openings
     LEFT JOIN greenhouse_jobs
       ON greenhouse_openings.job_id = greenhouse_jobs.job_id 
@@ -100,6 +122,8 @@ WITH greenhouse_openings AS (
       ON cost_center_mapping.department = greenhouse_department.department_modified
     LEFT JOIN hires
       ON hires.greenhouse_candidate_id = greenhouse_recruiting_xf.candidate_id
+    LEFT JOIN office
+      ON office.job_id = greenhouse_openings.job_id  
     WHERE greenhouse_jobs.job_opened_at IS NOT NULL 
 )
 
