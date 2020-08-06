@@ -625,6 +625,7 @@ models:
           - not_null
       - name: namespace_id
         tests:
+          - not_null
           - no_overlapping_valid_from_to_dates
           - unique_where_currently_valid
       - name: gitlab_subscription_trial_starts_on
