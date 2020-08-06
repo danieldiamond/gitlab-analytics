@@ -77,8 +77,8 @@ Information on the Enterprise Dimensional Model can be found in the [handbook](h
 
 {% enddocs %}
 
-{% docs dim_licenses %}
-Dimensional table representing generated licenses and associated metadata.
+{% docs fct_licenses %}
+Factual table representing generated licenses and associated metadata.
 
 The grain of the table is a license_id.
 
