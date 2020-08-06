@@ -536,7 +536,6 @@ models:
       - name: namespace_id
         tests:
           - not_null
-          - unique
       - name: updated_at
         tests: 
           - not_null
