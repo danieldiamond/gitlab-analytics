@@ -52,7 +52,7 @@ Please prioritize this issue since we dedicate a day from your milestone to this
 * [ ] Check the DBT Source Freshness Dashboard for lagging or missing data. 
     * [ ] Link to all resulting issues and MRs in slack 
 
-In addition to these tasks the Data Engineer on triage should be focused on resolving these issues, including the backlog found on the [De - Triage Errors board](https://gitlab.com/groups/gitlab-data/-/boards/1917859)
+In addition to these tasks the Data Engineer on triage should be focused on resolving these issues, including the backlog found on the [DE - Triage Errors board](https://gitlab.com/groups/gitlab-data/-/boards/1917859)
 
 ## Finishing the Day
 
