@@ -6,21 +6,22 @@ WITH
     SELECT DISTINCT
 
       id::NUMBER                                   AS gitlab_subscription_id,
-      start_date::DATE                              AS gitlab_subscription_start_date,
-      end_date::DATE                                AS gitlab_subscription_end_date,
-      trial_starts_on::DATE                         AS gitlab_subscription_trial_starts_on,
-      trial_ends_on::DATE                           AS gitlab_subscription_trial_ends_on,
+      start_date::DATE                             AS gitlab_subscription_start_date,
+      end_date::DATE                               AS gitlab_subscription_end_date,
+      trial_starts_on::DATE                        AS gitlab_subscription_trial_starts_on,
+      trial_ends_on::DATE                          AS gitlab_subscription_trial_ends_on,
       namespace_id::NUMBER                         AS namespace_id,
       hosted_plan_id::NUMBER                       AS plan_id,
       max_seats_used::NUMBER                       AS max_seats_used,
       seats::NUMBER                                AS seats,
-      trial::BOOLEAN                                AS is_trial,
-      created_at::TIMESTAMP                         AS created_at,
-      updated_at::TIMESTAMP                         AS updated_at,
+      trial::BOOLEAN                               AS is_trial,
+      created_at::TIMESTAMP                        AS created_at,
+      updated_at::TIMESTAMP                        AS updated_at,
       valid_from -- Column was added in distinct_source CTE
   
     FROM distinct_source
-    WHERE gitlab_subscription_id != 572635 -- This ID has NULL values for many of the important columns.
+    WHERE gitlab_subscription_id != 572635 -- This ID has NULL values for many of the important columns. 
+      AND namespace_id IS NOT NULL 
 
 )
 
