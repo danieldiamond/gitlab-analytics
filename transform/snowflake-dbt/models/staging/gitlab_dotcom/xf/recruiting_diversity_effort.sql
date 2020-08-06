@@ -40,6 +40,8 @@ WITH issues AS (
         'Used Diversity Strings', NULL)                         AS is_using_diversity_strings,
       IFF(CONTAINS(issue_description, '[x] No, I did not use Diversity Sourcing methods'::VARCHAR) = True,
         'Did not Use', NULL)                                    AS is_not_using_diversity_srings,
+      IFF(CONTAINS(issue_description, '[x] Not Actively Sourcing'::VARCHAR) = True,
+        'Not Actively Sourcing', NULL)                          AS not_actively_sourcing,
       IFF(is_using_diversity_strings IS NULL 
           AND is_not_using_diversity_srings IS NULL, 
           'No Answer', NULL)                                    AS has_no_Answer
