@@ -42,14 +42,14 @@ WITH date_details AS (
         WHEN h.stage_name IN ('Closed Won')                                                                                                         THEN 'Closed Won'
         ELSE 'Other'
       END                                   AS stage_name_3plus,
-     CASE
-       WHEN h.stage_name IN ('00-Pre Opportunity','0-Pending Acceptance','0-Qualifying','Developing','1-Discovery', '2-Developing', '2-Scoping', '3-Technical Evaluation')     THEN 'Pipeline'
-       WHEN h.stage_name IN ('4-Proposal', '5-Negotiating', '6-Awaiting Signature', '7-Closing')                                                                               THEN '4+ Pipeline'
-       WHEN h.stage_name IN ('8-Closed Lost', 'Closed Lost')                                                                                                                   THEN 'Lost'
-       WHEN h.stage_name IN ('Closed Won')                                                                                                                                     THEN 'Closed Won'
-       ELSE 'Other'
-       END                                  AS stage_name_4plus,
-       h.opportunity_id,
+      CASE
+         WHEN h.stage_name IN ('00-Pre Opportunity','0-Pending Acceptance','0-Qualifying','Developing','1-Discovery', '2-Developing', '2-Scoping', '3-Technical Evaluation')     THEN 'Pipeline'
+         WHEN h.stage_name IN ('4-Proposal', '5-Negotiating', '6-Awaiting Signature', '7-Closing')                                                                               THEN '4+ Pipeline'
+         WHEN h.stage_name IN ('8-Closed Lost', 'Closed Lost')                                                                                                                   THEN 'Lost'
+         WHEN h.stage_name IN ('Closed Won')                                                                                                                                     THEN 'Closed Won'
+         ELSE 'Other'
+         END                                  AS stage_name_4plus,
+         h.opportunity_id,
        CASE
          WHEN o.account_owner_team_stamped = 'US East'                                                                                       THEN 'US East'
          WHEN o.account_owner_team_stamped = 'US West'                                                                                       THEN 'US West'
@@ -81,8 +81,6 @@ WITH date_details AS (
        ON h.date_actual = dd2.date_actual
      WHERE dd2.day_of_fiscal_quarter = 1
        AND d.quarter_number - dd2.quarter_number = 0
-       AND h.close_date >= '2019-11-01'
-       AND h.close_date <= '2020-07-31'
      {{ dbt_utils.group_by(n=12) }}
 
 ), ENDING AS (
@@ -179,19 +177,20 @@ WITH date_details AS (
       SUM(b.forecasted_iacv)                                                    AS forecasted_iacv,
       SUM(e.forecasted_iacv)                                                    AS forecasted_iacv_ending
     FROM beginning b
-    FULL OUTER JOIN ENDING e
+    FULL OUTER JOIN ending e
       ON b.opportunity_id || b.close_qtr = e.opportunity_id || e.close_qtr
     {{ dbt_utils.group_by(n=20) }}
 
 ), waterfall AS (
 
     SELECT
-      final.*,
+      combined.*,
       CASE WHEN close_date IS NOT NULL THEN forecasted_iacv ELSE 0 END                                                                      AS starting_pipeline,
       CASE WHEN created_date_ending >= first_day_of_fiscal_quarter AND close_date_ending IS NOT NULL THEN forecasted_iacv_ending ELSE 0 END AS created_in_qtr,
       CASE WHEN created_date_ending < first_day_of_fiscal_quarter AND close_date IS NULL THEN forecasted_iacv_ending ELSE 0 END             AS pulled_in_from_other_qtr,
       CASE WHEN stage_name_ending = '8-Closed Lost' AND net_iacv_ending = 0 THEN -forecasted_iacv_ending ELSE 0 END                         AS closed_lost,
       CASE WHEN close_date_ending IS NULL THEN -forecasted_iacv ELSE 0 END                                                                  AS slipped_deals,
+      ZEROIFNULL(-net_iacv_ending)                                                                                                          AS net_iacv_waterfall,
       CASE
         WHEN stage_name_ending = 'Closed Won' THEN 0
         WHEN stage_name_ending = '9-Unqualified' THEN 0
@@ -202,14 +201,23 @@ WITH date_details AS (
       CASE
         WHEN (stage_name_ending = '9-Unqualified' OR stage_name_ending = '10-Duplicate') AND close_date_ending IS NOT NULL
         THEN -forecasted_iacv_ending ELSE 0
-      END                                                                                                                                   AS duplicate_unqualified,
-      ending_pipeline - (starting_pipeline + created_in_qtr + pulled_in_from_other_qtr + closed_lost + duplicate_unqualified + slipped_deals - net_iacv_ending)
-                                                                                                                                            AS  net_change_in_pipeline_iacv
+      END                                                                                                                                   AS duplicate_unqualified
+
+
     FROM combined
+
+), net_change_in_pipeline_iacv AS (
+
+    SELECT
+      waterfall.*,
+      (ending_pipeline - (starting_pipeline + created_in_qtr + pulled_in_from_other_qtr + closed_lost + duplicate_unqualified + slipped_deals)) - net_iacv_waterfall
+                                                                                                                                             AS  net_change_in_pipeline_iacv
+    FROM waterfall
 
 ), final AS (
 
     SELECT
+      {{ dbt_utils.surrogate_key(['opportunity_id', 'close_qtr']) }} AS primary_key,
       opportunity_id,
       close_qtr,
       fiscal_close_year,
@@ -242,15 +250,14 @@ WITH date_details AS (
       net_change_in_pipeline_iacv,
       created_in_qtr,
       pulled_in_from_other_qtr,
-      -net_iacv_ending AS net_iacv_waterfall,
+      net_iacv_waterfall,
       closed_lost,
       duplicate_unqualified,
       slipped_deals,
       ending_pipeline
-    FROM
+    FROM net_change_in_pipeline_iacv
 
 )
 
-SELECT
-*
+SELECT *
 FROM final
