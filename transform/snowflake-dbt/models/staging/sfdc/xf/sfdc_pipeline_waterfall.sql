@@ -261,3 +261,5 @@ WITH date_details AS (
 
 SELECT *
 FROM final
+WHERE close_date_ending >= '2019-11-01'
+  OR close_date >= '2019-11-01'
