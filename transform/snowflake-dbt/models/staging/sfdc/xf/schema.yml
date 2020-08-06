@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: sfdc_accounts_xf
-    description: '{{ doc("sfdc_accounts_xf") }}' 
+    description: '{{ doc("sfdc_accounts_xf") }}'
     columns:
       - name: account_id
         tests:
@@ -64,15 +64,22 @@ models:
         tests:
           - not_null
           - unique
-  - name: sfdc_opportunity_field_historical 
-    description: '{{ doc("sfdc_opportunity_field_historical") }}' 
+  - name: sfdc_opportunity_field_historical
+    description: '{{ doc("sfdc_opportunity_field_historical") }}'
     columns:
       - name: opportunity_id
         tests:
           - not_null
       - name: valid_from
         tests:
-          - not_null 
+          - not_null
+  - name: sfdc_pipeline_waterfall
+    description: Model to describe pipeline movement from the first day of the quarter to the first day of the following quarter.
+    columns:
+      - name: primary_key
+        tests:
+          - not_null
+          - unique
   - name: sfdc_account_snapshot_history
     description: This model constrains the scope of sfdc_account_snapshots_base to the columns in sfdc_accounts_xf and their corresponding aliases.
     columns:
@@ -81,10 +88,10 @@ models:
           - not_null
       - name: account_name
         tests:
-          - not_null            
+          - not_null
       - name: valid_from
-        tests: 
-          - not_null                        
+        tests:
+          - not_null
   - name: sfdc_opportunity_snapshot_history
     description: This model constrains the scope of sfdc_opportunity_snapshots_base to the columns in sfdc_opportunity_xf and their corresponding aliases.
     columns:
@@ -101,8 +108,8 @@ models:
           tests:
             - not_null
         - name: valid_from
-          tests: 
-            - not_null                             
+          tests:
+            - not_null
   - name: sfdc_opportunity_xf
     description: This model contains meta information on each Salesforce opportunity enriched with stage, source, and user information. Note that `sales_segment` and `parent_segment` are derived from the Stamped Sales Segment for an opportunity and do not change over time. The current segmentation of an opportunity's account is available in `sfdc_accounts_xf`.
     columns:
@@ -129,7 +136,7 @@ models:
       - name: ps_engagement_id
         tests:
           - not_null
-          - unique          
+          - unique
   - name: sfdc_proof_of_value_xf
     columns:
       - name: pov_id
@@ -156,10 +163,10 @@ models:
       - name: id
         tests:
           - not_null
-          - unique                               
+          - unique
   - name: sfdc_users_xf
     columns:
       - name: id
         tests:
           - not_null
-          - unique       
+          - unique
