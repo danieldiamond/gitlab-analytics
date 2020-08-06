@@ -3,11 +3,6 @@ WITH source as (
 	SELECT *
   	  FROM {{ source('greenhouse', 'hiring_team') }}
 
-), greenhouse_users AS (
-
-    SELECT *
-    FROM {{ref('greenhouse_users_source')}}
-
 ), renamed as (
 
 	SELECT
