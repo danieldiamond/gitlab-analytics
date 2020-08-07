@@ -1337,10 +1337,8 @@ roles:
             - reporting
 
     - mdewji:
-        member_of:
-            - postgres_pipeline
         warehouses:
-            - reporting
+            - admin
 
     - mjozenazemian:
         warehouses:
@@ -1355,10 +1353,8 @@ roles:
             - analyst_xl
 
     - mriser:
-        member_of:
-            - postgres_pipeline
         warehouses:
-            - analyst_xs
+            - admin
 
     - msendal:
         warehouses:
