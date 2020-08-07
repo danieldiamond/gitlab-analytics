@@ -1487,11 +1487,6 @@ roles:
                     - testing_db.*.*
                 write:
                     - testing_db.*.*
-          
-
-    - tcarter:
-        warehouses:
-            - reporting
 
     - tmurphy:
         warehouses:
@@ -1858,10 +1853,8 @@ users:
             - stitch
 
     - tcarter:
-        can_login: yes
-        member_of:
-            - securityadmin
-            - tcarter
+        can_login: no
+        member_of: []
 
     - target_snowflake:
         can_login: yes
