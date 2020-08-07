@@ -80,6 +80,8 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'epics'
     export_table_primary_key: id
+    additional_validation_filter: >
+      WHERE updated_at <= '{LAST_SUCCESSFUL_RUN_DATE}'
   oauth_access_tokens:
     import_db: GITLAB_DB
     import_query: >
