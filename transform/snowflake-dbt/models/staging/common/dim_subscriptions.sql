@@ -5,7 +5,7 @@ WITH zuora_subscription AS (
 ), zuora_subscription_snapshots AS (
 
   SELECT
-  rank() over (partition by name order by DBT_VALID_FROM desc) as rank,
+  rank() over (partition by subscription_name order by DBT_VALID_FROM desc) as rank,
   *
   FROM {{ ref('zuora_subscription_snapshots_source') }}
   WHERE --status in ('Cancelled', 'Active')
@@ -41,5 +41,5 @@ INNER JOIN zuora_subscription_snapshots
   AND zuora_subscription_snapshots.rank = 1
 INNER JOIN zuora_account
   ON zuora_account.account_id = zuora_subscription.account_id
-WHERE is_deleted = FALSE
+WHERE zuora_subscription.is_deleted = FALSE
   AND exclude_from_analysis IN ('False', '')
