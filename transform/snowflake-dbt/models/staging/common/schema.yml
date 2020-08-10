@@ -356,5 +356,3 @@ models:
           - not_null
       - name: recorded_at
         description: The timestamp when the usage ping was recorded.
-      - name: updated_at
-        description: The timestamp when the usage ping was updated.

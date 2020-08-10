@@ -40,8 +40,7 @@ WITH usage_data AS (
       license_plan,
       license_trial   AS is_trial,
       created_at,
-      recorded_at,
-      updated_at
+      recorded_at
     FROM calculated
 
 )        
