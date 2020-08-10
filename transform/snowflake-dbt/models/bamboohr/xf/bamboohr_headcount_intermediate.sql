@@ -35,7 +35,8 @@
         + SUM(headcount_end_contributor))/2             AS headcount_average_contributor,
       SUM(hired_contributor)                            AS hired_contributor,
       SUM(separated_contributor)                        AS separated_contributor,
-      SUM(IFF(is_promotion = TRUE,1,0))                 AS promotion                                
+      SUM(IFF(is_promotion = TRUE,1,0))                 AS promotion,
+      AVG(location_factor)                              AS location_factor
       " %}
 
 
@@ -87,6 +88,8 @@ WITH dates AS (
       employees.date_actual,
       department,
       division,
+      job_role,
+      job_grade,
       mapping_enhanced.eeoc_field_name,                                                       
       mapping_enhanced.eeoc_value,                                          
       IFF(dates.start_date = date_actual,1,0)                                   AS headcount_start,
@@ -130,9 +133,10 @@ WITH dates AS (
       IFF(is_hire_date = True 
           AND job_role_modified = 'Individual Contributor',1,0)                  AS hired_contributor,
       IFF(is_termination_date = True
-          AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor,
-    
-      is_promotion                         
+          AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor,  
+      is_promotion,                         
+      IFF(dates.end_date = date_actual 
+            AND sales_geo_differential = 'n/a - Comp Calc',1,0)                  AS location_factor
     FROM dates
     LEFT JOIN employees
       ON DATE_TRUNC(month,dates.start_date) = DATE_TRUNC(month, employees.date_actual)
@@ -143,21 +147,42 @@ WITH dates AS (
       AND employees.date_actual = separation_reason.valid_from_date
    WHERE date_actual IS NOT NULL
 
+
 ), aggregated AS (
 
 
-   SELECT
+    SELECT
       DATE_TRUNC(month,start_date)      AS month_date,
       'all_attributes_breakout'         AS breakout_type,
       department,
       division,
+      job_role,
+      job_grade,
       eeoc_field_name,                                                       
       eeoc_value,    
      {{repeated_metric_columns}}
     FROM dates 
     LEFT JOIN intermediate 
       ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
-    {{ dbt_utils.group_by(n=6) }}  
+    {{ dbt_utils.group_by(n=8) }}  
+
+
+    UNION ALL
+
+    SELECT
+      DATE_TRUNC(month,start_date)      AS month_date,
+      'department_breakout'             AS breakout_type,
+      department,
+      division,
+      NULL                              AS job_role,
+      NULL                              AS job_grade,
+      eeoc_field_name,                                                       
+      eeoc_value,    
+     {{repeated_metric_columns}}
+    FROM dates 
+    LEFT JOIN intermediate 
+      ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
+    {{ dbt_utils.group_by(n=8) }}  
 
     UNION ALL
 
@@ -166,13 +191,15 @@ WITH dates AS (
       'eeoc_breakout'                   AS breakout_type, 
       'eeoc_breakout'                   AS department,
       'eeoc_breakout'                   AS division,
+      NULL                              AS job_role,
+      NULL                              AS job_grade,
       eeoc_field_name,                                                       
       eeoc_value,  
       {{repeated_metric_columns}}
     FROM dates 
     LEFT JOIN intermediate 
       ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
-    {{ dbt_utils.group_by(n=6) }} 
+    {{ dbt_utils.group_by(n=8) }} 
 
     UNION ALL
 
@@ -181,6 +208,8 @@ WITH dates AS (
       'division_breakout'               AS breakout_type, 
       'division_breakout'               AS department,
       division,
+      NULL                              AS job_role,
+      NULL                              AS job_grade,
       eeoc_field_name,                                                       
       eeoc_value,
       {{repeated_metric_columns}}
@@ -188,7 +217,7 @@ WITH dates AS (
     LEFT JOIN intermediate 
       ON DATE_TRUNC(month, start_date) = DATE_TRUNC(month, date_actual)
     WHERE department IS NOT NULL
-    {{ dbt_utils.group_by(n=6) }} 
+    {{ dbt_utils.group_by(n=8) }} 
 
 ) 
 
