@@ -5,7 +5,7 @@
 
  
 {% set partition_statement = "OVER (PARTITION BY base.breakout_type, base.department, base.division, base.job_role,
-                              base.job_grade, base.eeoc_field_name, base.eeoc_value
+                                    base.job_grade, base.eeoc_field_name, base.eeoc_value
                               ORDER BY base.month_date DESC ROWS BETWEEN CURRENT ROW AND 11 FOLLOWING)
                               " %}
 
@@ -27,6 +27,8 @@ WITH source AS (
       breakout_type, 
       department,
       division,
+      job_role,
+      job_grade,
       eeoc_field_name,                                                       
       eeoc_value
     FROM source
@@ -38,6 +40,8 @@ WITH source AS (
       IFF(base.breakout_type = 'eeoc_breakout' AND base.eeoc_field_name = 'no_eeoc', 'kpi_breakout',base.breakout_type) AS breakout_type, 
       base.department,
       base.division,
+      base.job_role,
+      base.job_grade,
       base.eeoc_field_name,
       base.eeoc_value,
       headcount_start,
@@ -108,8 +112,8 @@ WITH source AS (
       RATIO_TO_REPORT(headcount_average_contributor) 
         {{ratio_to_report_partition_statement}}                                     AS percent_of_headcount_contributor,
       
-      SUM(COALESCE(promotion,0)) {{partition_statement}}                            AS rolling_12_month_promotions
-
+      SUM(COALESCE(promotion,0)) {{partition_statement}}                            AS rolling_12_month_promotions,
+      location_factor
     FROM base
     LEFT JOIN source  
       ON base.month_date = source.month_date
@@ -127,6 +131,8 @@ WITH source AS (
       breakout_type, 
       department,
       division,
+      job_role,
+      job_grade,
       eeoc_field_name,
       eeoc_value,
       IFF(headcount_start <4 AND eeoc_field_name != 'no_eeoc', 
@@ -139,7 +145,9 @@ WITH source AS (
         NULL, hire_count)                                                   AS hire_count,
       IFF(separation_count <4 AND eeoc_field_name != 'no_eeoc', 
         NULL, separation_count)                                             AS separation_count,
-      
+      IFF(voluntary_separation <4, NULL, voluntary_separation)              AS voluntary_separation_count,
+      IFF(voluntary_separation < 4,  NULL, voluntary_separation)            AS involuntary_separation_count,  
+
       rolling_12_month_headcount,
       rolling_12_month_separations,
       rolling_12_month_voluntary_separations,
@@ -207,7 +215,8 @@ WITH source AS (
       IFF(min_headcount_contributor <2 AND eeoc_field_name != 'no_eeoc', 
         NULL, percent_of_headcount_leaders)                                 AS percent_of_headcount_contributor,
       IFF(rolling_12_month_promotions<2 AND eeoc_field_name != 'no_eeoc', 
-        NULL, rolling_12_month_promotions)                                  AS rolling_12_month_promotions   
+        NULL, rolling_12_month_promotions)                                  AS rolling_12_month_promotions,
+      location_factor
     FROM intermediate   
 
 )

@@ -157,5 +157,6 @@ models:
         - name: hired_contributor
         - name: separated_contributor
         - name: promotion
+        - name: location_factor
   - name: employee_locality
     description: This idenitifes the location factor for an employee on a given day starting 2020.03.24

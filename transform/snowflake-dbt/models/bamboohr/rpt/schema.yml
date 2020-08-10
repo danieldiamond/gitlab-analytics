@@ -48,6 +48,8 @@ models:
     - name: hire_count
       description: Provides the total number of employees hired for a given month as associated to the diversity_field and aggregation_type.
     - name: separation_count
+    - name: voluntary_separation_count
+    - name: involuntary_separation_count
     - name: rolling_12_month_headcount
       description: Provides the average of the current month and previous 11 month average headcounts (the average headcount for each month is the headcount_start + headcount_end divided by 2).  
     - name: rolling_12_month_separations
@@ -96,6 +98,7 @@ models:
     - name: percent_of_headcount_manager
     - name: percent_of_headcount_contributor
     - name: rolling_12_month_promotions
+    - name: location_factor
  
   - name: cost_center_division_department_mapping_current
     description: This provides the current division, department, cost center.    

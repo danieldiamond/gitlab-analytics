@@ -136,7 +136,8 @@ WITH dates AS (
           AND job_role_modified = 'Individual Contributor',1,0)                  AS separated_contributor,  
       is_promotion,                         
       IFF(dates.end_date = date_actual 
-            AND sales_geo_differential = 'n/a - Comp Calc',1,0)                  AS location_factor
+            AND sales_geo_differential = 'n/a - Comp Calc',
+            location_factor, NULL)                                               AS location_factor
     FROM dates
     LEFT JOIN employees
       ON DATE_TRUNC(month,dates.start_date) = DATE_TRUNC(month, employees.date_actual)
