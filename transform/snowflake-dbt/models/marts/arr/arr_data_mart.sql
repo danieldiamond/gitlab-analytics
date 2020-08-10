@@ -24,7 +24,7 @@ WITH charges_agg AS (
     SELECT DISTINCT
       DATE_TRUNC('month', last_day_of_fiscal_year) AS last_month_of_fiscal_year,
       fiscal_year
-    FROM analytics.date_details
+    FROM {{ ref('dim_dates') }}
 
 ), charges_month_by_month AS (
 
