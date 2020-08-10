@@ -254,8 +254,8 @@ models:
   - name: dim_customers_valid_at
     description: Parameterized model to recreate dimension table representing customer details as in SFDC at given date. Required variable valid_at is timezone sensitive
 
-  - name: fct_licenses
-    description: '{{ doc("fct_licenses") }}'
+  - name: dim_licenses
+    description: '{{ doc("dim_licenses") }}'
     columns:
       - name: license_id
         description: The unique ID of a generated license.
