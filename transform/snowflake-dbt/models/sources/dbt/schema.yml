@@ -1,7 +1,7 @@
 version: 2
 
 models:
-    - name: dbt_source
+    - name: dbt_sources_source
       description: "Monitoring information about DBT sources"
       columns:
         - name: freshness_observed_at
@@ -19,7 +19,7 @@ models:
         - name: time_since_loaded_seconds
           tests:
             - not_null
-    - name: dbt_run_results
+    - name: dbt_run_results_source
       description: "Information about compilation/execution time for DBT models."
       columns:
         - name: compilation_completed_at
@@ -30,7 +30,7 @@ models:
         - name: model_name
           tests:
             - not_null    
-    - name: dbt_test_results
+    - name: dbt_test_results_source
       description: "DBT test results by name and time"
       columns:
         - name: is_failed_test

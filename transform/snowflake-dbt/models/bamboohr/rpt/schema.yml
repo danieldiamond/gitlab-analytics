@@ -124,3 +124,5 @@ models:
       tests:
         - not_null
     - name: actual_headcount_vs_planned_headcount
+    - name: bamboohr_missing_emergency_contact_alert
+      description: Identifies team members that need to add emergency contact.

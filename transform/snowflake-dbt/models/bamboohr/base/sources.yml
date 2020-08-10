@@ -21,8 +21,11 @@ sources:
       - name: custom_bonus
         identifier: custombonus
       - name: directory
+      - name: emergency_contacts
+        identifier: emergencycontacts
       - name: employment_status
-        identifier: employmentstatus
+        identifier: employmentstatus       
       - name: job_info
         identifier: jobinfo
       - name: id_employee_number_mapping
+      

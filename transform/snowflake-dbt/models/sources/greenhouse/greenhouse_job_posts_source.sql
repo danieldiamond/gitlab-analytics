@@ -8,8 +8,8 @@ WITH source as (
 	SELECT
 
 			--keys
-   			id::bigint					      AS job_post_id,
-   			job_id::bigint				    AS job_id,
+   			id::NUMBER					      AS job_post_id,
+   			job_id::NUMBER				    AS job_id,
 
    			--info
    			title::varchar				    AS job_post_title,

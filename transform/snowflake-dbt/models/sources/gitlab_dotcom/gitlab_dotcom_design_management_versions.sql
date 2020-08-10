@@ -7,10 +7,10 @@ WITH source AS (
 ), renamed AS (
 
     SELECT
-      id::INTEGER                                 AS version_id,
-      issue_id::INTEGER                           AS issue_id,
+      id::NUMBER                                 AS version_id,
+      issue_id::NUMBER                           AS issue_id,
       created_at::TIMESTAMP                       AS created_at,
-      author_id::INTEGER                          AS author_id
+      author_id::NUMBER                          AS author_id
     FROM source
 
 )

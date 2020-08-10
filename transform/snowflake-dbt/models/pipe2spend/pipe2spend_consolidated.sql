@@ -82,7 +82,7 @@ SELECT
     coalesce(
         p.pipe_iacv/
         nullif(
-            (h.salary_per_month::integer + coalesce(j.spend,0))
+            (h.salary_per_month::NUMBER + coalesce(j.spend,0))
             ,0)
         ,0)                 AS pipe_to_spend
 FROM headcount h

@@ -1,7 +1,7 @@
 WITH dbt_run_results AS (
 
     SELECT *
-    FROM {{ ref('dbt_run_results') }}
+    FROM {{ ref('dbt_run_results_source') }}
 
 ), current_stats AS (
 

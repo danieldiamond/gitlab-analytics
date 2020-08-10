@@ -9,7 +9,7 @@ WITH source as (
     SELECT
 
             --key
-            application_id::bigint      AS application_id,
+            application_id::NUMBER      AS application_id,
 
             --info
             status::varchar             AS candidate_status,

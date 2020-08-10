@@ -122,6 +122,8 @@ models:
         tests:
           - accepted_values:
               values: ['SMB', 'Mid-Market', 'Strategic', 'Large', 'Unknown', Null]
+      - name: order_type_live
+        description: The most current state of the order type formula in SFDC.
   - name: sfdc_professional_services_engagement_xf
     columns:
       - name: ps_engagement_id

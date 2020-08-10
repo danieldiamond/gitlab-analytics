@@ -8,8 +8,8 @@ WITH source AS (
 
     SELECT
 
-      id::INTEGER               AS terraform_state_id,
-      project_id::INTEGER       AS project_id,
+      id::NUMBER               AS terraform_state_id,
+      project_id::NUMBER       AS project_id,
       created_at::TIMESTAMP     AS created_at,
       updated_at::TIMESTAMP     AS updated_at,
       file_store::VARCHAR       AS file_store

@@ -8,11 +8,11 @@ WITH source AS (
 
     SELECT
 
-      id::INTEGER                                     AS notification_settings_id,
-      user_id::INTEGER                                AS user_id,
-      source_id::INTEGER                              AS source_id,
+      id::NUMBER                                     AS notification_settings_id,
+      user_id::NUMBER                                AS user_id,
+      source_id::NUMBER                              AS source_id,
       source_type::VARCHAR                            AS source_type,
-      level::INTEGER                                  AS settings_level,
+      level::NUMBER                                  AS settings_level,
       created_at::TIMESTAMP                           AS created_at,
       updated_at::TIMESTAMP                           AS updated_at,
       new_note::BOOLEAN                               AS has_new_note_enabled,

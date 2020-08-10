@@ -25,8 +25,6 @@ sources:
         description: '{{ doc("zendesk_community_relations_macros_desc") }}'
       - name: organizations
         description: '{{ doc("zendesk_community_relations_org_desc") }}'
-      - name: satisfaction_ratings
-        description: '{{ doc("zendesk_community_relations_satisfaction_ratings_desc") }}'
       - name: tags
         description: '{{ doc("zendesk_community_relations_tags_desc") }}'
       - name: tickets

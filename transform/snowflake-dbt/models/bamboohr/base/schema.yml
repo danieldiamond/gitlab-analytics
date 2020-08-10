@@ -119,3 +119,12 @@ models:
         - name: hire_date
         - name: locality
         - name: updated_at
+
+  - name: bamboohr_emergency_contacts
+    description: Displays emergency contact information for team members
+    columns:
+        - name: employee_id
+        - name: full_name
+        - name: home_phone
+        - name: mobile_phone
+        - name: work_phone
