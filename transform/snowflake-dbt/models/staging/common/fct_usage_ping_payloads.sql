@@ -20,8 +20,7 @@ WITH usage_data AS (
         WHEN edition IN ('EE', 'EES') THEN 'Starter'
         WHEN edition = 'EEP' THEN 'Premium'
         WHEN edition = 'EEU' THEN 'Ultimate'
-      ELSE NULL END                                              AS product_tier,
-      PARSE_IP(source_ip, 'inet')['ip_fields'][0]                AS source_ip_numeric
+      ELSE NULL END                                              AS product_tier
     FROM usage_data
 
 ), renamed AS (
@@ -33,8 +32,6 @@ WITH usage_data AS (
       host_id,
       license_md5,
       hostname,
-      source_ip,
-      source_ip_numeric,
       main_edition    AS edition,
       product_tier,
       cleaned_version AS version,
