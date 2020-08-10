@@ -22,7 +22,7 @@
     "source_table_name": "gitlab_dotcom_events",
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
-    "primary_key": "gitlab_dotcom_events_id",
+    "primary_key": "event_id",
     "stage_name": "create",
     "is_representative_of_stage": "False"
   }, {
@@ -30,7 +30,7 @@
     "source_table_name": "gitlab_dotcom_events",
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
-    "primary_key": "gitlab_dotcom_events_id",
+    "primary_key": "event_id",
     "stage_name": "create",
     "is_representative_of_stage": "False"
   }, {
@@ -38,7 +38,7 @@
     "source_table_name": "gitlab_dotcom_events",
     "user_column_name": "author_id",
     "key_to_parent_project": "project_id",
-    "primary_key": "gitlab_dotcom_events_id",
+    "primary_key": "event_id",
     "stage_name": "create",
     "is_representative_of_stage": "False"
   },
