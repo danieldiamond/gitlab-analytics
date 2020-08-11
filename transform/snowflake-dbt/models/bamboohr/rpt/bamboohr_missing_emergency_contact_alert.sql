@@ -1,3 +1,8 @@
+{{ config({
+    "schema": "analytics"
+    })
+}}
+
 WITH employees as (
 
     SELECT *
