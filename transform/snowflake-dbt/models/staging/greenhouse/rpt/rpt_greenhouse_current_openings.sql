@@ -67,7 +67,7 @@ WITH greenhouse_openings AS (
 
 ), greenhouse_jobs_offices AS (
 
-  select * 
+  SELECT * 
   from "ANALYTICS"."GREENHOUSE"."GREENHOUSE_JOBS_OFFICES_SOURCE"
 
 ), greenhouse_offices_sources AS (
