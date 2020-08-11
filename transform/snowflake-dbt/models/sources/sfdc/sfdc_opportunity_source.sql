@@ -46,7 +46,7 @@ WITH source AS (
         account_owner__c               AS account_owner,
         opportunity_owner__c           AS opportunity_owner,
         owner_team_o__c                AS opportunity_owner_team,
-        Manager_Current__c             AS opportunity_owner_manager,
+        manager_current__c             AS opportunity_owner_manager,
         sales_market__c                AS opportunity_owner_department,
         SDR_LU__c                      AS opportunity_sales_development_representative,
         BDR_LU__c                      AS opportunity_business_development_representative,
