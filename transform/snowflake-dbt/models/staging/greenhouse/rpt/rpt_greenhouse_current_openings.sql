@@ -67,22 +67,24 @@ WITH greenhouse_openings AS (
 
 ), greenhouse_jobs_offices AS (
 
-  select * 
-  from "ANALYTICS"."GREENHOUSE"."GREENHOUSE_JOBS_OFFICES_SOURCE"
+    SELECT * 
+    FROM {{ref('greenhouse_jobs_offices_source')}}
 
 ), greenhouse_offices_sources AS (
 
-  SELECT * 
-  FROM "ANALYTICS"."GREENHOUSE"."GREENHOUSE_OFFICES_SOURCE"
-  WHERE office_name IS NOT NULL
+    SELECT * 
+    FROM {{ref('greenhouse_offices_source')}}
+    WHERE office_name IS NOT NULL
   
 ), office AS (
   
-  SELECT greenhouse_jobs_offices.job_id, office_name
-  FROM greenhouse_jobs_offices
-  LEFT JOIN greenhouse_offices_sources
-    ON greenhouse_offices_sources.office_id = greenhouse_jobs_offices.office_id
-  WHERE office_name IS NOT NULL
+    SELECT 
+      greenhouse_jobs_offices.job_id, 
+      office_name
+    FROM greenhouse_jobs_offices
+    LEFT JOIN greenhouse_offices_sources
+      ON greenhouse_offices_sources.office_id = greenhouse_jobs_offices.office_id
+    WHERE office_name IS NOT NULL
 
 
 ), aggregated AS (
