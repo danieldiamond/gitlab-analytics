@@ -50,7 +50,7 @@ Replace the folder name with something unique and recognizable, such as the name
 
 By default, the command will create multiple files in GCS.  To just create one file, add the `single = true` option at the end of the command.
 
-After the dataset has been copied into the GCS stage, it can be downloaded from gcs in the [`snowflake_exports` bucket in the `gitlab-analysis` project]().  Follow the 
+After the dataset has been copied into the GCS stage, it can be downloaded from gcs in the [`snowflake_exports` bucket in the `gitlab-analysis` project](https://console.cloud.google.com/storage/browser/snowflake_exports).  Download the files and follow the instructions below. 
 
 
 #### Sharing
