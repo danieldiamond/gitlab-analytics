@@ -237,6 +237,7 @@ def validate_ids(
     # Set the initial vars and stop the validation if not needed.
     raw_query = table_dict["import_query"]
     additional_filtering = table_dict.get("additional_filtering", "")
+    validation_filtering = table_dict.get("additional_validation_filter", "")
     primary_key = table_dict["export_table_primary_key"]
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need id validation.")
@@ -259,7 +260,7 @@ def validate_ids(
 
     # Populate the validation table
     logging.info(f"Uploading IDs to {validate_table_name}.")
-    id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filtering}"
+    id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filtering} {validation_filtering}"
     logging.info(id_query)
     load_ids(
         additional_filtering,

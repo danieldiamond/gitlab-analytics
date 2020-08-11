@@ -3,9 +3,11 @@ import yaml
 from datetime import datetime, timedelta
 
 from airflow import DAG
-from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-
+from airflow.models import XCom
 from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow.utils.timezone import make_aware
+
 from kubernetes_helpers import get_affinity, get_toleration
 from kube_secrets import (
     CI_STATS_DB_HOST,
@@ -65,6 +67,7 @@ standard_secrets = [
 validation_schedule_interval = "0 1 * * 0"
 every_eighth_hour = "0 */8 * * *"
 every_day_at_four = "0 4 */1 * *"
+
 
 # Dictionary containing the configuration values for the various Postgres DBs
 config_dict = {
@@ -149,6 +152,25 @@ config_dict = {
         "validation_schedule_interval": validation_schedule_interval,
     },
 }
+
+
+def pull_xcom_call(
+    dag_id: str, task_id: str, execution_date=datetime.now()
+) -> datetime:
+    # xcom will get all values, that was written before this date with using Xcom directly (without context object)
+    execution_list = XCom.get_many(
+        make_aware(execution_date),
+        dag_ids=[dag_id],
+        task_ids=[task_id],
+        include_prior_dates=True,
+    )
+    print("XCom.get_many ")
+    if execution_list:
+        print(type((get_mane_xcoms_values__with_xcom_class[0].execution_date)))
+        return get_mane_xcoms_values__with_xcom_class[0].execution_date
+    else:
+        print("No tasks found")
+        return datetime.now()
 
 
 def generate_cmd(dag_name, operation):
@@ -312,12 +334,18 @@ for source_name, config in config_dict.items():
     with validation_dag:
 
         # Validate Task
-        validate_cmd = generate_cmd(config["dag_name"], "validate")
+        last_extract_run_date = pull_xcom_call(
+            dag_id=f"{config['dag_name']}_db_extract",
+            task_id=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
+        )
+        validate_cmd = f"export LAST_EXTRACT_RUN_DATE={last_extract_run_date.strftime('%Y-%m-%dT%H:%M:%S%z')} && echo $LAST_EXTRACT_RUN_DATE &&"
+        validate_cmd = validate_cmd + generate_cmd(config["dag_name"], "validate")
+
         validate_ids = KubernetesPodOperator(
             **gitlab_defaults,
             image=DATA_IMAGE,
-            task_id=f"{config['task_name']}-db-validation",
-            name=f"{config['task_name']}-db-validation",
+            task_id=f"{config['task_name']}-{table.replace('_','-')}-db-validation",
+            name=f"{config['task_name']}-{table.replace('_','-')}-db-validation",
             secrets=standard_secrets + config["secrets"],
             env_vars={**standard_pod_env_vars, **config["env_vars"]},
             affinity=get_affinity(False),
