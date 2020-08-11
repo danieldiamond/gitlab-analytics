@@ -35,7 +35,7 @@ models:
       description: This identifies the breakout of the data. 
       tests:
         - accepted_values:
-                values: ['all_attributes_breakout', 'kpi_breakout','eeoc_breakout','division_breakout']
+                values: ['all_attributes_breakout', 'kpi_breakout','eeoc_breakout','division_breakout','department_breakout']
     - name: department
     - name: division
     - name: eeoc_field_name
@@ -111,7 +111,7 @@ models:
       description: Identifies if the breakout is at an all company level, division, or department.
       tests:
         - accepted_values:
-                values: ['all_company_breakout','department_division_breakout','division_breakout', 'department_breakout']
+                values: ['all_company_breakout','department_division_breakout','division_breakout']
     - name: department
     - name: division
     - name: planned_headcount
