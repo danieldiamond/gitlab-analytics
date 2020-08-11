@@ -20,7 +20,7 @@ WITH hiring_team AS (
 
 ), final AS (
 
-	SELECT
+    SELECT
       hiring_team.job_id,
       hiring_team.hiring_team_role,
       hiring_team.is_responsible,
