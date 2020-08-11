@@ -23,7 +23,7 @@ WITH source AS (
       jsontext['target_branch_name']                              AS target_branch_name,
       --get the number after the last dash
       REGEXP_REPLACE(
-          GET(SPLIT(jsontext['plain_diff_path'], '-'), ARRAY_SIZE(SPLIT(jsontext['plain_diff_path'], '-')) - 1),  
+          GET(SPLIT(plain_diff_url_path, '-'), ARRAY_SIZE(SPLIT(plain_diff_url_path, '-')) - 1),  
           '[^0-9]+', 
           ''
       )::NUMBER                                               AS product_merge_request_iid
