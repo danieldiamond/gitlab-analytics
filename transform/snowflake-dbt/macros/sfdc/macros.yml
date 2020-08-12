@@ -1,6 +1,8 @@
 version: 2
 
 macros:
+  - name: account_owner_team
+    description: '{{ doc("account_owner_team") }}'
   - name: sales_segment_cleaning
     description: '{{ doc("sales_segment_cleaning") }}'
   - name: sfdc_deal_size

@@ -46,23 +46,12 @@ SELECT
   sfdc_account.billing_country            AS customer_country,
   ultimate_parent_account.account_id      AS ultimate_parent_account_id,
   ultimate_parent_account.account_name    AS ultimate_parent_account_name,
-  CASE
-     WHEN ultimate_parent_account.account_segment = 'Unknown' THEN 'SMB'
-     WHEN ultimate_parent_account.account_segment IS NULL     THEN 'SMB'
-     ELSE ultimate_parent_account.account_segment
-  END                                     AS ultimate_parent_account_segment,
+  {{ sales_segment_cleaning('ultimate_parent_account.account_segment') }}
+                                          AS ultimate_parent_account_segment,
   ultimate_parent_account.billing_country AS ultimate_parent_billing_country,
   ultimate_parent_account.df_industry     AS ultimate_parent_industry,
-  CASE
-    WHEN ultimate_parent_account.account_owner_team = 'US East'                                                                                       THEN 'US East'
-    WHEN ultimate_parent_account.account_owner_team = 'US West'                                                                                       THEN 'US West'
-    WHEN ultimate_parent_account.account_owner_team = 'EMEA'                                                                                          THEN 'EMEA'
-    WHEN ultimate_parent_account.account_owner_team = 'APAC'                                                                                          THEN 'APAC'
-    WHEN ultimate_parent_account.account_owner_team = 'Public Sector'                                                                                 THEN 'Public Sector'
-    WHEN ultimate_parent_account.account_owner_team IN ('Commercial', 'Commercial - MM', 'MM - East', 'MM - West', 'MM-EMEA', 'MM - EMEA', 'MM-APAC') THEN 'MM'
-    WHEN ultimate_parent_account.account_owner_team IN ('SMB', 'SMB - US', 'SMB - International', 'Commercial - SMB')                                 THEN 'SMB'
-    ELSE 'Other'
-  END                                     AS ultimate_parent_account_owner_team,
+  {{ account_owner_team('ultimate_parent_account.account_owner_team') }}
+                                          AS ultimate_parent_account_owner_team,
   ultimate_parent_account.tsp_territory   AS ultimate_parent_territory,
   sfdc_account.record_type_id             AS record_type_id,
   sfdc_account.gitlab_entity,
