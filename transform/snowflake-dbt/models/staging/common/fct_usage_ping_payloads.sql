@@ -94,7 +94,7 @@ WITH license AS (
       license_trial   AS is_trial,
       created_at,
       recorded_at
-    FROM calculated
+    FROM joined
 
 )  
 
