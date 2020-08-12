@@ -3,10 +3,8 @@ import yaml
 from datetime import datetime, timedelta
 
 from airflow import DAG
-from airflow.models import XCom
 from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
-from airflow.utils.timezone import make_aware
 
 from kubernetes_helpers import get_affinity, get_toleration
 from kube_secrets import (
@@ -152,25 +150,6 @@ config_dict = {
         "validation_schedule_interval": validation_schedule_interval,
     },
 }
-
-
-def pull_xcom_call(
-    dag_id: str, task_id: str, execution_date=datetime.now()
-) -> datetime:
-    # xcom will get all values, that was written before this date with using Xcom directly (without context object)
-    execution_list = XCom.get_many(
-        make_aware(execution_date),
-        dag_ids=[dag_id],
-        task_ids=[task_id],
-        include_prior_dates=True,
-    )
-    print("XCom.get_many ")
-    if execution_list:
-        print(type((get_mane_xcoms_values__with_xcom_class[0].execution_date)))
-        return get_mane_xcoms_values__with_xcom_class[0].execution_date
-    else:
-        print("No tasks found")
-        return datetime.now()
 
 
 def generate_cmd(dag_name, operation):
@@ -334,25 +313,19 @@ for source_name, config in config_dict.items():
     with validation_dag:
 
         # Validate Task
-        last_extract_run_date = pull_xcom_call(
-            dag_id=f"{config['dag_name']}_db_extract",
-            task_id=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
-        )
-        validate_cmd = f"export LAST_EXTRACT_RUN_DATE={last_extract_run_date.strftime('%Y-%m-%dT%H:%M:%S%z')} && echo $LAST_EXTRACT_RUN_DATE &&"
-        validate_cmd = validate_cmd + generate_cmd(config["dag_name"], "validate")
-
+        validate_cmd = generate_cmd(config["dag_name"], "validate")
         validate_ids = KubernetesPodOperator(
-            **gitlab_defaults,
-            image=DATA_IMAGE,
-            task_id=f"{config['task_name']}-{table.replace('_','-')}-db-validation",
-            name=f"{config['task_name']}-{table.replace('_','-')}-db-validation",
-            secrets=standard_secrets + config["secrets"],
-            env_vars={**standard_pod_env_vars, **config["env_vars"]},
-            affinity=get_affinity(False),
-            tolerations=get_toleration(False),
-            arguments=[validate_cmd],
-            dag=validation_dag,
-            do_xcom_push=True,
-            xcom_push=True,
+                **gitlab_defaults,
+                image=DATA_IMAGE,
+                task_id=f"{config['task_name']}-db-validation",
+                name=f"{config['task_name']}-db-validation",
+                secrets=standard_secrets + config["secrets"],
+                env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                affinity=get_affinity(False),
+                tolerations=get_toleration(False),
+                arguments=[validate_cmd],
+                dag=validation_dag,
+                do_xcom_push=True,
+                xcom_push=True,
         )
     globals()[f"{config['dag_name']}_db_validation"] = validation_dag
