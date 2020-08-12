@@ -78,6 +78,7 @@ def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
     drop_query = f"DROP TABLE IF EXISTS tap_postgres.{temp_table}"
     query_executor(engine, drop_query)
 
+
 def load_incremental(
     source_engine: Engine,
     target_engine: Engine,

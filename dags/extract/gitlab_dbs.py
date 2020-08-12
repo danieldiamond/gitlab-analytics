@@ -66,7 +66,6 @@ validation_schedule_interval = "0 1 * * 0"
 every_eighth_hour = "0 */8 * * *"
 every_day_at_four = "0 4 */1 * *"
 
-
 # Dictionary containing the configuration values for the various Postgres DBs
 config_dict = {
     "ci_stats": {
