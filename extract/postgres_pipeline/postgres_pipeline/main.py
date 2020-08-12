@@ -78,18 +78,6 @@ def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
     drop_query = f"DROP TABLE IF EXISTS tap_postgres.{temp_table}"
     query_executor(engine, drop_query)
 
-def load_incremental_and_validate(source_engine: Engine,
-    target_engine: Engine,
-    table: str,
-    table_dict: Dict[Any, Any],
-    table_name: str,
-) -> bool:
-    """
-        Loads incrementally and runs validation step immediately afterwards
-    """
-    load_incremental(source_engine, target_engine, table, table_dict, table_name)
-    validate_ids(source_engine, target_engine, table, table_dict, table_name)
-
 def load_incremental(
     source_engine: Engine,
     target_engine: Engine,
@@ -359,10 +347,11 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
 
     # Link the load_types to their respective functions
     load_types = {
-        "incremental": load_incremental_and_validate,
+        "incremental": load_incremental,
         "scd": load_scd,
         "sync": sync_incremental_ids,
         "test": check_new_tables,
+        "validate": validate_ids,
     }
 
     for table in manifest_dict["tables"]:

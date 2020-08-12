@@ -224,6 +224,25 @@ for source_name, config in config_dict.items():
                 xcom_push=True,
             )
 
+            # Validate Task
+            validate_cmd = generate_cmd(config["dag_name"], "validate")
+            validate_ids = KubernetesPodOperator(
+                        **gitlab_defaults,
+                        image=DATA_IMAGE,
+                        task_id=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
+                        name=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
+                        secrets=standard_secrets + config["secrets"],
+                        env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                        affinity=get_affinity(False),
+                        tolerations=get_toleration(False),
+                        arguments=[validate_cmd],
+                        do_xcom_push=True,
+                        xcom_push=True,
+            )
+
+            incremental_extract >> validate_ids
+
+
     globals()[f"{config['dag_name']}_db_extract"] = extract_dag
 
     # Sync DAG
