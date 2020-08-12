@@ -78,6 +78,17 @@ def swap_temp_table(engine: Engine, real_table: str, temp_table: str) -> None:
     drop_query = f"DROP TABLE IF EXISTS tap_postgres.{temp_table}"
     query_executor(engine, drop_query)
 
+def load_incremental_and_validate(source_engine: Engine,
+    target_engine: Engine,
+    table: str,
+    table_dict: Dict[Any, Any],
+    table_name: str,
+) -> bool:
+    """
+        Loads incrementally and runs validation step immediately afterwards
+    """
+    load_incremental(source_engine, target_engine, table, table_dict, table_name)
+    validate_ids(source_engine, target_engine, table, table_dict, table_name)
 
 def load_incremental(
     source_engine: Engine,
@@ -237,7 +248,6 @@ def validate_ids(
     # Set the initial vars and stop the validation if not needed.
     raw_query = table_dict["import_query"]
     additional_filtering = table_dict.get("additional_filtering", "")
-    validation_filtering = table_dict.get("additional_validation_filter", "")
     primary_key = table_dict["export_table_primary_key"]
     if "{EXECUTION_DATE}" not in raw_query:
         logging.info(f"Table {table} does not need id validation.")
@@ -260,7 +270,7 @@ def validate_ids(
 
     # Populate the validation table
     logging.info(f"Uploading IDs to {validate_table_name}.")
-    id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filtering} {validation_filtering}"
+    id_query = f"SELECT id, updated_at FROM {table} WHERE id IS NOT NULL {additional_filtering}"
     logging.info(id_query)
     load_ids(
         additional_filtering,
@@ -349,11 +359,10 @@ def main(file_path: str, load_type: str, load_only_table: str = None) -> None:
 
     # Link the load_types to their respective functions
     load_types = {
-        "incremental": load_incremental,
+        "incremental": load_incremental_and_validate,
         "scd": load_scd,
         "sync": sync_incremental_ids,
         "test": check_new_tables,
-        "validate": validate_ids,
     }
 
     for table in manifest_dict["tables"]:
