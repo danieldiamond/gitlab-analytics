@@ -6,8 +6,8 @@ WITH source AS (
 ), renamed as (
 
     SELECT
-      "Company_Name"::VARCHAR                         AS company_name,
-      "Total_Page_Count"::INTEGER                     AS total_page_count
+      "Company_Name"::VARCHAR       AS company_name,
+      "Total_Page_Count"::NUMBER    AS total_page_count
     FROM source
 )
 

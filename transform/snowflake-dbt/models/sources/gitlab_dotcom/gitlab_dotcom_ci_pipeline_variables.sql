@@ -6,9 +6,9 @@ WITH source AS (
 ), renamed AS (
 
     SELECT 
-      id::INTEGER          AS ci_pipeline_variable_id, 
+      id::NUMBER          AS ci_pipeline_variable_id, 
       key                  AS key, 
-      pipeline_id::INTEGER AS ci_pipeline_id, 
+      pipeline_id::NUMBER AS ci_pipeline_id, 
       variable_type        AS variable_type
 
     FROM source

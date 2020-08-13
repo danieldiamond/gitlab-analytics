@@ -89,6 +89,7 @@ roles:
             - boneyard
             - covid19
             - dbt_analytics
+            - dbt_analytics_clones
             - gitlab_data_yaml
             - handbook
             - sheetload
@@ -126,6 +127,17 @@ roles:
             databases:
                 write:
                     - analytics
+                read:
+                    - raw
+            schemas:
+                write:
+                    - analytics.*
+                read: raw.gcp_billing
+            tables:
+                write:
+                    - analytics.*.*
+                read:
+                    - raw.gcp_billing.*
 
     - analyst_growth:
         warehouses:
@@ -296,7 +308,7 @@ roles:
             - analyst_marketing
             - boneyard
             - covid19
-            - customers_db_sensitive
+            - customers_db
             - dbt_analytics
             - gitlab_data_yaml
             - handbook
@@ -366,21 +378,25 @@ roles:
             schemas:
                 - raw.bamboohr
                 - raw.engineering_extracts
+                - raw.gcp_billing
                 - raw.gitlab_data_yaml
                 - raw.gitter
                 - raw.pmg
                 - raw.prometheus
                 - raw.snowplow
                 - raw.tap_postgres
+                - raw.qualtrics_mailing_list
             tables:
                 - raw.bamboohr.*
                 - raw.engineering_extracts.*
+                - raw.gcp_billing.*
                 - raw.gitlab_data_yaml.*
                 - raw.gitter.*
                 - raw.pmg.*
                 - raw.prometheus.*
                 - raw.snowplow.*
                 - raw.tap_postgres.*
+                - raw.qualtrics_mailing_list.*
         privileges:
             databases:
                 read:
@@ -583,7 +599,7 @@ roles:
                 read:
                     - covid19.public.jhu_covid_19
 
-    - customers_db_sensitive:
+    - customers_db:
         privileges:
             databases:
                 read:
@@ -591,9 +607,11 @@ roles:
             schemas:
                 read:
                     - analytics.analytics_sensitive
+                    - analytics.customers
             tables:
                 read:
                     - analytics.analytics_sensitive.customers_db_customers_pii
+                    - analytics.customers.*
 
     - date:
         privileges:
@@ -632,17 +650,29 @@ roles:
             schemas:
                 read:
                     - analytics.analytics
-                    - analytics.analytics_clones
                     - analytics.analytics_meta
                     - analytics.analytics_staging
                     - raw.dbt
             tables:
                 read:
                     - analytics.analytics.*
-                    - analytics.analytics_clones.*
                     - analytics.analytics_meta.*
                     - analytics.analytics_staging.*
                     - raw.dbt.*
+
+    - dbt_analytics_clones:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics_clones
+            tables:
+                read:
+                    - analytics.analytics_clones.*
 
     - dbt_analytics_sensitive:
         warehouses:
@@ -766,15 +796,12 @@ roles:
         privileges:
             databases:
                 read:
-                    - analytics
                     - raw
             schemas:
                 read:
-                    - analytics.customers
                     - raw.tap_postgres
             tables:
                 read:
-                    - analytics.customers.*
                     - raw.tap_postgres.*
 
     - public:
@@ -1103,7 +1130,7 @@ roles:
     - datwood:
         member_of:
             - analyst_growth
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
 
@@ -1228,7 +1255,7 @@ roles:
         member_of:
             - analyst_finance
             - bamboohr
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
             
@@ -1247,7 +1274,7 @@ roles:
     - jpeguero:
         member_of:
             - analyst_marketing
-            - customers_db_sensitive
+            - customers_db
             - netsuite
             - static_sensitive
         warehouses:
@@ -1278,7 +1305,7 @@ roles:
     - kaguilar:
         member_of:
             - analyst_engineering
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
 
@@ -1301,6 +1328,16 @@ roles:
     - lmai:
         member_of:
             - analyst_engineering
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.analytics_sensitive
+            tables: # https://gitlab.com/gitlab-com/team-member-epics/access-requests/-/issues/6311
+                read:
+                    - analytics.analytics_sensitive.bamboohr_id_employee_number_mapping 
         warehouses:
             - analyst_xs
 
@@ -1311,10 +1348,8 @@ roles:
             - reporting
 
     - mdewji:
-        member_of:
-            - postgres_pipeline
         warehouses:
-            - reporting
+            - admin
 
     - mjozenazemian:
         warehouses:
@@ -1329,10 +1364,8 @@ roles:
             - analyst_xl
 
     - mriser:
-        member_of:
-            - postgres_pipeline
         warehouses:
-            - analyst_xs
+            - admin
 
     - msendal:
         warehouses:
@@ -1382,7 +1415,7 @@ roles:
     - pluthra:
         member_of:
             - analyst_people
-            - customers_db_sensitive
+            - customers_db
         warehouses:
             - analyst_xs
 
@@ -1465,11 +1498,6 @@ roles:
                     - testing_db.*.*
                 write:
                     - testing_db.*.*
-          
-
-    - tcarter:
-        warehouses:
-            - reporting
 
     - tmurphy:
         warehouses:
@@ -1836,10 +1864,8 @@ users:
             - stitch
 
     - tcarter:
-        can_login: yes
-        member_of:
-            - securityadmin
-            - tcarter
+        can_login: no
+        member_of: []
 
     - target_snowflake:
         can_login: yes
@@ -1914,7 +1940,7 @@ warehouses:
         size: x-small
 
     - reporting:
-        size: small
+        size: medium
 
     - stitch:
         size: x-small

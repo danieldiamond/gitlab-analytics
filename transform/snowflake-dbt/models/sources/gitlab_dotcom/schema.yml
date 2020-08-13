@@ -530,17 +530,21 @@ models:
         tests:
           - not_null
           - unique
-  - name: gitlab_dotcom_elasticsearch_indexed_namespaces
+  - name: gitlab_dotcom_elasticsearch_indexed_namespaces_source
     description: Base model for GitLab.com elasticsearch indexed namespaces.
     columns:
       - name: namespace_id
         tests:
           - not_null
-          - unique
-          - relationships:
-              to: ref('gitlab_dotcom_namespaces')
-              field: namespace_id
-              severity: warn
+      - name: updated_at
+        tests: 
+          - not_null
+      - name: created_at
+        tests:
+          - not_null
+      - name: task_instance_name
+      - name: uploaded_at
+
   - name: gitlab_dotcom_environments
     description: Base model for GitLab.com environments.
     columns:

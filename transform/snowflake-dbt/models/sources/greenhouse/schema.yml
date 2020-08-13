@@ -962,7 +962,9 @@ models:
             - not_null
         - name: is_milestone_stage
         - name: stage_name_modified
-          description: This groups stages based on names.     
+          description: This groups stages based on names.  
+        - name: stage_name_modified_with_underscores
+          description: This is stage_name_modified with spaces between words replaced by an underscore     
     - name: greenhouse_tags_source
       description: '{{ doc("greenhouse_tags_source") }}'
       columns:

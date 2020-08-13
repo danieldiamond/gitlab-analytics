@@ -2,47 +2,45 @@
 # Documentation
 # ======
 
-# https://gitlab.com/help/user/project/code_owners
+# https://docs.gitlab.com/ee/user/project/code_owners.html
 
 # Ending a path in a `/` will specify the code owners for every file
 # nested in that directory, on any level
 
-# ======
-# Default
-# ======
-
+[Default]
 * @jjstark @kathleentam @tayloramurphy
 
-# ======
-# Top Level Folder Overwrites
-# ======
+
+[Admin]
 /.gitlab/       @kathleentam    @jjstark
 /admin/         @kathleentam    @jjstark
 /analyze/       @kathleentam    @jjstark
-/dags/          @tayloramurphy  @m_walker
-/extract/       @tayloramurphy  @m_walker	@jjstark
-/load/          @tayloramurphy  @jjstark    @kathleentam
-/orchestrate/   @tayloramurphy  @m_walker
 
-# ======
-# Top Level File Overwrites
-# ======
+CODEOWNERS      @kathleentam    @jjstark  
+.gitignore      @kathleentam    @jjstark    
+CONTRIBUTING.md @kathleentam    @jjstark  
+LICENSE.md      @kathleentam    @jjstark  
+README.md       @kathleentam    @jjstark  
+__init__.py     @kathleentam    @jjstark  
 
-Makefile            @tayloramurphy @m_walker
-docker-compose.yml  @tayloramurphy @m_walker
-.gitlab-ci.yml      @tayloramurphy @m_walker
-CODEOWNERS          @kathleentam   @jjstark  
-.gitignore          @kathleentam   @jjstark    
-CONTRIBUTING.md     @kathleentam   @jjstark  
-LICENSE.md          @kathleentam   @jjstark  
-README.md           @kathleentam   @jjstark  
-__init__.py         @kathleentam   @jjstark  
+
+[Data Engineering]
+/dags/              @tayloramurphy  @m_walker
+/extract/           @tayloramurphy  @m_walker	@jjstark
+/load/              @tayloramurphy  @jjstark    @kathleentam
+/orchestrate/       @tayloramurphy  @m_walker
+
+Makefile            @tayloramurphy  @m_walker
+docker-compose.yml  @tayloramurphy  @m_walker
+.gitlab-ci.yml      @tayloramurphy  @m_walker
+
 
 
 # ======
 # dbt Overwrites
 # ======
 
+[dbt]
 /transform/                                         @tayloramurphy  @jjstark        @emilie         @kathleentam
 /transform/general/                                 @kathleentam    @derekatwood    @pluthra
 /transform/snowflake-dbt/                           @tayloramurphy  @jjstark        @emilie         @kathleentam

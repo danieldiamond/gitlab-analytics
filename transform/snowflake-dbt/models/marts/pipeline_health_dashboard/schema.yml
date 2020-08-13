@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: accounts_new_updated
+    description: '{{ doc("accounts_new_updated") }}'
+    columns:
+      - name: date_day
+        tests:
+          - not_null
+  - name: subscriptions_new_updated
+    description: '{{ doc("subscriptions_new_updated") }}'
+    columns:
+      - name: date_day
+        tests:
+          - not_null
+  - name: golden_records
+    description: '{{ doc("golden_records") }}'

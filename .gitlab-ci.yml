@@ -31,7 +31,7 @@ include:
 
 # Template for cloning databases in Snowflake for use in MRs
 .snowflake_clone_template: &snowflake_clone_template
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:v0.0.9
   tags:
     - analytics
   before_script:
@@ -104,7 +104,7 @@ clone_stop:
 
 .python_check: &python_check
   stage: 🐍 Python
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:v0.0.9
   tags:
     - analytics
   only:
@@ -156,7 +156,7 @@ python_pytest:
 
 .yaml_validate: &yaml_validate
   stage: 🐍 Python
-  image: registry.gitlab.com/gitlab-data/data-image/data-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/data-image:v0.0.9
   tags:
     - analytics
   only:
@@ -173,7 +173,7 @@ yaml_validation:
 
 .permifrost: &permifrost
   stage: 🐍 Python
-  image: registry.gitlab.com/gitlab-data/permifrost:v0.1.1
+  image: registry.gitlab.com/gitlab-data/permifrost:v0.2.0
   tags:
     - analytics
   only:
@@ -193,7 +193,7 @@ permifrost_manual:
 
 .pages_job_template: &pages_job_template
   stage: 📚 dbt Docs
-  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:latest
+  image: registry.gitlab.com/gitlab-data/data-image/dbt-image:v0.0.9
   variables:
     SNOWFLAKE_ROLE: $SNOWFLAKE_TRANSFORM_ROLE
     SNOWFLAKE_WAREHOUSE: $SNOWFLAKE_TRANSFORM_WAREHOUSE

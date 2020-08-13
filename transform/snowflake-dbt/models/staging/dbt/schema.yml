@@ -48,5 +48,7 @@ models:
                 to: ref('dbt_failing_tests')
                 field: test_name
         - name: last_successful_run_at
-        
-        
+    - name: dbt_run_results
+      description: "Information about compilation/execution time for DBT models."
+    - name: dbt_test_results
+      description: "DBT test results by name and time"

@@ -63,7 +63,7 @@ default_args = {
 }
 
 # Create the DAG
-dag = DAG("dbt", default_args=default_args, schedule_interval="0 */8 * * *")
+dag = DAG("dbt", default_args=default_args, schedule_interval="45 */8 * * *")
 
 # BranchPythonOperator functions
 def dbt_run_or_refresh(timestamp: datetime, dag: DAG) -> str:

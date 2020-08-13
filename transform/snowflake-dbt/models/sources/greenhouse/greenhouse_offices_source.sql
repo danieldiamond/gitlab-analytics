@@ -8,9 +8,9 @@ WITH source as (
 	SELECT
 
             --keys
-            id::bigint                          AS office_id,
-            organization_id::bigint             AS organization_id,
-            parent_id::bigint                   AS office_parent_id,
+            id::NUMBER                          AS office_id,
+            organization_id::NUMBER             AS organization_id,
+            parent_id::NUMBER                   AS office_parent_id,
 
             --info
             name::varchar                       AS office_name,

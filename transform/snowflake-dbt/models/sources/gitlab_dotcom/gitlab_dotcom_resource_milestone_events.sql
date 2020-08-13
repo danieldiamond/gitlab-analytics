@@ -19,12 +19,12 @@ WITH source AS (
 
     SELECT
       id                                             AS resource_milestone_event_id,
-      action::INTEGER                                AS action_type_id,
+      action::NUMBER                                AS action_type_id,
       {{ resource_event_action_type('action') }}     AS action_type,
-      user_id::INTEGER                               AS user_id,
-      issue_id::INTEGER                              AS issue_id,
-      merge_request_id::INTEGER                      AS merge_request_id,
-      milestone_id::INTEGER                          AS milestone_id,
+      user_id::NUMBER                               AS user_id,
+      issue_id::NUMBER                              AS issue_id,
+      merge_request_id::NUMBER                      AS merge_request_id,
+      milestone_id::NUMBER                          AS milestone_id,
       {{ map_state_id('state') }}                    AS milestone_state,
       created_at::TIMESTAMP                          AS created_at
     FROM source

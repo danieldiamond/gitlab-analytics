@@ -8,11 +8,11 @@ WITH source AS (
   
   SELECT
   
-    id::INTEGER           AS ci_trigger_id,
+    id::NUMBER           AS ci_trigger_id,
     created_at::TIMESTAMP AS created_at,
     updated_at::TIMESTAMP AS updated_at,
-    project_id::INTEGER   AS project_id,
-    owner_id::INTEGER     AS owner_id,
+    project_id::NUMBER   AS project_id,
+    owner_id::NUMBER     AS owner_id,
     description::VARCHAR  AS ci_trigger_description
     
   FROM source

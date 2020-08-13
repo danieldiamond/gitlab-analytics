@@ -66,7 +66,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity_stage.is_closed                                                             AS stage_is_closed,
       sfdc_opportunity.technical_evaluation_date,
       sfdc_opportunity.order_type,
-      
+
       -- opportunity information
       sfdc_opportunity.acv,
       sfdc_opportunity.amount,
@@ -78,6 +78,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.forecasted_iacv,
       sfdc_opportunity.iacv_created_date,
       sfdc_opportunity.incremental_acv,
+      sfdc_opportunity.pre_covid_iacv,
       sfdc_opportunity.invoice_number,
       sfdc_opportunity.is_refund,
       sfdc_opportunity.is_downgrade,
@@ -113,6 +114,7 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.subscription_start_date,
       sfdc_opportunity.subscription_end_date,
       sfdc_opportunity.true_up_value,
+      sfdc_opportunity.order_type_live,
 
       -- command plan fields
       sfdc_opportunity.cp_champion,

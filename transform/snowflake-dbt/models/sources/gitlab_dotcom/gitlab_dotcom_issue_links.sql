@@ -4,9 +4,9 @@ WITH
 , renamed AS (
 
     SELECT
-      id::INTEGER                      AS issue_link_id,
-      source_id::INTEGER               AS source_id,
-      target_id::INTEGER               AS target_id,
+      id::NUMBER                      AS issue_link_id,
+      source_id::NUMBER               AS source_id,
+      target_id::NUMBER               AS target_id,
       created_at::TIMESTAMP            AS created_at,
       updated_at::TIMESTAMP            AS updated_at,
       valid_from -- Column was added in distinct_source CTE

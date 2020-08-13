@@ -5,8 +5,8 @@ gitlab-org/charts/deploy-image-helm-base,7453181
 gitlab-org/charts/gitlab,3828396
 gitlab-org/charts/gitlab-runner,6329679
 gitlab-org/charts/knative,16590122
-gitlab-org/ci-cd/custom-executors/autoscaler,13815397
-gitlab-org/ci-cd/custom-executors/fargate,16240616
+gitlab-org/ci-cd/custom-executor-drivers/autoscaler,13822214
+gitlab-org/ci-cd/custom-executor-drivers/fargate,16240616
 gitlab-org/ci-cd/docker-machine,1254421
 gitlab-org/ci-cd/gcp-exporter,5279538
 gitlab-org/ci-cd/gitlab-runner-ubi-images,17019611
@@ -208,9 +208,8 @@ gitlab-org/gitlab-design,443787
 gitlab-org/gitlab-svgs,4149988
 gitlab-org/csslab,4382108
 gitlab-org/release-cli,16573099
-gitlab-org/ci-cd/custom-executor-drivers/autoscaler,13822214
-gitlab-org/quality/looping-pipeline,15114652
+gitlab-org/quality/ci/no-downtime-upgrades,15114652
 gitlab-org/quality/performance-sitespeed,15208888
 gitlab-org/quality/performance-data,13566613
 gitlab-org/quality/preprod,15821588
-gitlab-org/quality/secure-test-project-orchestrator,19722963
+gitlab-org/quality/ci/secure-test-project-orchestrator,19722963

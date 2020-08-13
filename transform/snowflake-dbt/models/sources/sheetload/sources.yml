@@ -13,59 +13,49 @@ sources:
       schema: false
       identifier: false
 
-    freshness:
-      warn_after: {count: 48, period: hour}
-
     tables:
       - name: abm_account_baselines
-        freshness: null
       - name: abuse_mitigation
+      - name: account_golden_records
       - name: ally_certificate
       - name: calendar
       - name: clari_export_forecast_net_iacv
-        freshness:
-          warn_after: {count: 10, period: day}
       - name: communication_certificate
       - name: company_call_attendance
       - name: compensation_certificate
       - name: data_team_capacity
       - name: days_to_close
       - name: employee_location_factor
-        freshness: null
       - name: gitlab_slack_stats
-        freshness: null
       - name: google_referrals
-        freshness: null
       - name: headcount
-        freshness: null
       - name: hire_forecast
       - name: hire_plan
-        freshness: null
+      - name: hire_replan  
       - name: ic_collaboration_competency
+      - name: ic_dib_comptency
+      - name: ic_efficiency_competency
+      - name: ic_iteration_competency
+      - name: ic_results_competency
+      - name: ic_transparency_competency
+      - name: infrastructure_missing_employees
       - name: job_roles_prior_to_2020_02
-        freshness: null
       - name: kpi_status
       - name: linkedin_recruiter
-        freshness: null
       - name: location_factor_targets
-        freshness: null
       - name: manual_downgrade_dotcom_tracking
       - name: marketing_core_users_from_docs_gitlab_com
       - name: marketing_kpi_benchmarks
       - name: marketing_pipe_to_spend_headcount
-        freshness: null
       - name: osat
       - name: planned_values
       - name: procurement_cost_savings
       - name: release_blog_posts
       - name: rep_quotas_full_fy2020
       - name: rep_quotas_full_ps_fy2020
-        freshness: null
       - name: scalable_employment_values
       - name: social_marketing_metrics
       - name: values_certificate
       - name: yc_companies
-        freshness: null
-      - name: hire_replan  
-        freshness: null
+
 

@@ -8,11 +8,11 @@ WITH source AS (
   
   SELECT
 
-    id::INTEGER           AS ci_trigger_request_id,
-    trigger_id::INTEGER   AS trigger_id,
+    id::NUMBER           AS ci_trigger_request_id,
+    trigger_id::NUMBER   AS trigger_id,
     created_at::TIMESTAMP AS created_at,
     updated_at::TIMESTAMP AS updated_at,
-    commit_id::INTEGER    AS commit_id
+    commit_id::NUMBER    AS commit_id
     
   FROM source
   
