@@ -237,7 +237,7 @@ for source_name, config in config_dict.items():
                         xcom_push=True,
             )
 
-            incremental_extract >> validate_ids
+            [incremental_extract >> validate_ids]
 
 
     globals()[f"{config['dag_name']}_db_extract"] = extract_dag
