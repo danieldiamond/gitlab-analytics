@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: rspec
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: rspec
+    loader: Stitch
+    loaded_at_field: _sdc_batched_at
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    tables:
+      - name: profiling_data
+        description: '{{ doc("rspec_profiling_data") }}'
