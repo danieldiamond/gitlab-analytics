@@ -41,32 +41,30 @@ WITH sfdc_account AS (
 )
 
 SELECT
-  sfdc_account.account_id                 AS crm_id,
-  sfdc_account.account_name               AS customer_name,
-  sfdc_account.billing_country            AS customer_country,
-  ultimate_parent_account.account_id      AS ultimate_parent_account_id,
-  ultimate_parent_account.account_name    AS ultimate_parent_account_name,
-  {{ sales_segment_cleaning('ultimate_parent_account.account_segment') }}
-                                          AS ultimate_parent_account_segment,
-  ultimate_parent_account.billing_country AS ultimate_parent_billing_country,
-  ultimate_parent_account.df_industry     AS ultimate_parent_industry,
-  {{ account_owner_team('ultimate_parent_account.account_owner_team') }}
-                                          AS ultimate_parent_account_owner_team,
-  ultimate_parent_account.tsp_territory   AS ultimate_parent_territory,
-  sfdc_account.record_type_id             AS record_type_id,
+  sfdc_account.account_id                       AS crm_id,
+  sfdc_account.account_name                     AS customer_name,
+  sfdc_account.billing_country                  AS customer_country,
+  ultimate_parent_account.account_id            AS ultimate_parent_account_id,
+  ultimate_parent_account.account_name          AS ultimate_parent_account_name,
+  ultimate_parent_account.account_segment       AS ultimate_parent_account_segment,
+  ultimate_parent_account.billing_country       AS ultimate_parent_billing_country,
+  ultimate_parent_account.df_industry           AS ultimate_parent_industry,
+  ultimate_parent_account.account_owner_team    AS ultimate_parent_account_owner_team,
+  ultimate_parent_account.tsp_territory         AS ultimate_parent_territory,
+  sfdc_account.record_type_id                   AS record_type_id,
   sfdc_account.gitlab_entity,
-  sfdc_account.federal_account            AS federal_account,
+  sfdc_account.federal_account                  AS federal_account,
   sfdc_account.gitlab_com_user,
   sfdc_account.account_owner,
   sfdc_account.account_owner_team,
   sfdc_account.account_type,
-  sfdc_users.name                         AS technical_account_manager,
-  sfdc_account.is_deleted                 AS is_deleted,
+  sfdc_users.name                               AS technical_account_manager,
+  sfdc_account.is_deleted                       AS is_deleted,
   CASE
     WHEN sfdc_account.is_deleted
       THEN master_records.sfdc_master_record_id
     ELSE NULL
-  END                                     AS merged_to_account_id
+  END                                           AS merged_to_account_id
 FROM sfdc_account
 LEFT JOIN master_records
   ON sfdc_account.account_id = master_records.account_id
