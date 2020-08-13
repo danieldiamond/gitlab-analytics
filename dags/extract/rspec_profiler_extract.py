@@ -48,15 +48,15 @@ dag = DAG(
 rspec_profiler_extract_cmd = f"""
     {clone_and_setup_extraction_cmd} &&
     curl https://gitlab-org.gitlab.io/rspec_profiling_stats/overall_time.csv > overall_time.csv
-    python rspec_profiler/src/execute.py
+    python3 sheetload/sheetload.py csv --filename overall_time.csv --schema rspec --tablename profiling_data
 """
 
 # having both xcom flag flavors since we're in an airflow version where one is being deprecated
 rspec_profiler_extract = KubernetesPodOperator(
     **gitlab_defaults,
     image=DATA_IMAGE,
-    task_id="rspec_profiler-extract",
-    name="rspec_profiler-extract",
+    task_id="rspec-profiler-extract",
+    name="rspec-profiler-extract",
     secrets=[
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_LOAD_DATABASE,
