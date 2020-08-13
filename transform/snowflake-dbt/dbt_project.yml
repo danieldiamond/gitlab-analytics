@@ -3,8 +3,9 @@
 # ======
 name: 'gitlab_snowflake'
 version: '1.0'
+config-version: 2
 profile: 'gitlab-snowflake'
-require-dbt-version: 0.16.1
+require-dbt-version: 0.17.1
 
 
 # ======
@@ -23,9 +24,9 @@ clean-targets:
 # Snowflake Configs
 # ======
 quoting:
-    database: true
-    identifier: false
-    schema: false
+  database: true
+  identifier: false
+  schema: false
 query-comment:
   comment: "{{ query_comment(node) }}"
   append: true
@@ -48,264 +49,303 @@ on-run-end:
 # Seed Configs
 # ======
 seeds:
-  enabled: true
-  schema: staging
-  quote_columns: False
+  +enabled: true
+  +schema: staging
+  +quote_columns: False
 
   gitlab_snowflake:
     zuora_country_geographic_region:
-      schema: analytics
+      +schema: analytics
     gitlab_release_schedule:
-      column_types:
+      +column_types:
         major_minor_version: varchar
 
+# ==================
+# Variable Configs
+# ==================
+vars:
+  warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
+  valid_at: '{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S%z") }}'
 
-# ======
+  snowplow:
+    'snowplow:use_fivetran_interface': false
+    'snowplow:events': "{{ ref('snowplow_unnested_events') }}"
+    'snowplow:context:web_page': "{{ ref('snowplow_web_page') }}"
+    'snowplow:context:performance_timing': false
+    'snowplow:context:useragent': false
+    'snowplow:timezone': 'America/New_York'
+    'snowplow:page_ping_frequency': 30
+    'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
+    'snowplow:pass_through_columns': ['glm_source','cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
+
+
+# ==================
 # Model Configs
-# ======
+# ==================
 models:
-  pre-hook:
+  +pre-hook:
     - "{{ logging.log_model_start_event() }}"
-  post-hook:
+  +post-hook:
     - "{{ logging.log_model_end_event() }}"
-  vars:
-    database: "raw"
-    warehouse_name: "{{ env_var('SNOWFLAKE_TRANSFORM_WAREHOUSE') }}"
-    valid_at: '{{ run_started_at.strftime("%Y-%m-%d") }}'
-    
-  # Logging Package
+
+  # ------------------
+  # Logging Package https://hub.getdbt.com/fishtown-analytics/logging/latest/
+  # ------------------
   logging:
-    schema: meta
-    post-hook:
+    +schema: meta
+    +post-hook:
       - "grant select on {{this}} to role reporter"
 
-  # Snowplow Package
+  # ------------------
+  # Snowplow Package https://hub.getdbt.com/fishtown-analytics/snowplow/latest/
+  # ------------------
   snowplow:
-    schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
-    post-hook:
+    +schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
+    +post-hook:
       - "grant usage on schema {{this.schema}} to role snowplow"
       - "grant select on {{this}} to role snowplow"
-    tags: ["product"]
-    vars:
-      'snowplow:use_fivetran_interface': false
-      'snowplow:events': "{{ref('snowplow_unnested_events')}}"
-      'snowplow:context:web_page': "{{ref('snowplow_web_page')}}"
-      'snowplow:context:performance_timing': false
-      'snowplow:context:useragent': false
-      'snowplow:timezone': 'America/New_York'
-      'snowplow:page_ping_frequency': 30
-      'snowplow:app_ids': ['gitlab', 'about', 'gitlab_customers']
-      'snowplow:pass_through_columns': ['glm_source','cf_formid','cf_elementid','cf_nodename','cf_type','cf_elementclasses','cf_value','sf_formid','sf_formclasses','sf_elements','ff_formid','ff_elementid','ff_nodename','ff_elementtype','ff_elementclasses','ff_value','lc_elementid','lc_elementclasses','lc_elementtarget','lc_targeturl','lc_elementcontent','tt_category','tt_variable','tt_timing','tt_label']
+    +tags: ["product"]
 
-  # Snowflake Spend Package
+  # ------------------
+  # Snowflake Spend Package https://gitlab.com/gitlab-data/snowflake_spend
+  # ------------------
   snowflake_spend:
-    materialized: table
+    +materialized: table
     xf:
-      schema: analytics
+      +schema: analytics
 
+  # ==================
   # GitLab Models
+  # ==================
   gitlab_snowflake:
-    materialized: view
+    +materialized: view
 
-    # Dimensional Structure
+    # ------------------
+    # Sources
+    # ------------------
     sources:
-    
+
       airflow:
-        materialized: table
-        schema: airflow
+        +materialized: table
+        +schema: airflow
 
       customers:
-        schema: customers
+        +schema: customers
         sensitive:
-          schema: sensitive
+          +schema: sensitive
           secure: true
 
+      date:
+        +materialized: table
+        +schema: date
+        
       dbt:
-        materialized: table
-        schema: dbt
+        +materialized: table
+        +schema: dbt
     
       engineering:
-        materialized: table
+        +materialized: table
 
       gitlab_data_yaml:
-        schema: gitlab_data_yaml
+        +schema: gitlab_data_yaml
 
       gitlab_dotcom:
-        tags: ["product"]
-        materialized: table
-        schema: staging
-      
+        +tags: ["product"]
+        +materialized: table
+        +schema: staging
+
       gitter:
-        enabled: false
+        +enabled: false
 
       google_analytics_360:
-        materialized: table
-        schema: google_analytics_360
+        +materialized: table
+        +schema: google_analytics_360
 
       greenhouse:
-        schema: greenhouse
+        +schema: greenhouse
 
       handbook:
-        schema: handbook
+        +schema: handbook
 
       license:
-        schema: license_db
+        +schema: license_db
 
       netsuite:
-        schema: netsuite
+        +schema: netsuite
+        sensitive:
+          +schema: sensitive
+          secure: true
 
       qualtrics:
-        materialized: table
-        schema: qualtrics
+        +materialized: table
+        +schema: qualtrics
 
       pmg:
-        materialized: table
-        schema: pmg
+        +materialized: table
+        +schema: pmg
 
       sfdc:
-        schema: sfdc
+        +schema: sfdc
         sensitive:
-          schema: sensitive
+          +schema: sensitive
           secure: true
 
       sheetload:
-        schema: sheetload
+        +schema: sheetload
 
       snowflake:
-        schema: snowflake
+        +schema: snowflake
+
+      snowplow:
+        +tags: ["product"]
+        +schema: snowplow
 
       version:
-        tags: ["product"]
-        materialized: table
-        schema: version_db
+        +tags: ["product"]
+        +materialized: table
+        +schema: version_db
 
       zendesk:
-        schema: zendesk
+        +schema: zendesk
+
+      zendesk_community_relations:
+        +schema: zendesk_community_relations
 
       zuora:
-        schema: zuora
+        +schema: zuora
 
-
+    # ------------------
+    # Staging
+    # ------------------
     staging:
-      schema: staging
-      materialized: table
+      +schema: staging
+      +materialized: table
 
       customers:
         xf:
-          schema: analytics
+          +schema: analytics
+
+      date:
+        +schema: analytics
+        +materialized: view
 
       engineering:
-        materialized: table
+        +materialized: table
 
       gitlab_data_yaml:
         xf:
-          schema: analytics
+          +schema: analytics
 
       gitlab_dotcom:
-        tags: ["product"]
-        materialized: table
-        schema: analytics
+        +tags: ["product"]
+        +materialized: table
+        +schema: analytics
 
       gitter:
-        enabled: false
-        materialized: table
+        +enabled: false
+        +materialized: table
 
       google_analytics_360:
         xf:
-          schema: analytics
+          +schema: analytics
 
       greenhouse:
         xf:
-          schema: sensitive
+          +schema: sensitive
           secure: true
         rpt:
-          schema: analytics
+          +schema: analytics
 
       handbook:
         rpt:
-          schema: analytics
+          +schema: analytics
         xf:
-          schema: analytics
+          +schema: analytics
 
       license:
-        materialized: view
+        +materialized: view
 
       netsuite:
         xf:
-          schema: analytics
+          +schema: analytics
 
       qualtrics:
-        schema: analytics
+        +schema: analytics
 
       pmg:
-        schema: analytics
+        +schema: analytics
 
       sfdc:
         xf:
-          schema: analytics
+          +schema: analytics
+    
+      sheetload:
+        +schema: analytics
 
       snowflake:
-          schema: analytics
-          materialized: view
+        +schema: analytics
+        +materialized: view
+
+      snowplow:
+        +tags: ["product"]
+        +schema: analytics
+        month_partition: 
+          +schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
 
       version:
-        tags: ["product"]
+        +tags: ["product"]
         xf:
-          schema: analytics
+          +schema: analytics
         ephemeral:
-          schema: analytics
+          +schema: analytics
 
       zuora:
         xf:
-          schema: analytics
-    
+          +schema: analytics
+
+    # ------------------
+    # Marts
+    # ------------------
     marts:  
       
       arr:  
-        materialized: table  
+        +materialized: table  
 
       product_kpis:
-        materialized: table 
+        +materialized: table 
 
       exports:
-        materialized: view
-        schema: exports 
+        +materialized: view
+        +schema: exports 
 
+        users_emails:
+          enabled: false
 
+    # ------------------
     # Legacy Structure
+    # ------------------
     bamboohr:
-      schema: sensitive
+      +schema: sensitive
       secure: true
       base:
-        materialized: table
-
-    date:
-      materialized: table
+        +materialized: table
 
     pipe2spend:
-      enabled: false
-      materialized: table
+      +enabled: false
+      +materialized: table
 
     poc:
-      tags: ["poc"]
-      enabled: true
-      materialized: table
-      schema: analytics
+      +tags: ["poc"]
+      +enabled: true
+      +materialized: table
+      +schema: analytics
 
     retention:
-      materialized: table
+      +materialized: table
 
     smau_events:
-      tags: ["product"]
-      materialized: table
-
-    snowplow:
-      tags: ["product"]
-      xf:
-        materialized: table
-
-    snowplow_combined:
-      tags: ["product"]
+      +tags: ["product"]
+      +materialized: table
 
 
 # ======
@@ -318,22 +358,22 @@ snapshots:
     transient: false
 
     customers:
-      tags: ["daily"]
+      +tags: ["daily"]
 
     gitlab_dotcom:
-      tags: ["daily"]
+      +tags: ["daily"]
 
     license:
-      tags: ["daily"]
+      +tags: ["daily"]
 
     netsuite:
-      tags: ["daily"]
+      +tags: ["daily"]
 
     sfdc:
-      tags: ["daily"]
+      +tags: ["daily"]
 
     sheetload:
-      tags: ["daily"]
+      +tags: ["daily"]
 
     zuora:
-      tags: ["daily"]
+      +tags: ["daily"]

@@ -22,6 +22,9 @@ sources:
       - name: gitlab_dotcom_gitlab_subscriptions_snapshots
       - name: gitlab_dotcom_members_snapshots
       - name: gitlab_dotcom_namespaces_snapshots
+      - name: gitlab_dotcom_namespace_statistics_snapshots
+      - name: gitlab_dotcom_namespace_root_storage_statistics_snapshots
+      - name: gitlab_dotcom_projects_snapshots
       - name: gitlab_dotcom_project_statistics_snapshots
       - name: license_db_licenses_snapshots
       - name: sfdc_account_snapshots

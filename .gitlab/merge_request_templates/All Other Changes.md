@@ -19,7 +19,7 @@ Please include links to any related MRs and/or issues.
 * [ ] Commits NOT set to squash
 * [ ] This MR is ready for final review and merge.
 * [ ] Resolve all threads
-* [ ] Remove the `WIP:` prefix in the MR title before assigning to reviewer
+* [ ] Remove the `Draft:` prefix in the MR title before assigning to reviewer
 * [ ] Assigned to reviewer
 
 ### Which pipeline job do I run?

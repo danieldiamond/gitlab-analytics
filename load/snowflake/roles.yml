@@ -39,7 +39,11 @@ roles:
         warehouses:
             - admin
         member_of:
-            - sysadmin
+            - useradmin
+
+    - useradmin:
+        warehouses:
+            - admin
 
     - sysadmin:
         warehouses:
@@ -116,6 +120,7 @@ roles:
             - snowflake_db
             - version_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -147,6 +152,7 @@ roles:
             - snowplow
             - version_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -218,6 +224,7 @@ roles:
             - pmg
             - snowflake_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -246,6 +253,7 @@ roles:
             - snowflake_db
             - version_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -302,6 +310,7 @@ roles:
             - snowplow
             - version_db
             - zendesk
+            - zendesk_community_relations
             - zuora
         privileges:
             databases:
@@ -586,6 +595,18 @@ roles:
                 read:
                     - analytics.analytics_sensitive.customers_db_customers_pii
 
+    - date:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.date
+            tables:
+                read:
+                    - analytics.date.*
+
     - db_dumps:
         privileges:
             databases:
@@ -732,10 +753,12 @@ roles:
                 read:
                     - raw.netsuite_fivetran
                     - analytics.netsuite
+                    - analytics.analytics_sensitive
             tables:
                 read:
                     - raw.netsuite_fivetran.*
                     - analytics.netsuite.*
+                    - analytics.analytics_sensitive.netsuite_*
 
     - postgres_pipeline:
         warehouses:
@@ -753,6 +776,10 @@ roles:
                 read:
                     - analytics.customers.*
                     - raw.tap_postgres.*
+
+    - public:
+        member_of:
+          - date
 
     - qualtrics:
         warehouses:
@@ -826,12 +853,12 @@ roles:
                     - raw
             schemas:
                 read:
-                    - analytics.analytics_staging
+                    - analytics.analytics_sensitive
                     - analytics.sheetload
                     - raw.sheetload
             tables:
                 read:
-                    - analytics.analytics_staging.sheetload_*
+                    - analytics.analytics_sensitive.sheetload_*
                     - analytics.sheetload.*
                     - raw.sheetload.*  
 
@@ -869,10 +896,12 @@ roles:
                     - raw
             schemas:
                 read:
+                    - analytics.snowplow
                     - analytics.snowplow_*
                     - raw.snowplow
             tables:
                 read:
+                    - analytics.snowplow.*
                     - analytics.snowplow_*.*
                     - raw.snowplow.*
 
@@ -966,7 +995,24 @@ roles:
             tables:
                 read:
                     - analytics.zendesk.*
-                    - raw.zendesk_stitch.*  
+                    - raw.zendesk_stitch.*
+
+    - zendesk_community_relations:
+          warehouses:
+              - analyst_xs
+          privileges:
+              databases:
+                  read:
+                      - analytics
+                      - raw
+              schemas:
+                  read:
+                      - analytics.zendesk_community_relations
+                      - raw.zendesk_community_relations_stitch
+              tables:
+                  read:
+                      - analytics.zendesk_community_relations.*
+                      - raw.zendesk_community_relations_stitch.*
 
     - zuora:
         warehouses:
@@ -1044,8 +1090,6 @@ roles:
             - analyst_xs
 
     - cmccarty:
-        member_of:
-            - securityadmin
         warehouses:
             - admin
 
@@ -1058,17 +1102,22 @@ roles:
 
     - datwood:
         member_of:
-            - analyst_core
+            - analyst_growth
             - customers_db_sensitive
-            - db_dumps
-            - postgres_pipeline
         warehouses:
             - analyst_xs
+
     - dknox:
         member_of:
             - analyst_engineering
         warehouses:
             - analyst_xs
+
+    - dparker:
+        member_of:
+            - reporter
+        warehouses:
+            - reporting
 
     - dtang:
         member_of:
@@ -1079,7 +1128,6 @@ roles:
     - dtownsend:
         member_of:
             - analyst_engineering
-            - dtownsend
 
     - eburke:
         member_of:
@@ -1268,6 +1316,10 @@ roles:
         warehouses:
             - reporting
 
+    - mjozenazemian:
+        warehouses:
+            - reporting
+
     - mpeychet:
         member_of:
             - analyst_growth
@@ -1278,16 +1330,9 @@ roles:
 
     - mriser:
         member_of:
-            - mriser
             - postgres_pipeline
         warehouses:
             - analyst_xs
-
-    - mrodriguez:
-        member_of:
-            - reporter
-        warehouses:
-            - reporting
 
     - msendal:
         warehouses:
@@ -1308,6 +1353,12 @@ roles:
             - engineer_xl
             - loading
             - reporting
+
+    - nfiguera:
+        member_of:
+            - analyst_sales
+        warehouses:
+            - analyst_xs
 
     - parmstrong:
         warehouses:
@@ -1347,12 +1398,6 @@ roles:
         warehouses:
             - analyst_xs
 
-    - sreddy:
-        member_of:
-            - product_manager
-        warehouses:
-            - reporting
-
     - ssichak:
         warehouses:
             - reporting
@@ -1373,6 +1418,7 @@ roles:
                     - raw.stitch_google_sheets
                     - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
+                    - raw.zendesk_community_relations_stitch
                     - raw.zuora_stitch
                 write:
                     - raw.license_db_dump
@@ -1380,6 +1426,7 @@ roles:
                     - raw.stitch_google_sheets
                     - raw.version_db_dump_stitch
                     - raw.zendesk_stitch
+                    - raw.zendesk_community_relations_stitch
                     - raw.zuora_stitch
             tables:
                 read:
@@ -1388,6 +1435,7 @@ roles:
                     - raw.stitch_google_sheets.*
                     - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
+                    - raw.zendesk_community_relations_stitch.*
                     - raw.zuora_stitch.*
                 write:
                     - raw.license_db_dump.*
@@ -1395,6 +1443,7 @@ roles:
                     - raw.stitch_google_sheets.*
                     - raw.version_db_dump_stitch.*
                     - raw.zendesk_stitch.*
+                    - raw.zendesk_community_relations_stitch.*
                     - raw.zuora_stitch.*
     
     - target_snowflake:
@@ -1506,6 +1555,7 @@ users:
         can_login: yes
         member_of:
             - cmccarty
+            - securityadmin
 
     - cmestel:
         can_login: yes
@@ -1522,6 +1572,11 @@ users:
         member_of:
             - dknox
     
+    - dparker:
+        can_login: yes
+        member_of:
+            - dparker
+
     - dtang:
         can_login: yes
         member_of:
@@ -1665,6 +1720,12 @@ users:
         member_of:
             - mdewji
             - securityadmin
+    
+    - mjozenazemian:
+        can_login: yes
+        member_of:
+            - mjozenazemian
+            - securityadmin
 
     - mpeychet:
         can_login: yes
@@ -1677,9 +1738,8 @@ users:
             - mriser
 
     - mrodriguez:
-        can_login: yes
-        member_of:
-            - mrodriguez
+        can_login: no
+        member_of: []
 
     - msendal:
         can_login: yes
@@ -1697,6 +1757,11 @@ users:
         member_of:
             - engineer
             - mwalker
+
+    - nfiguera:
+        can_login: yes
+        member_of:
+            - nfiguera
 
     - parmstrong:
         can_login: yes
@@ -1756,9 +1821,8 @@ users:
             - accountadmin
 
     - sreddy:
-        can_login: yes
-        member_of:
-            - sreddy
+        can_login: no
+        member_of: []
 
     - ssichak:
         can_login: yes

@@ -1,3 +1,11 @@
+{% docs gitlab_dotcom_ci_minutes_ui_namespace_replication %}
+
+This table replicates the proccess that the Gitlab UI uses to generate the CI minutes Usage Quota both for personal namespaces and top level group namespaces. The codebase logic used to build this model can be seen mapped in [this diagram](https://app.lucidchart.com/documents/view/0b8b66e6-8536-4a5d-b992-9e324581187d/0_0).
+
+It also adds two additional columns which aren't calculated in the UI, which are `limit_based_plan` and `status_based_plan` which are independent of whether there aren't projects with `shared_runners_enabled` inside the namespaces and only take into account how many minutes have been used from the monthly quota based in the plan of the namespace.
+
+{% enddocs %}
+
 {% docs gitlab_dotcom_daily_usage_data_events_90 %}
 
 This table selects all the rows from `gitlab_dotcom_usage_data_events` that have an `event_date` (date when the event happened) that is less than 90 days ago. 
@@ -89,8 +97,21 @@ There are 5 general ways that a user can have access to a group G:
 * Be a **group member** of group G.
 * Be a **group member** of G2, where G2 is a descendant (subgroup) of group G.
 * Be a **project member** of P, where P is owned by G or one of G's descendants.
-* Be a group member of X, where X is invited to a project underneath G via [project group links](https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group).
-* Be a group member of Y, where Y is invited to G or one of G's descendants via [group group links](https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group).
+* Be a group member of X or a parent group of X, where X is invited to a project underneath G via [project group links](https://docs.gitlab.com/ee/user/group/#sharing-a-project-with-a-group).
+* Be a group member of Y or a parent group of Y, where Y is invited to G or one of G's descendants via [group group links](https://docs.gitlab.com/ee/user/group/#sharing-a-group-with-another-group).
+
+An example of these relationships is shown in this diagram:
+
+<div style="width: 720px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:720px; height:480px" src="https://app.lucidchart.com/documents/embeddedchart/9f529269-3e32-4343-9713-8eb311df7258" id="WRFbB73aKeB3"></iframe></div>
+
+Additionally, this model calculates the field `is_billable` - i.e. if a member should be counted toward the seat count for a subscription (note: this also applies to namespaces without a subscription for the convenience of determining seats in use). To determine the number of seats in use for a given namespace, a simple query such as the following will suffice: 
+
+```
+SELECT COUNT(DISTINCT user_id)
+FROM analytics.gitlab_dotcom_memberships
+WHERE is_billable = TRUE
+  AND ultimate_parent_id = 123456
+```  
 
 {% enddocs %}
 

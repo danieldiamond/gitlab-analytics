@@ -49,7 +49,7 @@ WITH date_table AS (
 ), base_mrr AS (
 
     SELECT
-      --keys
+      --primary key
       zuora_rpc.rate_plan_charge_id,
 
       --account info
@@ -65,21 +65,24 @@ WITH date_table AS (
       zuora_subscription.subscription_name_slugify,
 
       --rate_plan info
+      zuora_rpc.product_rate_plan_charge_id,
       zuora_rp.rate_plan_name,
       zuora_rpc.rate_plan_charge_name,
       zuora_rpc.rate_plan_charge_number,
       zuora_rpc.unit_of_measure,
       zuora_rpc.quantity,
       zuora_rpc.mrr,
-      zuora_product.product_name,
+      zuora_rpc.charge_type,
 
       --date info
       date_trunc('month', zuora_subscription.subscription_start_date::DATE)     AS sub_start_month,
       date_trunc('month', zuora_subscription.subscription_end_date::DATE)       AS sub_end_month,
-      date_trunc('month', zuora_rpc.effective_start_date::DATE)                 AS effective_start_month,
-      date_trunc('month', zuora_rpc.effective_end_date::DATE)                   AS effective_end_month,
-      zuora_rpc.effective_start_date,
-      zuora_rpc.effective_end_date
+      subscription_start_date::DATE                                             AS subscription_start_date,
+      subscription_end_date::DATE                                               AS subscription_end_date,
+      zuora_rpc.effective_start_month,
+      zuora_rpc.effective_end_month,
+      zuora_rpc.effective_start_date::DATE                                      AS effective_start_date,
+      zuora_rpc.effective_end_date::DATE                                        AS effective_end_date
     FROM zuora_accts
     INNER JOIN zuora_subscription
       ON zuora_accts.account_id = zuora_subscription.account_id
@@ -92,7 +95,8 @@ WITH date_table AS (
     LEFT JOIN zuora_product
       ON zuora_product.product_id = zuora_rpc.product_id
     WHERE zuora_subscription.subscription_status NOT IN ('Draft','Expired')
-      AND mrr IS NOT NULL
+      AND zuora_rpc.charge_type = 'Recurring'
+      AND mrr != 0
 
 ), month_base_mrr AS (
 
@@ -106,8 +110,12 @@ WITH date_table AS (
       subscription_name_slugify,
       sub_start_month,
       sub_end_month,
+      subscription_start_date,
+      subscription_end_date,
       effective_start_month,
       effective_end_month,
+      effective_start_date,
+      effective_end_date,
       country,
       {{product_category('rate_plan_name')}},
       {{ delivery('product_category')}},
@@ -116,17 +124,18 @@ WITH date_table AS (
           THEN 'Support Only'
         ELSE 'Full Service'
       END                                       AS service_type,
-      product_name,
+      product_rate_plan_charge_id,
       rate_plan_name,
       rate_plan_charge_name,
+      charge_type,
       unit_of_measure,
       SUM(mrr)                                  AS mrr,
       SUM(quantity)                             AS quantity
     FROM base_mrr
     INNER JOIN date_table
-      ON base_mrr.effective_start_date <= date_table.date_actual
-      AND (base_mrr.effective_end_date > date_table.date_actual OR base_mrr.effective_end_date IS NULL)
-    {{ dbt_utils.group_by(n=19) }}
+      ON base_mrr.effective_start_month <= date_table.date_actual
+      AND (base_mrr.effective_end_month > date_table.date_actual OR base_mrr.effective_end_month IS NULL)
+    {{ dbt_utils.group_by(n=24) }}
 
 ), current_mrr AS (
 
@@ -150,7 +159,7 @@ WITH date_table AS (
 )
 
 SELECT
-  dateadd('month',-1,month_base_mrr.mrr_month)                          AS mrr_month,
+  mrr_month,
   month_base_mrr.account_id,
   account_number,
   account_name,
@@ -164,10 +173,11 @@ SELECT
   country,
   product_category,
   delivery,
-  product_name,
   service_type,
+  product_rate_plan_charge_id,
   rate_plan_name,
-  month_base_mrr.rate_plan_charge_name,
+  rate_plan_charge_name,
+  charge_type,
   unit_of_measure,
   SUM(mrr)                                                              AS mrr,
   SUM(mrr*12)                                                           AS arr,
@@ -176,4 +186,4 @@ SELECT
 FROM month_base_mrr
 LEFT JOIN current_mrr
   ON month_base_mrr.subscription_id = current_mrr.subscription_id
-{{ dbt_utils.group_by(n=19) }}
+{{ dbt_utils.group_by(n=20) }}

@@ -36,7 +36,7 @@ WITH employee_directory_intermediate AS (
 ), bucketed as (
 
   SELECT
-    {{ dbt_utils.surrogate_key('date_actual', 'division', 'department') }} AS unique_key,
+    {{ dbt_utils.surrogate_key(['date_actual', 'division', 'department']) }} AS unique_key,
     date_actual,
     division,
     department,

@@ -11,10 +11,23 @@ models:
         tests:
           - not_null
       - name: key_value
-      - name: updated_at
+      - name: created_at
         tests:
           - not_null
-        
+  
+  - name: gitlab_dotcom_ci_minutes_ui_namespace_replication
+    description: '{{ doc("gitlab_dotcom_ci_minutes_ui_namespace_replication") }}'
+    columns:
+      - name: snapshot_month
+        tests:
+          - not_null
+      - name: namespace_id
+        tests:
+          - not_null
+      - name: CONCAT(snapshot_month, namespace_id)
+        tests:
+          - unique
+
   - name: gitlab_dotcom_clusters_applications_cert_managers_xf
     columns:
       - name: clusters_applications_cert_managers_id
@@ -258,11 +271,9 @@ models:
         description: The number of members that are presently associated with the group.
       - name: project_count
         description: The number of projects that are presently associated with the group.
+
   - name: gitlab_dotcom_memberships
     description: '{{ doc("gitlab_dotcom_memberships") }}'
-    tests:
-      - unique:
-          column_name: "concat(membership_source_type, '_', membership_source_id, '_', user_id)"
     columns:
       - name: ultimate_parent_id
         tests:
@@ -284,12 +295,21 @@ models:
         description: The id of the record that is granting the access. If membership_source_type='group_membership', then this is the group_id.
         tests:
           - not_null
+      - name: is_active
+        tests:
+          - not_null
+      - name: is_guest
+        tests:
+          - not_null
+      - name: is_billable
+        tests:
+          - not_null            
 
   - name: gitlab_dotcom_events_monthly_active_users
     description: '{{ doc("gitlab_dotcom_events_monthly_active_users") }}'
     tests:
       - unique:
-          column_name: "concat(day, plan_id_at_event_date)"
+          column_name: "concat(day, plan_id_at_event_date, plan_was_paid_at_event_date)"
     columns:
       - name: day
         tests:
@@ -506,3 +526,24 @@ models:
         description: days between user creation and last activity
       - name: account_age_cohort
         description: cohorting of time between last dbt run and user creation date.    
+
+  - name: recruiting_diversity_effort
+    description: This tracks the recruiting teams weekly check-ins to understand how they are progressing on their OKR for a diverse team.
+    columns:     
+    - name: issue_title
+      tests:
+        - not_null
+    - name: issue_IID
+      tests:
+        - not_null
+        - unique
+    - name: issue_created_at
+    - name: issue_created_week
+    - name: issue_closed_at
+    - name: issue_closed_week
+    - name: is_issue_closed
+    - name: issue_state
+    - name: assignee
+    - name: is_using_diversity_strings   
+    - name: is_not_using_diversity_srings
+    - name: has_no_answer

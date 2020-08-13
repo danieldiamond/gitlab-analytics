@@ -6,8 +6,11 @@ gitlab-org/charts/gitlab,3828396
 gitlab-org/charts/gitlab-runner,6329679
 gitlab-org/charts/knative,16590122
 gitlab-org/ci-cd/custom-executors/autoscaler,13815397
+gitlab-org/ci-cd/custom-executors/fargate,16240616
 gitlab-org/ci-cd/docker-machine,1254421
 gitlab-org/ci-cd/gcp-exporter,5279538
+gitlab-org/ci-cd/gitlab-runner-ubi-images,17019611
+gitlab-org/ci-cd/shared-runners/images/gcp/windows-containers,13815397
 gitlab-org/cluster-integration/auto-build-image,10400718
 gitlab-org/cluster-integration/auto-deploy-image,11688089
 gitlab-org/cluster-integration/helm-install-image,9184510
@@ -178,6 +181,7 @@ gitlab-org/security/gitlab-shell,15685819
 gitlab-org/security/gitlab-foss,15683922
 gitlab-org/security/omnibus-gitlab,15667093
 gitlab-org/security/gitlab,15642544
+gitlab-org/security/gitlab-runner,19047934
 gitlab-org/defend/general,15234689
 gitlab-org/status-page,16842968
 gitlab-com/gl-infra/gitter-infrastructure,2959752
@@ -205,3 +209,8 @@ gitlab-org/gitlab-svgs,4149988
 gitlab-org/csslab,4382108
 gitlab-org/release-cli,16573099
 gitlab-org/ci-cd/custom-executor-drivers/autoscaler,13822214
+gitlab-org/quality/looping-pipeline,15114652
+gitlab-org/quality/performance-sitespeed,15208888
+gitlab-org/quality/performance-data,13566613
+gitlab-org/quality/preprod,15821588
+gitlab-org/quality/secure-test-project-orchestrator,19722963

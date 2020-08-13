@@ -222,6 +222,8 @@ sources:
         identifier: gitlab_db_project_statistics
       - name: projects
         identifier: gitlab_db_projects
+      - name: prometheus_alerts
+        identifier: gitlab_db_prometheus_alerts
       - name: protected_branches
         identifier: gitlab_db_protected_branches
       - name: push_rules
