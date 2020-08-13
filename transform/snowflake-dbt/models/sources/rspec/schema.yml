@@ -2,7 +2,8 @@ version: 2
 
 models:
     - name: profiling_data
-        columns:
-          - name: commit
-            tests:
-              - not_null
+      columns:
+        - name: commit
+          tests:
+            - not_null
+            - unique
