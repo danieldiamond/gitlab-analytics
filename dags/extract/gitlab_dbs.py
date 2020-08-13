@@ -62,7 +62,6 @@ standard_secrets = [
     SNOWFLAKE_LOAD_ROLE,
 ]
 
-validation_schedule_interval = "0 1 * * 0"
 every_eighth_hour = "0 */8 * * *"
 every_day_at_four = "0 4 */1 * *"
 
@@ -81,7 +80,6 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": every_day_at_four,
         "task_name": "ci-stats",
-        "validation_schedule_interval": validation_schedule_interval,
     },
     "customers": {
         "dag_name": "customers",
@@ -96,7 +94,6 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 3 */1 * *",
         "task_name": "customers",
-        "validation_schedule_interval": validation_schedule_interval,
     },
     "gitlab_com": {
         "dag_name": "gitlab_com",
@@ -111,7 +108,6 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": "0 2 */1 * *",
         "task_name": "gitlab-com",
-        "validation_schedule_interval": validation_schedule_interval,
     },
     "gitlab_profiler": {
         "dag_name": "gitlab_profiler",
@@ -126,7 +122,6 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": every_day_at_four,
         "task_name": "gitlab-profiler",
-        "validation_schedule_interval": validation_schedule_interval,
     },
     "license": {
         "dag_name": "license",
@@ -136,7 +131,6 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": every_day_at_four,
         "task_name": "license",
-        "validation_schedule_interval": validation_schedule_interval,
     },
     "version": {
         "dag_name": "version",
@@ -146,7 +140,6 @@ config_dict = {
         "start_date": datetime(2019, 5, 30),
         "sync_schedule_interval": every_day_at_four,
         "task_name": "version",
-        "validation_schedule_interval": validation_schedule_interval,
     },
 }
 
@@ -230,8 +223,13 @@ for source_name, config in config_dict.items():
                         image=DATA_IMAGE,
                         task_id=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
                         name=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
+                        pool=f"{config['task_name']}_pool",
                         secrets=standard_secrets + config["secrets"],
-                        env_vars={**standard_pod_env_vars, **config["env_vars"]},
+                        env_vars={
+                            **standard_pod_env_vars,
+                            **config["env_vars"],
+                            "LAST_EXECUTION_DATE": "{{ execution_date }}",
+                        },
                         affinity=get_affinity(False),
                         tolerations=get_toleration(False),
                         arguments=[validate_cmd],
@@ -243,7 +241,6 @@ for source_name, config in config_dict.items():
 
 
     globals()[f"{config['dag_name']}_db_extract"] = extract_dag
-
     # Sync DAG
     sync_dag_args = {
         "catchup": False,
