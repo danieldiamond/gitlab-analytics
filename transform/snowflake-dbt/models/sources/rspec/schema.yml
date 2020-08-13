@@ -3,6 +3,6 @@ version: 2
 models:
     - name: profiling_data
         columns:
-        name: commit
-        tests:
-          - not_null
+          - name: commit
+            tests:
+              - not_null
