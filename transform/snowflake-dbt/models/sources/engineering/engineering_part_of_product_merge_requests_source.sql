@@ -26,7 +26,8 @@ WITH source AS (
           GET(SPLIT(plain_diff_url_path, '-'), ARRAY_SIZE(SPLIT(plain_diff_url_path, '-')) - 1),  
           '[^0-9]+', 
           ''
-      )::NUMBER                                               AS product_merge_request_iid
+      )::NUMBER                                                   AS product_merge_request_iid,
+      TRIM(ARRAY_TO_STRING(ARRAY_SLICE(SPLIT(plain_diff_url_path, '-'), 0, -1), '-'), '/')::VARCHAR AS product_merge_request_project
     FROM source
 
 )
