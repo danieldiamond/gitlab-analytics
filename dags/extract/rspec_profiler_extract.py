@@ -69,7 +69,5 @@ rspec_profiler_extract = KubernetesPodOperator(
     affinity=get_affinity(False),
     tolerations=get_toleration(False),
     arguments=[rspec_profiler_extract_cmd],
-    do_xcom_push=True,
-    xcom_push=True,
     dag=dag,
 )
