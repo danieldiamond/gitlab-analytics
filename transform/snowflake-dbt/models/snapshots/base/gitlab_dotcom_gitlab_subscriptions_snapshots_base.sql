@@ -9,6 +9,7 @@ WITH source AS (
   SELECT *
   FROM {{ source('snapshots', 'gitlab_dotcom_gitlab_subscriptions_snapshots') }}
   WHERE id != 572635 -- This ID has NULL values for many of the important columns.
+    AND namespace_id IS NOT NULL
 
 ), renamed AS (
 

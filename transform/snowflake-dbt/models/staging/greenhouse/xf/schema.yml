@@ -1,6 +1,17 @@
 version: 2
 
 models:
+  - name: greenhouse_hiring_team
+    description: Identifies the team member assigned to greenhouse hiring team roles (recruiter, coordinator, hiring manager, and sourcer) on a job_id level. Note - a job_id can have multiple individuals assigned to a role.
+    columns:
+      - name: hiring_team.job_id,
+      - name: hiring_team_role
+      - name: is_responsible
+      - name: employee_id
+      - name: full_name
+      - name: hiring_team_created_at
+      - name: hiring_team_updated_at
+      
   - name: greenhouse_recruiting_xf
     description: This is shows all applications submitted and ties in offer data, greenhouse department (the associated division), and source data to be in 1 place.
     columns:

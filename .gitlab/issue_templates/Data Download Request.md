@@ -29,13 +29,34 @@ If none, please include a description
 
   ### Reviewer Checklist 
 * [ ]  Review the Submitter Checklist. 
-* [ ]  Check if the data requested is sensitive. If it is, close the issue and comment : "This request has been denied due to access to the information being requested." 
+* [ ]  Check if the data requested. If it is and the requester does not have access, close the issue and comment : "This request has been denied due to access to the information being requested." 
 * [ ]  If not, continue with the steps below: 
   - [ ] Run the query in Snowflake. 
-  - [ ] Export the file in the requested format. 
-  - For Sensitive Data
-    - [ ] Encrypt the data into zip file (use `zip -er`)
-    - [ ] share the file's password with the submitter over a secure channel separate from the channel you will use to send the file
-  - [ ] Share the file with the submitter over a secure channel
-  - [ ] Reassign this issue to the Submitter for verification of receipt 
-  - [ ] Once the submitter has verified receipt, delete the file from your computer
+
+#### Small Data Set
+* [ ] Export the file in the requested format using the Snowflake UI's export functionality.
+
+
+#### Large Data Set
+* [ ] Load the dataset in the requested format to the `"RAW"."PUBLIC".SNOWFLAKE_EXPORTS` stage by running:
+
+```
+COPY INTO @"RAW"."PUBLIC".SNOWFLAKE_EXPORTS/<identifiable_folder_name>/
+FROM (<query>)
+FILE_FORMAT = (TYPE = {CSV | JSON | PARQUET} <other format options>) 
+```
+
+Replace the folder name with something unique and recognizable, such as the name of the issue.  Make sure to [add format options](https://docs.snowflake.com/en/sql-reference/sql/copy-into-location.html#syntax) to get the data to be formatted as requested.  This is especially important with the CSV format for escaping records and defining delimiters.
+
+By default, the command will create multiple files in GCS.  To just create one file, add the `single = true` option at the end of the command.
+
+After the dataset has been copied into the GCS stage, it can be downloaded from gcs in the [`snowflake_exports` bucket in the `gitlab-analysis` project](https://console.cloud.google.com/storage/browser/snowflake_exports).  Download the files and follow the instructions below. 
+
+
+#### Sharing
+* For Sensitive Data
+  - [ ] Encrypt the data into zip file (use `zip -er`)
+  - [ ] Share the file's password with the submitter over a secure channel separate from the channel you will use to send the file.  [One time secret](https://onetimesecret.com/) may be a good option to share passwords, just make sure to not put in any context with the password. 
+* [ ] Share the file with the submitter over a secure channel
+* [ ] Reassign this issue to the Submitter for verification of receipt 
+* [ ] Once the submitter has verified receipt, delete the file from your computer
