@@ -113,6 +113,8 @@ WITH source AS (
 
         product_category__c            AS product_category,
         products_purchased__c          AS product_purchased,
+        Product_Details__c             AS product_details,
+        Expected_Product__c            AS expected_product,
 
         -- command plan fields
         fm_champion__c                 AS cp_champion,

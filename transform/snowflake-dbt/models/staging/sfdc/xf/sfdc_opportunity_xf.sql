@@ -135,8 +135,7 @@ WITH sfdc_opportunity AS (
                 OR lower(sfdc_opportunity.product_purchased) like '%ultimate%')         THEN 'Self-Managed'
             WHEN (lower(sfdc_opportunity.product_category) like '%enterprise%'
                 OR lower(sfdc_opportunity.product_purchased) like '%enterprise%')       THEN 'Self-Managed' 
-            END                                                                                             AS product_type,
-
+            END                                                                                             AS deployment_category,
 
       -- command plan fields
       sfdc_opportunity.cp_champion,
