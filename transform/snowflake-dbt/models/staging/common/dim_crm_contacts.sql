@@ -11,20 +11,26 @@ WITH sfdc_leads AS (
 )
 
 SELECT
-  contact_id     AS sfdc_record_id,
-  'contact'      AS sfdc_record_type,
+
+  contact_id       AS sfdc_record_id,
+  'contact'        AS sfdc_record_type,
   email_domain,
   account_id,
   person_score,
-  contact_title  AS title
+  contact_title    AS title
+
 FROM sfdc_contacts
+
 UNION
+
 SELECT
-  lead_id        AS sfdc_record_id,
-  'lead'         AS sfdc_record_type,
+
+  lead_id          AS sfdc_record_id,
+  'lead'           AS sfdc_record_type,
   email_domain,
-  NULL           AS account_id,
+  NULL             AS account_id,
   person_score,
   title
+
 FROM sfdc_leads
 WHERE is_converted = FALSE
