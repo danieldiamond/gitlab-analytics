@@ -20,6 +20,10 @@ sheets:
     owner: '@taylormurphy'
     tabs:
       - test_sheet
+  - name: trial_pageviews
+    owner: '@rkohnke'
+    tabs:
+      - trial_pageviews
   - name: us_cities_latitude_longitude
     owner: '@rkohnke'
     tabs:
