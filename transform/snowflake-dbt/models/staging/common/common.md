@@ -9,6 +9,11 @@ Information on the Enterprise Dimensional Model can be found in the [handbook](h
 
 {% enddocs %}
 
+{% docs dim_crm_contacts %}
+Dimension that combines dimensional data from salesforce leads and salesforce contacts. Currectly joining on the `convertedcontactid` lead field.
+
+{% enddocs %}
+
 {% docs dim_accounts %}
 Dimensional table representing each individual Zuora account with details of person to bill for the account.
 

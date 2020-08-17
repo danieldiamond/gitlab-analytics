@@ -62,6 +62,16 @@ models:
       - name: merged_to_account_id
         description: for deleted accounts this is the SFDC account they were merged to
 
+  - name: dim_crm_contacts
+    description: '{{ doc("dim_crm_contacts") }}'
+    columns:
+      - name: lead_id
+        tests:
+          - unique
+      - name: contact_id
+        tests:
+          - unique
+
   - name: dim_dates
     description: '{{ doc("dim_dates") }}'
     columns:
