@@ -27,8 +27,4 @@ SELECT
   person_score,
   title
 FROM sfdc_leads
-WHERE lead_email not in (
-                          SELECT DISTINCT contact_email 
-                          FROM sfdc_contacts
-                        )
-  AND is_converted = FALSE
+WHERE is_converted = FALSE
