@@ -116,6 +116,28 @@ WITH sfdc_opportunity AS (
       sfdc_opportunity.true_up_value,
       sfdc_opportunity.order_type_live,
 
+      -- NF: This code might be better in a macro, but I like the fact
+      -- that is directly visible here
+
+      CASE WHEN (lower(sfdc_opportunity.product_category) like '%bronze%'
+                OR lower(sfdc_opportunity.product_purchased) like '%bronze%')           THEN 'SaaS'
+            WHEN (lower(sfdc_opportunity.product_category) like '%silver%'
+                OR lower(sfdc_opportunity.product_purchased) like '%silver%')           THEN 'SaaS'
+            WHEN (lower(sfdc_opportunity.product_category) like '%gold%'
+                OR lower(sfdc_opportunity.product_purchased) like '%gold%')             THEN 'SaaS'
+            WHEN (lower(sfdc_opportunity.product_category) like '%gitlab.com%'
+                OR lower(sfdc_opportunity.product_purchased) like '%gitlab.com%')       THEN 'SaaS'
+            WHEN (lower(sfdc_opportunity.product_category) like '%starter%'
+                OR lower(sfdc_opportunity.product_purchased) like '%starter%' )         THEN 'Self-Managed'
+            WHEN (lower(product_category) like '%premium%'
+                OR lower(sfdc_opportunity.product_purchased) like '%premium%')          THEN 'Self-Managed'
+            WHEN (lower(sfdc_opportunity.product_category) like '%ultimate%'
+                OR lower(sfdc_opportunity.product_purchased) like '%ultimate%')         THEN 'Self-Managed'
+            WHEN (lower(sfdc_opportunity.product_category) like '%enterprise%'
+                OR lower(sfdc_opportunity.product_purchased) like '%enterprise%')       THEN 'Self-Managed' 
+            END                                                                                             AS product_type,
+
+
       -- command plan fields
       sfdc_opportunity.cp_champion,
       sfdc_opportunity.cp_close_plan,

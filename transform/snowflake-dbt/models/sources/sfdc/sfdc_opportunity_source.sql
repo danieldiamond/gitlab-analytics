@@ -111,6 +111,9 @@ WITH source AS (
         true_up_value__c               AS true_up_value,
         order_type_live__c             AS order_type_live,
 
+        product_category__c            AS product_category,
+        products_purchased__c          AS product_purchased,
+
         -- command plan fields
         fm_champion__c                 AS cp_champion,
         fm_close_plan__c               AS cp_close_plan,
