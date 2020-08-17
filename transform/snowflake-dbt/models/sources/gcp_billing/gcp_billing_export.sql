@@ -34,7 +34,7 @@ WITH source AS (
     flatten_export.value:usage_start_time::TIMESTAMP               AS usage_start_time,
     flatten_export.value:usage_end_time::TIMESTAMP                 AS usage_end_time
   FROM source,
-  Table(Flatten(source.jsontext)) flatten_export
+  TABLE(FLATTEN(source.jsontext)) flatten_export
 
 )
 
