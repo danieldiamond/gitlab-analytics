@@ -65,10 +65,7 @@ models:
   - name: dim_crm_contacts
     description: '{{ doc("dim_crm_contacts") }}'
     columns:
-      - name: lead_id
-        tests:
-          - unique
-      - name: contact_id
+      - name: sfdc_record_id
         tests:
           - unique
 
@@ -152,6 +149,15 @@ models:
       - name: effective_end_date
         description: The date when the product expires and can't be subscribed to anymore
 
+  - name: fct_crm_conversion_events
+    description: '{{ doc("fct_crm_conversion_events") }}'
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+      - name: event_timestamp
+        tests:
+          - not_null
 
   - name: fct_invoice_items
     description: '{{ doc("fct_invoice_items") }}'

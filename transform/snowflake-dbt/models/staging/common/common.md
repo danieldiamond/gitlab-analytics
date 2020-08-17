@@ -60,6 +60,12 @@ Information on the Enterprise Dimensional Model can be found in the [handbook](h
 
 {% enddocs %}
 
+{% docs fct_crm_conversion_events %}
+
+A fact for events along the marketing funnel and sales pipeline such as lead creation, conversion, marketing qualification, etc.
+
+{% enddocs %}
+
 {% docs fct_invoice_items %}
 Fact table providing invoice line item details.
 
