@@ -72,7 +72,7 @@ WITH source AS (
         PARSE_JSON(topology)                         AS topology,
         app_server_type::VARCHAR                     AS app_server_type,
         grafana_link_enabled::BOOLEAN                AS is_grafana_link_enabled, 
-        PARSE_JSON(ANALYTICS_UNIQUE_VISITS)          AS analytics_unique_visits
+        PARSE_JSON(analytics_unique_visits)          AS analytics_unique_visits
     FROM source
     WHERE CHECK_JSON(counts) IS NULL
 
