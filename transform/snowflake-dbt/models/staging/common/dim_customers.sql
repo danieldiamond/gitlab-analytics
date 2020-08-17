@@ -46,7 +46,8 @@ SELECT
   sfdc_account.billing_country                  AS customer_country,
   ultimate_parent_account.account_id            AS ultimate_parent_account_id,
   ultimate_parent_account.account_name          AS ultimate_parent_account_name,
-  ultimate_parent_account.account_segment       AS ultimate_parent_account_segment,
+  {{ sales_segment_cleaning('ultimate_parent_account.account_segment') }}
+                                                AS ultimate_parent_account_segment,
   ultimate_parent_account.billing_country       AS ultimate_parent_billing_country,
   ultimate_parent_account.df_industry           AS ultimate_parent_industry,
   ultimate_parent_account.account_owner_team    AS ultimate_parent_account_owner_team,
