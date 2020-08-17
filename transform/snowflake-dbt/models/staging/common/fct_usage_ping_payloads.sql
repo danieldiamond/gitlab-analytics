@@ -43,7 +43,8 @@ WITH license AS (
         WHEN edition IN ('EE', 'EES') THEN 'Starter'
         WHEN edition = 'EEP' THEN 'Premium'
         WHEN edition = 'EEU' THEN 'Ultimate'
-      ELSE NULL END                                              AS product_tier
+      ELSE NULL END                                              AS product_tier,
+      PARSE_IP(source_ip, 'inet')['ip_fields'][0]                AS source_ip_numeric
     FROM usage_data
 
 ), license_product_details AS (
@@ -80,6 +81,8 @@ WITH license AS (
       date_id,
       uuid,
       host_id,
+      source_ip,
+      source_ip_numeric,
       license_md5,
       subscription_id,
       account_id,
