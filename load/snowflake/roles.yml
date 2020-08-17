@@ -110,6 +110,7 @@ roles:
             - boneyard
             - covid19
             - dbt_analytics
+            - gcp_billing
             - gitlab_data_yaml
             - handbook
             - license_db
@@ -127,14 +128,6 @@ roles:
             databases:
                 write:
                     - analytics
-                read:
-                    - raw
-            schemas:
-                read: 
-                    - raw.gcp_billing
-            tables:
-                read:
-                    - raw.gcp_billing.*
 
     - analyst_growth:
         warehouses:
@@ -684,6 +677,23 @@ roles:
             tables:
                 read:
                     - analytics.analytics_sensitive.*
+
+    - gcp_billing:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+            schemas:
+                read:
+                    - analytics.gcp_billing
+                    - raw.gcp_billing
+            tables:
+                read:
+                    - analytics.gcp_billing.*
+                    - raw.gcp_billing.*
 
     - gitlab_data_yaml:
         warehouses:
