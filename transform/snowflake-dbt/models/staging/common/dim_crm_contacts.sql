@@ -28,6 +28,7 @@ SELECT
   title
 FROM sfdc_leads
 WHERE lead_email not in (
-	SELECT DISTINCT contact_email from sfdc_contacts
-  )
+                          SELECT DISTINCT contact_email 
+						  FROM sfdc_contacts
+                        )
   AND is_converted = FALSE
