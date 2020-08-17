@@ -9,7 +9,7 @@ WITH sfdc_leads AS(
     
 	lead_history.lead_history_id        AS event_id,
 	lead_history.field_modified_at      AS event_timestamp,
-    lead_history.lead_id                AS lead_id,
+  lead_history.lead_id                AS lead_id,
 	lead_history.created_by_id          AS crm_user_id,
 	sfdc_leads.converted_contact_id     AS contact_id,
 	sfdc_leads.converted_account_id     AS account_id,
