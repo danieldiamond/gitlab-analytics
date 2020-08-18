@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow.utils.helpers import cross_downstream, chain
 
 from kubernetes_helpers import get_affinity, get_toleration
 from kube_secrets import (
@@ -217,7 +218,9 @@ for source_name, config in config_dict.items():
             )
 
             # Validate Task
-            validate_cmd = generate_cmd(config["dag_name"], "validate")
+            validate_cmd = generate_cmd(
+                    config["dag_name"], f"--load_type validate --load_only_table {table}"
+            )
             validate_ids = KubernetesPodOperator(
                         **gitlab_defaults,
                         image=DATA_IMAGE,
@@ -237,7 +240,7 @@ for source_name, config in config_dict.items():
                         xcom_push=True,
             )
 
-            [incremental_extract >> validate_ids]
+            cross_downstream([incremental_extract], [validate_ids])
 
 
     globals()[f"{config['dag_name']}_db_extract"] = extract_dag
