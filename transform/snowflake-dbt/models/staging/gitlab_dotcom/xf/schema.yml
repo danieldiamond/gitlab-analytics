@@ -453,7 +453,7 @@ models:
       - name: namespace_plan_id_at_project_creation
         description: '{{ doc("namespace_plan_id_at_creation") }}'
 
-  - name: gitlab_dotcom_project_storage_xg
+  - name: gitlab_dotcom_project_storage_xf
     columns:
       - name: project_id
         tests:
