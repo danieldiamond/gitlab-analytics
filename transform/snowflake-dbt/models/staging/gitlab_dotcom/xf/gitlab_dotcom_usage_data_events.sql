@@ -24,7 +24,7 @@
     "key_to_parent_project": "project_id",
     "primary_key": "event_id",
     "stage_name": "create",
-    "is_representative_of_stage": "False"
+    "is_representative_of_stage": "True"
   }, {
     "event_name": "action_monthly_active_users_design_management",
     "source_table_name": "gitlab_dotcom_events",
@@ -274,7 +274,7 @@
     "key_to_parent_project": "project_id",
     "primary_key": "merge_request_id",
     "stage_name": "create",
-    "is_representative_of_stage": "True"
+    "is_representative_of_stage": "False"
   },
   {
     "event_name": "merge_request_notes",

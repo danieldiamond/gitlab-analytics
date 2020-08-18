@@ -334,6 +334,12 @@ models:
         description: The identifier of the host of the instance.
       - name: license_md5
         description: The md5 hash of the license file. Use this field to join to dim_licenses.
+      - name: subscription_id
+        description: The zuora subscription id derived from the license. Use this field to join to dim_subscriptions.
+      - name: account_id
+        description: The zuora account id associated with the subscription. Use this field to join to dim_accounts.
+      - name: array_product_details_id  
+        description: The array of distinct product detail ids associated with the subscription. Use this field to join to dim_product_details.
       - name: hostname
         description: The name of the host of the instance.
       - name: edition
