@@ -2,8 +2,12 @@ import os
 import yaml
 from datetime import datetime, timedelta
 
+from airflow.models import DAG
+from airflow.operators.dummy_operator import DummyOperator
+
 from airflow import DAG
 from airflow_utils import DATA_IMAGE, clone_repo_cmd, gitlab_defaults, slack_failed_task
+from airflow.operators.subdag_operator import SubDagOperator
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.utils.helpers import cross_downstream, chain
 
@@ -159,6 +163,62 @@ def extract_manifest(file_path):
     return manifest_dict
 
 
+def load_subdag(parent_dag_name, child_dag_name, args):
+    dag_subdag = DAG(
+        dag_id='{0}.{1}'.format(parent_dag_name, child_dag_name),
+        default_args=args,
+        schedule_interval="@daily",
+    )
+    with dag_subdag:
+        incremental_cmd = generate_cmd(
+                config["dag_name"], f"--load_type incremental --load_only_table {table}"
+        )
+        incremental_extract = KubernetesPodOperator(
+                        **gitlab_defaults,
+                        image=DATA_IMAGE,
+                        task_id=f"{config['task_name']}-{table.replace('_', '-')}-db-incremental",
+                        name=f"{config['task_name']}-{table.replace('_', '-')}-db-incremental",
+                        pool=f"{config['task_name']}_pool",
+                        secrets=standard_secrets + config["secrets"],
+                        env_vars={
+                            **standard_pod_env_vars,
+                            **config["env_vars"],
+                            "LAST_EXECUTION_DATE": "{{ execution_date }}",
+                        },
+                        affinity=get_affinity(False),
+                        tolerations=get_toleration(False),
+                        arguments=[incremental_cmd],
+                        do_xcom_push=True,
+                        xcom_push=True,
+                        dag=dag_subdag,
+                )
+
+        # Validate Task
+        validate_cmd = generate_cmd(
+                config["dag_name"], f"--load_type validate --load_only_table {table}"
+        )
+        validate_ids = KubernetesPodOperator(
+                **gitlab_defaults,
+                image=DATA_IMAGE,
+                task_id=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
+                name=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
+                pool=f"{config['task_name']}_pool",
+                secrets=standard_secrets + config["secrets"],
+                env_vars={
+                    **standard_pod_env_vars,
+                    **config["env_vars"],
+                    "LAST_EXECUTION_DATE": "{{ execution_date }}",
+                },
+                affinity=get_affinity(False),
+                tolerations=get_toleration(False),
+                arguments=[validate_cmd],
+                do_xcom_push=True,
+                xcom_push=True,
+                dag=dag_subdag,
+        )
+
+    return dag_subdag
+
 def extract_table_list_from_manifest(manifest_contents):
     return manifest_contents["tables"].keys()
 
@@ -194,54 +254,17 @@ for source_name, config in config_dict.items():
             # tables without execution_date in the query won't be processed incrementally
             if "{EXECUTION_DATE}" not in manifest["tables"][table]["import_query"]:
                 continue
-            incremental_cmd = generate_cmd(
-                config["dag_name"], f"--load_type incremental --load_only_table {table}"
-            )
 
-            incremental_extract = KubernetesPodOperator(
-                **gitlab_defaults,
-                image=DATA_IMAGE,
-                task_id=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
-                name=f"{config['task_name']}-{table.replace('_','-')}-db-incremental",
-                pool=f"{config['task_name']}_pool",
-                secrets=standard_secrets + config["secrets"],
-                env_vars={
-                    **standard_pod_env_vars,
-                    **config["env_vars"],
-                    "LAST_EXECUTION_DATE": "{{ execution_date }}",
-                },
-                affinity=get_affinity(False),
-                tolerations=get_toleration(False),
-                arguments=[incremental_cmd],
-                do_xcom_push=True,
-                xcom_push=True,
+            load_tasks = SubDagOperator(
+                    task_id=f"{config['task_name']}-{table.replace('_','-')}-db-increment-validate",
+                    subdag=load_subdag(
+                            parent_dag_name=f"{config['dag_name']}_db_extract",
+                            child_dag_name=f"{config['task_name']}-{table.replace('_','-')}-db-increment-validate",
+                            args=extract_dag_args),
+                    default_args=extract_dag_args,
+                    dag=extract_dag,
+                    pool=f"{config['task_name']}_pool"
             )
-
-            # Validate Task
-            validate_cmd = generate_cmd(
-                    config["dag_name"], f"--load_type validate --load_only_table {table}"
-            )
-            validate_ids = KubernetesPodOperator(
-                        **gitlab_defaults,
-                        image=DATA_IMAGE,
-                        task_id=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
-                        name=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
-                        pool=f"{config['task_name']}_pool",
-                        secrets=standard_secrets + config["secrets"],
-                        env_vars={
-                            **standard_pod_env_vars,
-                            **config["env_vars"],
-                            "LAST_EXECUTION_DATE": "{{ execution_date }}",
-                        },
-                        affinity=get_affinity(False),
-                        tolerations=get_toleration(False),
-                        arguments=[validate_cmd],
-                        do_xcom_push=True,
-                        xcom_push=True,
-            )
-
-            cross_downstream([incremental_extract], [validate_ids])
-
 
     globals()[f"{config['dag_name']}_db_extract"] = extract_dag
     # Sync DAG
