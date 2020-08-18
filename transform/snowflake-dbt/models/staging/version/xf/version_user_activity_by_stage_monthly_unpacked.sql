@@ -17,7 +17,6 @@ WITH usage_data AS (
         AND created_at > (SELECT max(created_at) FROM {{ this }})
     {% endif %}
 
-
 ), final AS (
 
     SELECT
