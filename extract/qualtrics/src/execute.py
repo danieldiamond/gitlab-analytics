@@ -62,9 +62,7 @@ if __name__ == "__main__":
     surveys_to_write: List[str] = get_and_write_surveys(client)
 
     for survey_id in surveys_to_write:
-        all_distributions = all_distributions + get_distributions(
-            client, survey_id
-        )
+        all_distributions = all_distributions + get_distributions(client, survey_id)
 
     distributions_to_write = [
         distribution

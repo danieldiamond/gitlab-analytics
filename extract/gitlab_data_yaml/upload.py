@@ -43,7 +43,7 @@ if __name__ == "__main__":
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
     base_url = "https://gitlab.com/gitlab-com/www-gitlab-com/raw/master/data/"
-    pi_url = f"{base_url}performance_indicators/" 
+    pi_url = f"{base_url}performance_indicators/"
 
     job_failed = False
 
