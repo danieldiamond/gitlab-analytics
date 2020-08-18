@@ -17,6 +17,21 @@ WITH usage_data AS (
         AND created_at > (SELECT max(created_at) FROM {{ this }})
     {% endif %}
 
+    UNION 
+
+    SELECT
+      usage_data.*,
+      f.key                                                                           AS stage_name,
+      f.value                                                                         AS stage_activity_count_json
+
+    FROM usage_data,
+      lateral flatten(input => usage_data.analytics_unique_visits) f
+    WHERE IS_OBJECT(f.value) = TRUE
+    {% if is_incremental() %}
+        AND created_at > (SELECT max(created_at) FROM {{ this }})
+    {% endif %}
+
+
 ), final AS (
 
     SELECT
