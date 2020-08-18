@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: maxmind
-    database: '{{ env_var("SNOWFLAKE_TRANSFORM_DATABASE") }}'
+    database: '{{ target.database }}'
     schema: boneyard
     loader: sheetload
     loaded_at_field: _UPDATED_AT

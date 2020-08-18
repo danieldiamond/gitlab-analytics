@@ -170,6 +170,9 @@ models:
 
       license:
         +schema: license_db
+    
+      maxmind:
+        +schema: maxmind
 
       netsuite:
         +schema: netsuite
