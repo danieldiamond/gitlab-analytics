@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: gcp_billing_export_source
+    description: Base model for gcp billing export
+    columns:
+      - name: billing_account_id
+        tests:
+          - not_null
