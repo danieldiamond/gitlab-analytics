@@ -39,7 +39,7 @@
         grant select on all tables in schema {{ schema_name }}_sensitive to role {{ sensitive }};
         grant select on all views in schema {{ schema_name }}_sensitive to role {{ sensitive }};
 
-        grant usage on schema {{schema_name}}_sensitive to role lmai;
+        grant select on table analytics.analytics_sensitive.bamboohr_id_employee_number_mapping to role lmai;
     {%- endif -%}
 
 {%- endmacro -%} 
