@@ -1,0 +1,7 @@
+version: 2
+
+models:
+    - name: maxmind_countries_source
+      description: "Countries source layer for maxmind ip-to-geo service"
+    - name: maxmind_ip_ranges_source
+      description: "IP ranges source layer for maxmind ip-to-geo service"

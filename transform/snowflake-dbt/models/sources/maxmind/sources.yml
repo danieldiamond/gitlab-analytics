@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: maxmind
+    database: '{{ env_var("SNOWFLAKE_TRANSFORM_DATABASE") }}'
+    schema: boneyard
+    loader: sheetload
+    loaded_at_field: _UPDATED_AT
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 36, period: hour}
+      error_after: {count: 60, period: hour}
+
+    tables:
+      - name: countries
+      - name: ranges
