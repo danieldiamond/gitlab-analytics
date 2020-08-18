@@ -319,7 +319,7 @@
     "key_to_parent_project": "project_id",
     "primary_key": "project_id",
     "stage_name": "package",
-    "is_representative_of_stage": "True"
+    "is_representative_of_stage": "False"
   },
   {
     "event_name": "projects_prometheus_active",
