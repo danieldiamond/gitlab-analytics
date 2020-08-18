@@ -1,6 +1,16 @@
 version: 2
 
 models:
+  - name: db_structure_merge_requests
+    description: All merge requests that have been merged that affect the main gitlab dot com schema file.  Used for data engineering monitoring.
+    columns:
+      - name: mr_path
+        tests:
+          - not_null
+      - name: merge_request_updated_at
+      - name: merged_at
+        tests:
+          - not_null
   - name: sizes_part_of_product_merge_requests
     description: This table is a table of unique merge requests with data about the lines and files added/removed in the MR.
     columns:

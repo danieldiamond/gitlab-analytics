@@ -130,12 +130,9 @@ roles:
                 read:
                     - raw
             schemas:
-                write:
-                    - analytics.*
-                read: raw.gcp_billing
+                read: 
+                    - raw.gcp_billing
             tables:
-                write:
-                    - analytics.*.*
                 read:
                     - raw.gcp_billing.*
 
