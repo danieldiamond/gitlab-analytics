@@ -14,7 +14,7 @@ models:
       - name: created_at
         tests:
           - not_null
-  
+
   - name: gitlab_dotcom_ci_minutes_ui_namespace_replication
     description: '{{ doc("gitlab_dotcom_ci_minutes_ui_namespace_replication") }}'
     columns:
@@ -189,7 +189,7 @@ models:
       - name: sfdc_account_id
         tests:
           - not_null
-     
+
   - name: gitlab_dotcom_gitlab_user_requests_opportunities
     description: '{{ doc("gitlab_dotcom_gitlab_user_requests_opportunities") }}'
     columns:
@@ -204,7 +204,7 @@ models:
           - not_null
       - name: sfdc_opportunity_id
         tests:
-          - not_null                    
+          - not_null
 
   - name: gitlab_dotcom_internal_notes_xf
     description: '{{ doc("gitlab_dotcom_internal_notes_xf") }}'
@@ -304,7 +304,7 @@ models:
       - name: is_billable
         tests:
           - not_null
-          
+
   - name: gitlab_dotcom_elasticsearch_indexed_namespaces_current
     description: '{{ doc("gitlab_dotcom_elasticsearch_indexed_namespaces_current") }}'
     columns:
@@ -313,7 +313,7 @@ models:
           - not_null
           - unique
       - name: updated_at
-        tests: 
+        tests:
           - not_null
       - name: created_at
         tests:
@@ -331,15 +331,15 @@ models:
         tests:
           - not_null
       - name: count_audit_events_active_users_last_28_days
-        description: The number of unique active users (from audit events table) in the previous 28 days (inclusive). 
+        description: The number of unique active users (from audit events table) in the previous 28 days (inclusive).
       - name: count_audit_events_active_users_last_28_days
-        description: The number of unique active users (from events table) in the previous 28 days (inclusive). 
+        description: The number of unique active users (from events table) in the previous 28 days (inclusive).
 
   - name: gitlab_dotcom_merge_request_assignment_events
     description: '{{ doc("gitlab_dotcom_merge_request_assignment_events") }}'
     columns:
       - name: merge_request_id
-        tests: 
+        tests:
           - not_null
 
   - name: gitlab_dotcom_merge_requests_merged_authors_xf
@@ -348,19 +348,19 @@ models:
       - name: project_id
       - name: namespace_id
       - name: merge_request_iid
-        tests: 
+        tests:
           - not_null
       - name: merge_request_title
-        tests: 
+        tests:
           - not_null
       - name: merge_request_id
-        tests: 
+        tests:
           - not_null
       - name: note_author_id
-        tests: 
+        tests:
           - not_null
       - name: user_name
-        tests: 
+        tests:
           - not_null
 
   - name: gitlab_dotcom_merge_requests_xf
@@ -453,6 +453,14 @@ models:
       - name: namespace_plan_id_at_project_creation
         description: '{{ doc("namespace_plan_id_at_creation") }}'
 
+  - name: gitlab_dotcom_project_storage_xg
+    columns:
+      - name: project_id
+        tests:
+          - not_null
+      - name: storage_size_GB
+        description: total storage size of all included storage types (repo + artifacts + LFS + Wiki + packages), not including container registry
+
   - name: gitlab_dotcom_resource_label_events_xf
     description: xf model for gitlab_dotcom_resource_milestone_events joining with issues, epics and mrs.
     columns:
@@ -510,7 +518,7 @@ models:
         tests:
           - not_null
           - unique
-          
+
   - name: gitlab_dotcom_usage_data_events
     description: '{{ doc("gitlab_dotcom_usage_data_events") }}'
     columns:
@@ -527,7 +535,7 @@ models:
       - name: event_created_at
         tests:
           - not_null
-        
+
   - name: gitlab_dotcom_users_xf
     description: '{{ doc("gitlab_dotcom_users_xf") }}'
     columns:
@@ -538,11 +546,11 @@ models:
       - name: days_active
         description: days between user creation and last activity
       - name: account_age_cohort
-        description: cohorting of time between last dbt run and user creation date.    
+        description: cohorting of time between last dbt run and user creation date.
 
   - name: recruiting_diversity_effort
     description: This tracks the recruiting teams weekly check-ins to understand how they are progressing on their OKR for a diverse team.
-    columns:     
+    columns:
     - name: issue_title
       tests:
         - not_null
@@ -557,6 +565,6 @@ models:
     - name: is_issue_closed
     - name: issue_state
     - name: assignee
-    - name: is_using_diversity_strings   
+    - name: is_using_diversity_strings
     - name: is_not_using_diversity_srings
     - name: has_no_answer
