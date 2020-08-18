@@ -43,10 +43,11 @@ if __name__ == "__main__":
     snowflake_engine = snowflake_engine_factory(config_dict, "LOADER")
 
     base_url = "https://gitlab.com/gitlab-com/www-gitlab-com/raw/master/data/"
+    pi_url = f"{base_url}performance_indicators/" 
 
     job_failed = False
 
-    def curl_and_upload(key, value):
+    def curl_and_upload(key, value, base_url):
         logging.info(f"Downloading {value}.yml to {value}.json file.")
         try:
             command = f"curl {base_url}{value}.yml | yaml2json -o {value}.json"
@@ -65,11 +66,10 @@ if __name__ == "__main__":
         )
 
     for key, value in file_dict.items():
-        curl_and_upload(key, value)
+        curl_and_upload(key, value, base_url)
 
     for key, value in pi_file_dict.items():
-        directory_value = f"performance_indicators/{value}" 
-        curl_and_upload(key, directory_value)
+        curl_and_upload(key, value, pi_url)
 
     if job_failed:
         sys.exit(1)
