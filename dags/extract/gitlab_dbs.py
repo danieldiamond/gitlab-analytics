@@ -167,7 +167,6 @@ def load_subdag(parent_dag_name, child_dag_name, args):
     dag_subdag = DAG(
         dag_id='{0}.{1}'.format(parent_dag_name, child_dag_name),
         default_args=args,
-        schedule_interval="@daily",
     )
     with dag_subdag:
         incremental_cmd = generate_cmd(
@@ -216,6 +215,8 @@ def load_subdag(parent_dag_name, child_dag_name, args):
                 xcom_push=True,
                 dag=dag_subdag,
         )
+
+       #  incremental_extract >> validate_ids
 
     return dag_subdag
 
