@@ -12,9 +12,7 @@ sources:
       schema: false
       identifier: false
 
-    freshness:
-      warn_after: {count: 36, period: hour}
-      error_after: {count: 60, period: hour}
+    freshness: null
 
     tables:
       - name: countries
