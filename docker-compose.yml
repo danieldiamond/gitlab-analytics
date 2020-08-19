@@ -95,6 +95,7 @@ services:
         SALT_IP: "pie"
         SALT_NAME: "pepperoni"
         SALT_EMAIL: "cheese"
+        SALT_PASSWORD: "416C736F4E6F745365637265FFFFFFAB"
       restart: always
       command: bash -c "/bin/bash"
       working_dir: /usr/local/analytics/transform/snowflake-dbt/
