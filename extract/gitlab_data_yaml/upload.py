@@ -47,21 +47,21 @@ if __name__ == "__main__":
 
     job_failed = False
 
-    def curl_and_upload(key, value, base_url):
-        logging.info(f"Downloading {value}.yml to {value}.json file.")
+    def curl_and_upload(table_name, file_name, base_url):
+        logging.info(f"Downloading {file_name}.yml to {file_name}.json file.")
         try:
-            command = f"curl {base_url}{value}.yml | yaml2json -o {value}.json"
+            command = f"curl {base_url}{file_name}.yml | yaml2json -o {file_name}.json"
             p = subprocess.run(command, shell=True)
             p.check_returncode()
         except:
             job_failed = True
 
-        logging.info(f"Uploading to {value}.json to Snowflake stage.")
+        logging.info(f"Uploading to {file_name}.json to Snowflake stage.")
 
         snowflake_stage_load_copy_remove(
-            f"{value}.json",
+            f"{file_name}.json",
             "raw.gitlab_data_yaml.gitlab_data_yaml_load",
-            f"raw.gitlab_data_yaml.{key}",
+            f"raw.gitlab_data_yaml.{table_name}",
             snowflake_engine,
         )
 
