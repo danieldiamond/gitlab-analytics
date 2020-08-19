@@ -27,12 +27,12 @@ class BigQueryClient:
         scope = ["https://www.googleapis.com/auth/cloud-platform"]
         scoped_credentials = credentials.with_scopes(scope)
 
-        bq_client = Client(credentials=scoped_credentials,)
+        bq_client = Client(credentials=scoped_credentials)
 
         info("BigQuery clients retrieved")
         return bq_client
 
-    def get_client(self, gapi_keyfile: str = None,) -> Client:
+    def get_client(self, gapi_keyfile: str = None) -> Client:
         """
 
         :param gapi_keyfile: optional, provides the ability to use gcp service account

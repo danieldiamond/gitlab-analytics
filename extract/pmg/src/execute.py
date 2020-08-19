@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     [
         snowflake_stage_load_copy_remove(
-            file_name, "pmg.pmg_load", "pmg.paid_digital", snowflake_engine,
+            file_name, "pmg.pmg_load", "pmg.paid_digital", snowflake_engine
         )
         for file_name in written_files
     ]
