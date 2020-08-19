@@ -8,7 +8,6 @@ models:
         - name: continent_name
         - name: country_iso_code
           tests:
-            - not_null
             - unique
         - name: country_name
         - name: geoname_id
@@ -21,9 +20,6 @@ models:
       description: "IP ranges source layer for maxmind ip-to-geo service"
       columns:
         - name: geoname_id
-          tests: 
-            - not_null
-            - unique
         - name: ip_range_first_ip
         - name: ip_range_last_ip
         - name: is_anonymous_proxy
