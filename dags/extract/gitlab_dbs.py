@@ -163,10 +163,11 @@ def extract_manifest(file_path):
     return manifest_dict
 
 
-def load_subdag(parent_dag_name, child_dag_name, args):
+def load_subdag(parent_dag_name, child_dag_name, args, schedule, pool):
     dag_subdag = DAG(
         dag_id='{0}.{1}'.format(parent_dag_name, child_dag_name),
         default_args=args,
+        schedule_interval=schedule,
     )
     with dag_subdag:
         incremental_cmd = generate_cmd(
@@ -177,7 +178,7 @@ def load_subdag(parent_dag_name, child_dag_name, args):
                         image=DATA_IMAGE,
                         task_id=f"{config['task_name']}-{table.replace('_', '-')}-db-incremental",
                         name=f"{config['task_name']}-{table.replace('_', '-')}-db-incremental",
-                        pool=f"{config['task_name']}_pool",
+                        pool=pool,
                         secrets=standard_secrets + config["secrets"],
                         env_vars={
                             **standard_pod_env_vars,
@@ -201,7 +202,7 @@ def load_subdag(parent_dag_name, child_dag_name, args):
                 image=DATA_IMAGE,
                 task_id=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
                 name=f"{config['task_name']}-{table.replace('_', '-')}-db-validation",
-                pool=f"{config['task_name']}_pool",
+                pool=pool,
                 secrets=standard_secrets + config["secrets"],
                 env_vars={
                     **standard_pod_env_vars,
@@ -216,7 +217,7 @@ def load_subdag(parent_dag_name, child_dag_name, args):
                 dag=dag_subdag,
         )
 
-       #  incremental_extract >> validate_ids
+        incremental_extract >> validate_ids
 
     return dag_subdag
 
@@ -239,11 +240,13 @@ for source_name, config in config_dict.items():
         "sla_miss_callback": slack_failed_task,
         "start_date": config["start_date"],
         "dagrun_timeout": timedelta(hours=6),
+
     }
     extract_dag = DAG(
         f"{config['dag_name']}_db_extract",
         default_args=extract_dag_args,
         schedule_interval=config["extract_schedule_interval"],
+        concurrency=2,
     )
 
     with extract_dag:
@@ -261,7 +264,10 @@ for source_name, config in config_dict.items():
                     subdag=load_subdag(
                             parent_dag_name=f"{config['dag_name']}_db_extract",
                             child_dag_name=f"{config['task_name']}-{table.replace('_','-')}-db-increment-validate",
-                            args=extract_dag_args),
+                            args=extract_dag_args,
+                            schedule=config["extract_schedule_interval"],
+                            pool=f"{config['task_name']}_pool"),
+
                     default_args=extract_dag_args,
                     dag=extract_dag,
                     pool=f"{config['task_name']}_pool"
