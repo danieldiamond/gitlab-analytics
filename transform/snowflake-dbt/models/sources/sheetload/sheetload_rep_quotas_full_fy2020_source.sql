@@ -17,7 +17,11 @@ WITH source AS (
           THEN 0
         ELSE ZEROIFNULL(TRIM(full_quota)::NUMBER(16,5))
       END                                                              AS full_quota,
-      ZEROIFNULL(NULLIF(TRIM(ramping_quota),'')::NUMBER(16,5))         AS ramping_quota,
+      CASE
+        WHEN TRIM(ramping_quota) IN ('', '#N/A')
+          THEN 0
+        ELSE ZEROIFNULL(TRIM(ramping_quota)::NUMBER(16,5))
+      END                                                              AS ramping_quota,
       ZEROIFNULL(NULLIF(TRIM(ramping_percent),'')::NUMBER(3,2))        AS ramping_percent,
       ZEROIFNULL(NULLIF(TRIM(seasonality_percent),'')::NUMBER(3,2))    AS seasonality_percent,
       ZEROIFNULL(NULLIF(TRIM(gross_iacv_attainment),'')::NUMBER(16,2)) AS gross_iacv_attainment,
