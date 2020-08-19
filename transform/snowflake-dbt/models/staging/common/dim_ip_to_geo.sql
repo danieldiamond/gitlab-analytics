@@ -1,4 +1,5 @@
 WITH ip_ranges AS (
+    
     SELECT
       parse_ip(ip_range_first_ip, 'inet')['ipv4'] AS ip_address_number_range_start,
       parse_ip(ip_range_last_ip, 'inet')['ipv4']  AS ip_address_number_range_end,
