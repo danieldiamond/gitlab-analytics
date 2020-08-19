@@ -110,6 +110,7 @@ roles:
             - boneyard
             - covid19
             - dbt_analytics
+            - gcp_billing
             - gitlab_data_yaml
             - handbook
             - license_db
@@ -676,6 +677,23 @@ roles:
             tables:
                 read:
                     - analytics.analytics_sensitive.*
+
+    - gcp_billing:
+        warehouses:
+            - analyst_xs
+        privileges:
+            databases:
+                read:
+                    - analytics
+                    - raw
+            schemas:
+                read:
+                    - analytics.gcp_billing
+                    - raw.gcp_billing
+            tables:
+                read:
+                    - analytics.gcp_billing.*
+                    - raw.gcp_billing.*
 
     - gitlab_data_yaml:
         warehouses:
@@ -1337,10 +1355,8 @@ roles:
             - reporting
 
     - mdewji:
-        member_of:
-            - postgres_pipeline
         warehouses:
-            - reporting
+            - admin
 
     - mjozenazemian:
         warehouses:
@@ -1355,10 +1371,8 @@ roles:
             - analyst_xl
 
     - mriser:
-        member_of:
-            - postgres_pipeline
         warehouses:
-            - analyst_xs
+            - admin
 
     - msendal:
         warehouses:
@@ -1491,11 +1505,6 @@ roles:
                     - testing_db.*.*
                 write:
                     - testing_db.*.*
-          
-
-    - tcarter:
-        warehouses:
-            - reporting
 
     - tmurphy:
         warehouses:
@@ -1862,10 +1871,8 @@ users:
             - stitch
 
     - tcarter:
-        can_login: yes
-        member_of:
-            - securityadmin
-            - tcarter
+        can_login: no
+        member_of: []
 
     - target_snowflake:
         can_login: yes

@@ -139,13 +139,17 @@ models:
       date:
         +materialized: table
         +schema: date
-        
+
       dbt:
         +materialized: table
         +schema: dbt
-    
+
       engineering:
         +materialized: table
+
+      gcp_billing:
+        +materialized: table
+        +schema: gcp_billing
 
       gitlab_data_yaml:
         +schema: gitlab_data_yaml
@@ -233,6 +237,9 @@ models:
       engineering:
         +materialized: table
 
+      gcp_billing:
+        +schema: analytics
+
       gitlab_data_yaml:
         xf:
           +schema: analytics
@@ -279,7 +286,7 @@ models:
       sfdc:
         xf:
           +schema: analytics
-    
+
       sheetload:
         +schema: analytics
 
@@ -290,7 +297,7 @@ models:
       snowplow:
         +tags: ["product"]
         +schema: analytics
-        month_partition: 
+        month_partition:
           +schema: "snowplow_{{ var('year', run_started_at.strftime('%Y')) }}_{{ var('month', run_started_at.strftime('%m')) }}"
 
       version:
@@ -307,9 +314,9 @@ models:
     # ------------------
     # Marts
     # ------------------
-    marts:  
-      
-      arr:  
+    marts:
+
+      arr:
         +materialized: table
 
       pipeline_health_dashboard:

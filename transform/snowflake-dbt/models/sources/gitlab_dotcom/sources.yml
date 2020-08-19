@@ -90,6 +90,9 @@ sources:
         identifier: gitlab_db_clusters_applications_cert_managers
       - name: clusters_applications_crossplane
         identifier: gitlab_db_clusters_applications_crossplane
+        freshness:
+            warn_after: {count: 2, period: day}
+            error_after: {count: 4, period: day}
       - name: clusters_applications_elastic_stacks
         identifier: gitlab_db_clusters_applications_elastic_stacks
       - name: clusters_applications_helm

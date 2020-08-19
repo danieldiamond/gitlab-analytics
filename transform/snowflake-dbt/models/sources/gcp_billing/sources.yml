@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: gcp_billing
+    database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
+    schema: gcp_billing
+    loaded_at_field: DATEADD(sec, uploaded_at, '1970-01-01')
+    loader: Airflow, gcp_billing
+    description: GCP Billing Data from Bigquery [Original Issue](https://gitlab.com/gitlab-data/analytics/-/issues/5268)
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+
+    tables:
+      - name: gcp_billing_export_combined
+        identifier: gcp_billing_export_combined
+

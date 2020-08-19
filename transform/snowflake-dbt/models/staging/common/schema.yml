@@ -254,3 +254,111 @@ models:
   - name: dim_customers_valid_at
     description: Parameterized model to recreate dimension table representing customer details as in SFDC at given date. Required variable valid_at is timezone sensitive
 
+  - name: dim_licenses
+    description: '{{ doc("dim_licenses") }}'
+    columns:
+      - name: license_id
+        description: The unique ID of a generated license.
+        tests:
+          - not_null
+          - unique
+      - name: license_md5
+        description: The md5 hash of the license file. Use this field to join to fct_usage_ping_payloads.    
+        tests:
+          - not_null
+          - unique      
+      - name: subscription_id
+        description: The unique identifier of a version of a subscription.
+      - name: subscription_name
+        description: The unique identifier of a subscription.
+      - name: license_user_count
+        description: The user count of the license.
+      - name: license_plan
+        description: The plan code for the product tier of the license.
+      - name: is_trial
+        description: Boolean flag noting if the license was generated as part of a trial.          
+      - name: is_internal
+        description: Derived boolean flag noting if the email recipient and company associated with the license is part of GitLab.
+      - name: company
+        description: The company the license was generated for.    
+      - name: license_start_date
+        description: The start date of the license.
+      - name: license_expire_date
+        description: The expiration date of the license.
+      - name: created_at
+        description: The timestamp of when the license was generated.
+      - name: updated_at
+        description: The timestamp of when the license was updated.                                     
+
+  - name: dim_gitlab_versions
+    description: '{{ doc("dim_gitlab_versions") }}'
+    columns:
+      - name: version_id
+        description: The unique identifier of the release maintained by the Version app.
+        tests:
+          - not_null
+          - unique
+      - name: version
+        description: The unique identifier of the release.
+        tests:
+          - not_null
+          - unique
+      - name: major_version
+        description: The major version number of the release.
+      - name: minor_version
+        description: The minor version number of the release.
+      - name: patch_number
+        description: The patch number of the release.
+      - name: is_monthly_release
+        description: Derived boolean flag noting if the version number corresponds to a major monthly release.
+      - name: is_vulnerable
+        description: Boolean flag noting if vulnerabilities have been detected for the release.      
+      - name: created_date
+        description: The date the release was created in the Version app.
+      - name: updated_date    
+        description: The date the release was updated in the Version app.
+        
+  - name: fct_usage_ping_payloads
+    description: '{{ doc("fct_usage_ping_payloads") }}'
+    columns:
+      - name: usage_ping_id
+        description: The unique identifier of the usage ping.
+        tests:
+          - not_null
+          - unique
+      - name: uuid
+        description: The unique identifier of the self-managed instance.
+        tests:
+          - not_null
+      - name: host_id
+        description: The identifier of the host of the instance.
+      - name: license_md5
+        description: The md5 hash of the license file. Use this field to join to dim_licenses.
+      - name: subscription_id
+        description: The zuora subscription id derived from the license. Use this field to join to dim_subscriptions.
+      - name: account_id
+        description: The zuora account id associated with the subscription. Use this field to join to dim_accounts.
+      - name: array_product_details_id  
+        description: The array of distinct product detail ids associated with the subscription. Use this field to join to dim_product_details.
+      - name: hostname
+        description: The name of the host of the instance.
+      - name: edition
+        description: The edition of GitLab on the instance.
+      - name: tier
+        description: The product tier of GitLab on the instance.
+      - name: version
+        description: The version of the GitLab release on the instance.
+      - name: is_pre_release
+        description: Derived boolean flag noting if the version of GitLab on the instance corresponds to a pre-release or release candidate.
+      - name: instance_user_count
+        description: The total count of users on the instance.
+      - name: license_plan
+        description: The plan code for the product tier of the license.
+      - name: is_trial
+        description: Boolean flag noting if the license was generated as part of a trial. 
+      - name: created_at
+        description: The timestamp when the usage ping was created.
+        tests:
+          - not_null
+      - name: recorded_at
+        description: The timestamp when the usage ping was recorded.

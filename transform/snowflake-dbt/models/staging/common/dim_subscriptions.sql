@@ -23,6 +23,7 @@ SELECT
   zuora_subscription.subscription_id,
   zuora_account.crm_id,
   zuora_account.account_id,
+  zuora_subscription.subscription_name,
   zuora_subscription.subscription_name_slugify,
   zuora_subscription.subscription_name,
   zuora_subscription.subscription_status,
