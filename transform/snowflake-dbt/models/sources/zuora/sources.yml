@@ -19,6 +19,12 @@ sources:
     tables:
       - name: account
         description: '{{ doc("zuora_account_source") }}'
+        columns:
+          - name: id
+            description: Primary Key for Accounts
+            tests:
+              - dbt_utils.expression_is_true:
+                  expression: "id REGEXP '[0-9a-z]{32}'"
       - name: accounting_period
         identifier: accountingperiod
         description: '{{ doc("zuora_accounting_period_source") }}'
