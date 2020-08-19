@@ -92,6 +92,7 @@ roles:
             - dbt_analytics_clones
             - gitlab_data_yaml
             - handbook
+            - maxmind
             - sheetload
             - snapshots
             - snowflake_db
@@ -767,6 +768,21 @@ roles:
                 read:
                     - analytics.license_db.*
                     - raw.license_db_dump.*
+
+    - maxmind:
+        privileges:
+            databases:
+                read:
+                    - analytics
+            schemas:
+                read:
+                    - analytics.maxmind
+                    - analytics.boneyard
+            tables:
+                read:
+                    - analytics.maxmind.*
+                    - analytics.boneyard.countries
+                    - analytics.boneyard.ranges
 
     - netsuite:
         warehouses:
