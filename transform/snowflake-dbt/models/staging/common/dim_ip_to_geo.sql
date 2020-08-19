@@ -6,6 +6,7 @@ WITH ip_ranges AS (
       ip_range_last_ip                            AS ip_range_last_ip,
       geoname_id                                  AS location_id
     FROM {{ ref('maxmind_ip_ranges_source') }}
+    WHERE geoname_id IS NOT NULL
 
 )
 
