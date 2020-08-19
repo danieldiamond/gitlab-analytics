@@ -25,7 +25,6 @@ SELECT
   zuora_account.account_id,
   zuora_subscription.subscription_name,
   zuora_subscription.subscription_name_slugify,
-  zuora_subscription.subscription_name,
   zuora_subscription.subscription_status,
   zuora_subscription.version                                                AS subscription_version,
   zuora_subscription.auto_renew                                             AS is_auto_renew,
