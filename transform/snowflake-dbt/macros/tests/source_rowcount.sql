@@ -1,4 +1,4 @@
-{% macro source_rowcount(schema, table, count) %}
+{% macro source_rowcount(schema, table, count, where_clause=None) %}
 
 WITH source as (
 
@@ -9,6 +9,9 @@ WITH source as (
 
     SELECT count(*) as row_count
     FROM source
+    {% if where_clause != None %}
+    WHERE {{ where_clause }}
+    {% endif %}
 
 )
 

@@ -65,3 +65,12 @@ sources:
         description: '{{ doc("zuora_revenue_schedule_item_source") }}'
       - name: subscription
         description: '{{ doc("zuora_subscription_source") }}'
+        columns:
+          - name: accountid
+            description: Primary Key for Accounts
+            tests:
+              - dbt_utils.expression_is_true:
+                  expression: "accountid REGEXP '[0-9a-z]{32}'"
+              - relationships:
+                  to: source('zuora', 'account')
+                  field: id
