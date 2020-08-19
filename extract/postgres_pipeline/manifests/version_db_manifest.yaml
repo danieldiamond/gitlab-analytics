@@ -51,7 +51,6 @@ tables:
       , web_ide_commits
       , influxdb_metrics_enabled
       , prometheus_metrics_enabled
-      , smau
       , usage_activity_by_stage
       , gitaly_version
       , gitaly_servers

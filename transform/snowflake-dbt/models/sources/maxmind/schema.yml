@@ -1,0 +1,29 @@
+version: 2
+
+models:
+    - name: maxmind_countries_source
+      description: "Countries source layer for maxmind ip-to-geo service"
+      columns:
+        - name: continent_code
+        - name: continent_name
+        - name: country_iso_code
+          tests:
+            - unique
+        - name: country_name
+        - name: geoname_id
+          tests:
+            - not_null
+            - unique
+        - name: is_in_european_union
+        - name: locale_code        
+    - name: maxmind_ip_ranges_source
+      description: "IP ranges source layer for maxmind ip-to-geo service"
+      columns:
+        - name: geoname_id
+        - name: ip_range_first_ip
+        - name: ip_range_last_ip
+        - name: is_anonymous_proxy
+        - name: is_satellite_provider
+        - name: registered_country_geoname_id
+        - name: represented_country_geoname_id
+
