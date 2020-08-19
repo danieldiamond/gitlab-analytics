@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: maxmind
+    database: '{{ target.database }}'
+    schema: boneyard
+    loader: sheetload
+    loaded_at_field: _UPDATED_AT
+
+    quoting:
+      database: true
+      schema: false
+      identifier: false
+
+    freshness: null
+
+    tables:
+      - name: countries
+      - name: ranges
