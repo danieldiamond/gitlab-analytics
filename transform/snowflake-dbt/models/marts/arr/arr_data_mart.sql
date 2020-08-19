@@ -88,4 +88,3 @@ WITH charges_agg AS (
     LEFT JOIN last_month_of_fiscal_year year
       ON  charges_month_by_month.arr_month = year.last_month_of_fiscal_year
     {{ dbt_utils.group_by(n=24) }}
->>>>>>> master
