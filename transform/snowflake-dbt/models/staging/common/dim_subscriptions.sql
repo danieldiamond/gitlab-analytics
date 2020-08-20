@@ -4,6 +4,11 @@ WITH zuora_subscription AS (
 
 ), zuora_subscription_snapshots AS (
 
+  /**
+  This partition handles duplicates and hard deletes by taking only the latest subscription version snapshot
+  e.g ids: 2c92a0ff73bdbc700173bed865ad61c3, 2c92a007739edeb30173a0a834521622
+   */
+
   SELECT
   rank() over (partition by subscription_name order by DBT_VALID_FROM desc) as rank,
   subscription_id
