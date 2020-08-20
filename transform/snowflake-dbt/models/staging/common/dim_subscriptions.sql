@@ -8,15 +8,16 @@ WITH zuora_subscription AS (
   rank() over (partition by subscription_name order by DBT_VALID_FROM desc) as rank,
   subscription_id
   FROM {{ ref('zuora_subscription_snapshots_source') }}
-  WHERE --status in ('Cancelled', 'Active')
-  CURRENT_TIMESTAMP()::TIMESTAMP_TZ >= dbt_valid_from
-    AND {{ coalesce_to_infinity('dbt_valid_to') }} > current_timestamp()::TIMESTAMP_TZ
+  WHERE subscription_status NOT IN ('Draft', 'Expired')
+  AND dbt_valid_to IS NULL
 
 ), zuora_account AS (
+
   SELECT
     account_id,
     crm_id
   FROM {{ ref('zuora_account_source') }}
+
 )
 
 SELECT
