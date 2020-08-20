@@ -46,6 +46,9 @@ models:
             - not_null
             - unique
         - name: uuid
+        - name: source_ip
+          meta:
+            sensitive: true
 
     - name: version_version_checks_source
       description: Version check data from self-managed instances.

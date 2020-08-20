@@ -23,9 +23,14 @@ WITH license AS (
 
 ), usage_data AS (
 
-    SELECT *
+    SELECT {{ hash_sensitive_columns('version_usage_data_source') }}
     FROM {{ ref('version_usage_data_source') }}
     WHERE uuid IS NOT NULL
+
+), ip_to_geo AS (
+
+    SELECT *
+    FROM {{ ref('dim_ip_to_geo') }}
 
 ), calculated AS (
 
@@ -69,10 +74,11 @@ WITH license AS (
       calculated.*,
       subscription_id,
       account_id,
-      array_product_details_id
+      array_product_details_id,
+      ip_to_geo.location_id
     FROM calculated
     LEFT JOIN license_product_details
-      ON calculated.license_md5 = license_product_details.license_md5  
+      ON calculated.license_md5 = license_product_details.license_md5
 
 ), renamed AS (
 
@@ -81,8 +87,8 @@ WITH license AS (
       date_id,
       uuid,
       host_id,
-      source_ip,
-      source_ip_numeric,
+      source_ip_hash,
+      location_id,
       license_md5,
       subscription_id,
       account_id,
