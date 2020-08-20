@@ -1,6 +1,21 @@
 version: 2
 
 macros:
+  - name: source_rowcount
+    description: Does a rowcount check and fails if there are fewer rows than expected. An optional condition can be applied as well.
+    arguments:
+      - name: schema
+        type: string
+        description: The name of the schema being referenced
+      - name: table
+        type: string
+        description: The name of the table being referenced
+      - name: count
+        type: integer
+        description: The minimum number of rows expected in the source table
+      - name: where_clause
+        type: string
+        description: Optional filter on the data. Wrap the entire clause in double quotes.
   - name: test_no_overlapping_valid_from_to_dates
     description: '{{ doc("test_no_overlapping_valid_from_to_dates") }}'
   - name: test_unique_where_currently_valid
