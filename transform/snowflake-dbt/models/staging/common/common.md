@@ -22,6 +22,18 @@ Information on the Enterprise Dimensional Model can be found in the [handbook](h
 
 {% enddocs %}
 
+{% docs dim_ip_to_geo %}
+
+Dimensional table mapping ip address ranges to location ids.
+
+{% enddocs %}
+
+{% docs dim_location %}
+
+Dimensional table for geo locations.
+
+{% enddocs %}
+
 {% docs dim_product_details %}
 Dimensional table representing GitLab's Product Catalog. The Product Catalog is created and maintained through the Price Master Management business process and can be found in the [handbook](https://about.gitlab.com/handbook/finance/sox-internal-controls/quote-to-cash/#2-price-master-management).
 
