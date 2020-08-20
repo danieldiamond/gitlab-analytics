@@ -9,7 +9,9 @@ WITH zuora_subscription AS (
   subscription_id
   FROM {{ ref('zuora_subscription_snapshots_source') }}
   WHERE subscription_status NOT IN ('Draft', 'Expired')
-  AND dbt_valid_to IS NULL
+  AND CURRENT_TIMESTAMP()::TIMESTAMP_TZ >= dbt_valid_from
+  AND {{ coalesce_to_infinity('dbt_valid_to') }} > current_timestamp()::TIMESTAMP_TZ
+
 
 ), zuora_account AS (
 
