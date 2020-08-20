@@ -1,6 +1,18 @@
 version: 2
 
 macros:
+  - name: source_column_existence
+    description: Validates the existence of certain columns in a table within the raw database.
+    arguments:
+      - name: schema
+        type: string
+        description: The name of hte schema being referenced
+      - name: table
+        type: string
+        description: The name of the table being referenced
+      - name: column_list
+        type: list
+        description: List of columns being referenced
   - name: source_rowcount
     description: Does a rowcount check and fails if there are fewer rows than expected. An optional condition can be applied as well.
     arguments:
@@ -16,6 +28,15 @@ macros:
       - name: where_clause
         type: string
         description: Optional filter on the data. Wrap the entire clause in double quotes.
+  - name: source_table_existence
+    description: Validates the existence of certain columns in a table within the raw database.
+    arguments:
+      - name: schema
+        type: string
+        description: The name of hte schema being referenced
+      - name: table_list
+        type: list
+        description: List of tables being referenced
   - name: test_no_overlapping_valid_from_to_dates
     description: '{{ doc("test_no_overlapping_valid_from_to_dates") }}'
   - name: test_unique_where_currently_valid
