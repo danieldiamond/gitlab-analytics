@@ -1,5 +1,5 @@
 WITH zuora_subscription AS (
-  SELECT *
+  SELECT *,
   FROM {{ ref('zuora_subscription_source') }}
 
 ), zuora_subscription_snapshots AS (
@@ -10,12 +10,14 @@ WITH zuora_subscription AS (
    */
 
   SELECT
-  rank() over (partition by subscription_name order by DBT_VALID_FROM desc) as rank,
+  rank() OVER (
+    PARTITION BY subscription_name
+    ORDER BY DBT_VALID_FROM DESC) AS rank,
   subscription_id
   FROM {{ ref('zuora_subscription_snapshots_source') }}
   WHERE subscription_status NOT IN ('Draft', 'Expired')
-  AND CURRENT_TIMESTAMP()::TIMESTAMP_TZ >= dbt_valid_from
-  AND {{ coalesce_to_infinity('dbt_valid_to') }} > current_timestamp()::TIMESTAMP_TZ
+    AND CURRENT_TIMESTAMP()::TIMESTAMP_TZ >= dbt_valid_from
+    AND {{ coalesce_to_infinity('dbt_valid_to') }} > current_timestamp()::TIMESTAMP_TZ
 
 
 ), zuora_account AS (
