@@ -80,44 +80,6 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'epics'
     export_table_primary_key: id
-  oauth_access_tokens:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , resource_owner_id
-      , application_id
-      , expires_in
-      , revoked_at
-      , created_at
-      , scopes
-      FROM oauth_access_tokens
-    export_schema: 'gitlab_com'
-    export_table: 'oauth_access_tokens'
-    export_table_primary_key: id
-  members:
-    import_db: GITLAB_DB
-    import_query: >
-      SELECT id
-      , access_level
-      , source_id
-      , source_type
-      , user_id
-      , notification_level
-      , type
-      , created_at
-      , created_by_id
-      , invite_email
-      , invite_accepted_at
-      , invite_token
-      , requested_at
-      , CASE WHEN expires_at > '2262-01-01' THEN '2262-01-01' ELSE expires_at END AS expires_at
-      , ldap
-      , override
-      FROM members
-    export_schema: 'gitlab_com'
-    export_table: 'members'
-    export_table_primary_key: id
-    advanced_metadata: true
 
   alert_management_alert_assignees:
     import_db: GITLAB_DB
@@ -823,6 +785,30 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'epic_metrics'
     export_table_primary_key: id
+  experiment_users:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , experiment_id
+      , user_id
+      , group_type
+      , created_at
+      , updated_at
+      FROM experiment_users
+      WHERE updated_at BETWEEN '{EXECUTION_DATE}'::timestamp - interval '{HOURS} hours'
+        AND '{EXECUTION_DATE}'::timestamp
+    export_schema: 'gitlab_com'
+    export_table: 'experiment_users'
+    export_table_primary_key: id
+  experiments:
+    import_db: GITLAB_DB
+    import_query: >
+      SELECT id
+      , name
+      FROM experiments
+    export_schema: 'gitlab_com'
+    export_table: 'experiments'
+    export_table_primary_key: id
   gitlab_subscription_histories:
     import_db: GITLAB_DB
     import_query: >
@@ -1080,6 +1066,30 @@ tables:
     export_schema: 'gitlab_com'
     export_table: 'lists'
     export_table_primary_key: id
+  members:
+    import_db: GITLAB_DB
+    import_query: >
+        SELECT id
+        , access_level
+        , source_id
+        , source_type
+        , user_id
+        , notification_level
+        , type
+        , created_at
+        , created_by_id
+        , invite_email
+        , invite_accepted_at
+        , invite_token
+        , requested_at
+        , CASE WHEN expires_at > '2262-01-01' THEN '2262-01-01' ELSE expires_at END AS expires_at
+        , ldap
+        , override
+        FROM members
+    export_schema: 'gitlab_com'
+    export_table: 'members'
+    export_table_primary_key: id
+    advanced_metadata: true
   merge_requests:
     import_db: GITLAB_DB
     import_query: >
@@ -1325,6 +1335,20 @@ tables:
         AND '{EXECUTION_DATE}'::timestamp
     export_schema: 'gitlab_com'
     export_table: 'notification_settings'
+    export_table_primary_key: id
+  oauth_access_tokens:
+    import_db: GITLAB_DB
+    import_query: >
+        SELECT id
+        , resource_owner_id
+        , application_id
+        , expires_in
+        , revoked_at
+        , created_at
+        , scopes
+        FROM oauth_access_tokens
+    export_schema: 'gitlab_com'
+    export_table: 'oauth_access_tokens'
     export_table_primary_key: id
   pages_domains:
     import_db: GITLAB_DB
