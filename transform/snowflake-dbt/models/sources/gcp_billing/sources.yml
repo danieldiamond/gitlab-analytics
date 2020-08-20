@@ -4,7 +4,7 @@ sources:
   - name: gcp_billing
     database: '{{ env_var("SNOWFLAKE_LOAD_DATABASE") }}'
     schema: gcp_billing
-    loaded_at_field: DATEADD(sec, uploaded_at, '1970-01-01')
+    loaded_at_field: uploaded_at
     loader: Airflow, gcp_billing
     description: GCP Billing Data from Bigquery [Original Issue](https://gitlab.com/gitlab-data/analytics/-/issues/5268)
 
