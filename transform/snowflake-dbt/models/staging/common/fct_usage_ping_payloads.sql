@@ -48,8 +48,7 @@ WITH license AS (
         WHEN edition IN ('EE', 'EES') THEN 'Starter'
         WHEN edition = 'EEP' THEN 'Premium'
         WHEN edition = 'EEU' THEN 'Ultimate'
-      ELSE NULL END                                              AS product_tier,
-      PARSE_IP(source_ip, 'inet')['ip_fields'][0]                AS source_ip_numeric
+      ELSE NULL END                                              AS product_tier
     FROM usage_data
 
 ), license_product_details AS (
@@ -79,6 +78,8 @@ WITH license AS (
     FROM calculated
     LEFT JOIN license_product_details
       ON calculated.license_md5 = license_product_details.license_md5
+    LEFT JOIN ip_to_geo
+      ON calculated.source_ip_hash = ip_to_geo.source_ip_hash
 
 ), renamed AS (
 
